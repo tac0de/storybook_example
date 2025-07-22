@@ -2,7 +2,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import { Comment } from './Comment';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, within, waitFor } from '@storybook/testing-library';
 
 // 스토리북의 메타 정보. Meta<typeof Comment>를 사용하여 타입을 추론합니다.
 const meta: Meta<typeof Comment> = {
@@ -62,8 +62,11 @@ export const Editing: Story = {
     avatarUrl: 'https://i.pravatar.cc/40?u=hong',
   },
   play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      return canvasElement.querySelector('button[title="수정"]') !== null;
+    });
     const editButton = canvasElement.querySelector('button[title="수정"]') as HTMLButtonElement | null;
-    if (editButton) editButton.click();
+    if (editButton) await userEvent.click(editButton);
   },
 };
 
@@ -78,11 +81,14 @@ export const ToggleLikeAndDislike: Story = {
   play: async ({ canvasElement }) => {
     const emojis = ['😂', '❤️'];
     for (const emoji of emojis) {
+      await waitFor(() => {
+        return canvasElement.querySelector(`button[title="${emoji}"]`) !== null;
+      });
       const btn = canvasElement.querySelector(`button[title="${emoji}"]`) as HTMLButtonElement | null;
       if (btn) {
-        btn.click(); // on
+        await userEvent.click(btn); // on
         await new Promise(res => setTimeout(res, 300));
-        btn.click(); // off
+        await userEvent.click(btn); // off
         await new Promise(res => setTimeout(res, 300));
       }
     }
@@ -98,8 +104,11 @@ export const Replying: Story = {
     avatarUrl: 'https://i.pravatar.cc/40?u=seojoon',
   },
   play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      return canvasElement.querySelector('button[title="답글"]') !== null;
+    });
     const replyButton = canvasElement.querySelector('button[title="답글"]') as HTMLButtonElement | null;
-    if (replyButton) replyButton.click();
+    if (replyButton) await userEvent.click(replyButton);
   },
 };
 
@@ -112,6 +121,9 @@ export const ReportScenario: Story = {
     avatarUrl: 'https://i.pravatar.cc/40?u=report',
   },
   play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      return within(canvasElement).queryByRole('button', { name: /신고/ }) !== null;
+    });
     // 1. 신고 버튼 클릭
     const reportButton = within(canvasElement).getByRole('button', { name: /신고/ });
     await userEvent.click(reportButton);
