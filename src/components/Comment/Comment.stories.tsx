@@ -1,7 +1,7 @@
 // src/components/Comment.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/react';
-import { Comment } from '../components/Comment';
+import { Comment } from './Comment';
 import { userEvent, within } from '@storybook/testing-library';
 
 // 스토리북의 메타 정보. Meta<typeof Comment>를 사용하여 타입을 추론합니다.
@@ -126,4 +126,4 @@ export const ReportScenario: Story = {
     await new Promise(res => setTimeout(res, 300));
     // 4. 접수 메시지 확인 (자동화 검증은 생략, UI로 확인)
   },
-};
+}; 
