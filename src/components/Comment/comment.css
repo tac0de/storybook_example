@@ -96,7 +96,7 @@
 .like-count {
     margin-left: 2px;
     font-weight: bold;
-    color: #e53935;
+    color: #000;
     font-size: 13px;
 }
 
@@ -104,6 +104,8 @@
     .comment-container {
         max-width: 100%;
         padding: 8px;
+        flex-direction: column;
+        box-sizing: border-box;
     }
     .avatar, .avatar-placeholder {
         width: 32px;
@@ -118,5 +120,28 @@
     }
     .text {
         font-size: 13px;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        max-width: 100%;
+    }
+    .action-bar,
+    .reply-form,
+    .report-form {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+        box-sizing: border-box;
+    }
+    .action-btn,
+    .reply-input,
+    .report-input {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+    .reply-list {
+        padding-left: 8px;
+        border-left: 1px solid #eee;
     }
 }

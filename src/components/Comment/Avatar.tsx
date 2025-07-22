@@ -6,7 +6,6 @@ interface AvatarProps {
   avatarUrl?: string | null;
 }
 
-// author 문자열을 해시하여 고정된 색상 반환
 function stringToColor(str: string) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
