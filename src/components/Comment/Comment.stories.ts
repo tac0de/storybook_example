@@ -4,7 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Comment } from './Comment';
 import { userEvent, within, waitFor } from '@storybook/testing-library';
 
-// 스토리북의 메타 정보. Meta<typeof Comment>를 사용하여 타입을 추론합니다.
+/**
+ * Storybook 메타 정보
+ * - Comment 컴포넌트의 스토리북 설정 및 argTypes 정의
+ * - title: Storybook 내에서의 분류 경로
+ * - component: 실제 렌더링할 컴포넌트
+ * - argTypes: Storybook Controls 패널에서 조작 가능한 props 설명
+ */
 const meta: Meta<typeof Comment> = {
   title: 'Components/Comment',
   component: Comment,
@@ -19,10 +25,16 @@ const meta: Meta<typeof Comment> = {
 
 export default meta;
 
-// StoryObj 타입을 사용하여 개별 스토리를 정의합니다.
+/**
+ * Story 타입 정의
+ * - 각 스토리의 타입 안전성을 보장
+ */
 type Story = StoryObj<typeof meta>;
 
-// 첫 번째 스토리: "기본" 상태
+/**
+ * Primary: 기본 댓글 UI
+ * - 가장 일반적인 댓글 상태를 보여줌
+ */
 export const Primary: Story = {
   args: {
     author: '김민준',
@@ -32,7 +44,10 @@ export const Primary: Story = {
   },
 };
 
-// 두 번째 스토리: 프로필 이미지가 없는 경우
+/**
+ * NoAvatar: 프로필 이미지가 없는 경우
+ * - avatarUrl이 null일 때의 UI를 확인
+ */
 export const NoAvatar: Story = {
   args: {
     author: '이서연',
@@ -42,7 +57,10 @@ export const NoAvatar: Story = {
   },
 };
 
-// 세 번째 스토리: 텍스트가 매우 긴 경우
+/**
+ * LongText: 매우 긴 댓글 본문
+ * - 긴 텍스트가 레이아웃을 깨지 않고 잘 표시되는지 테스트
+ */
 export const LongText: Story = {
   args: {
     ...Primary.args, // Primary 스토리의 args를 그대로 사용
@@ -53,7 +71,10 @@ export const LongText: Story = {
   },
 };
 
-// 수정 모드 스토리: 처음부터 수정 버튼을 눌러 편집 상태로 진입
+/**
+ * Editing: 수정 모드 시나리오
+ * - 스토리북 play function을 활용해, 처음부터 수정 버튼을 눌러 편집 상태로 진입
+ */
 export const Editing: Story = {
   args: {
     author: '홍길동',
@@ -61,6 +82,10 @@ export const Editing: Story = {
     timestamp: '방금 전',
     avatarUrl: 'https://i.pravatar.cc/40?u=hong',
   },
+  /**
+   * play: 스토리북 상호작용 시나리오
+   * - 렌더링 후 "수정" 버튼을 찾아 클릭하여 편집 모드로 진입
+   */
   play: async ({ canvasElement }) => {
     await waitFor(() => {
       return canvasElement.querySelector('button[title="수정"]') !== null;
@@ -70,7 +95,10 @@ export const Editing: Story = {
   },
 };
 
-// 좋아요 싫어요 토글 시나리오 (play function 활용)
+/**
+ * ToggleLikeAndDislike: 좋아요/싫어요 토글 시나리오
+ * - play function에서 좋아요, 싫어요 버튼을 순서대로 눌러 토글 동작을 시연
+ */
 export const ToggleLikeAndDislike: Story = {
   args: {
     author: '최원영',
@@ -78,6 +106,9 @@ export const ToggleLikeAndDislike: Story = {
     timestamp: '5분 전',
     avatarUrl: 'https://i.pravatar.cc/40?u=emoji-toggle',
   },
+  /**
+   * play: 좋아요/싫어요 버튼을 자동으로 클릭/해제
+   */
   play: async ({ canvasElement }) => {
     const emojis = ['😂', '❤️'];
     for (const emoji of emojis) {
@@ -95,7 +126,10 @@ export const ToggleLikeAndDislike: Story = {
   },
 };
 
-// 답글 입력창 열기 (play function 활용)
+/**
+ * Replying: 답글 입력창 열기 시나리오
+ * - play function에서 답글 버튼을 눌러 입력창이 열리는지 확인
+ */
 export const Replying: Story = {
   args: {
     author: '박서준',
@@ -103,6 +137,9 @@ export const Replying: Story = {
     timestamp: '2분 전',
     avatarUrl: 'https://i.pravatar.cc/40?u=seojoon',
   },
+  /**
+   * play: 답글 버튼을 클릭하여 입력창이 열리는지 시연
+   */
   play: async ({ canvasElement }) => {
     await waitFor(() => {
       return canvasElement.querySelector('button[title="답글"]') !== null;
@@ -112,7 +149,10 @@ export const Replying: Story = {
   },
 };
 
-// 신고 기능 시나리오 (play function 활용)
+/**
+ * ReportScenario: 신고 기능 시나리오
+ * - play function에서 신고 버튼 클릭 → 사유 입력 → 신고하기 버튼 클릭까지 자동화
+ */
 export const ReportScenario: Story = {
   args: {
     author: '신고테스터',
@@ -120,6 +160,9 @@ export const ReportScenario: Story = {
     timestamp: '방금 전',
     avatarUrl: 'https://i.pravatar.cc/40?u=report',
   },
+  /**
+   * play: 신고 버튼 클릭 → 사유 입력 → 신고하기 버튼 클릭까지 자동화
+   */
   play: async ({ canvasElement }) => {
     await waitFor(() => {
       return within(canvasElement).queryByRole('button', { name: /신고/ }) !== null;
