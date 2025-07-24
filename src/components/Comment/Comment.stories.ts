@@ -1,8 +1,10 @@
 // src/components/Comment.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
-import { Comment } from './Comment';
 import { userEvent, within, waitFor } from '@storybook/testing-library';
+
+import { Comment } from './Comment';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 /**
  * Storybook 메타 정보
@@ -90,8 +92,10 @@ export const Editing: Story = {
     await waitFor(() => {
       return canvasElement.querySelector('button[title="수정"]') !== null;
     });
-    const editButton = canvasElement.querySelector('button[title="수정"]') as HTMLButtonElement | null;
-    if (editButton) await userEvent.click(editButton);
+    const editButton = canvasElement.querySelector('button[title="수정"]');
+    if (editButton) {
+      await userEvent.click(editButton);
+    }
   },
 };
 
@@ -115,7 +119,7 @@ export const ToggleLikeAndDislike: Story = {
       await waitFor(() => {
         return canvasElement.querySelector(`button[title="${emoji}"]`) !== null;
       });
-      const btn = canvasElement.querySelector(`button[title="${emoji}"]`) as HTMLButtonElement | null;
+      const btn = canvasElement.querySelector(`button[title="${emoji}"]`);
       if (btn) {
         await userEvent.click(btn); // on
         await new Promise(res => setTimeout(res, 300));
@@ -144,8 +148,10 @@ export const Replying: Story = {
     await waitFor(() => {
       return canvasElement.querySelector('button[title="답글"]') !== null;
     });
-    const replyButton = canvasElement.querySelector('button[title="답글"]') as HTMLButtonElement | null;
-    if (replyButton) await userEvent.click(replyButton);
+    const replyButton = canvasElement.querySelector('button[title="답글"]');
+    if (replyButton) {
+      await userEvent.click(replyButton);
+    }
   },
 };
 
@@ -165,20 +171,27 @@ export const ReportScenario: Story = {
    */
   play: async ({ canvasElement }) => {
     await waitFor(() => {
-      return within(canvasElement).queryByRole('button', { name: /신고/ }) !== null;
+      return (
+        within(canvasElement).queryByRole('button', { name: /신고/ }) !== null
+      );
     });
     // 1. 신고 버튼 클릭
-    const reportButton = within(canvasElement).getByRole('button', { name: /신고/ });
+    const reportButton = within(canvasElement).getByRole('button', {
+      name: /신고/,
+    });
     await userEvent.click(reportButton);
     await new Promise(res => setTimeout(res, 300));
     // 2. 신고 사유 입력
-    const input = within(canvasElement).getByPlaceholderText('신고 사유를 입력하세요...');
+    const input =
+      within(canvasElement).getByPlaceholderText('신고 사유를 입력하세요...');
     await userEvent.type(input, '스팸입니다');
     await new Promise(res => setTimeout(res, 300));
     // 3. 신고하기 버튼 클릭
-    const submitButton = within(canvasElement).getByRole('button', { name: /신고하기/ });
+    const submitButton = within(canvasElement).getByRole('button', {
+      name: /신고하기/,
+    });
     await userEvent.click(submitButton);
     await new Promise(res => setTimeout(res, 300));
     // 4. 접수 메시지 확인 (자동화 검증은 생략, UI로 확인)
   },
-}; 
+};

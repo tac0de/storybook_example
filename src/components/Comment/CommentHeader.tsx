@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 /**
  * CommentHeaderProps
@@ -14,11 +14,14 @@ interface CommentHeaderProps {
  * CommentHeader 컴포넌트
  * - 댓글 상단에 작성자와 작성 시간을 표시하는 역할
  */
-export const CommentHeader: React.FC<CommentHeaderProps> = ({ author, timestamp }) => (
-  <div className="comment-header">
+export const CommentHeader: React.FC<CommentHeaderProps> = ({
+  author,
+  timestamp,
+}) => (
+  <div className='comment-header'>
     {/* 작성자 이름 */}
-    <span className="author">{author}</span>
+    <span className='author'>{author}</span>
     {/* 작성 시간 */}
-    <span className="timestamp">{timestamp}</span>
+    <span className='timestamp'>{timestamp}</span>
   </div>
-); 
+);

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import './comment.css';
 
 /**
@@ -29,18 +29,17 @@ function stringToColor(str: string) {
  * Avatar 컴포넌트
  * - 프로필 이미지가 있으면 이미지를, 없으면 플레이스홀더(이니셜+색상)를 렌더링
  */
-export const Avatar: React.FC<AvatarProps> = ({ author, avatarUrl }) => (
+export const Avatar: React.FC<AvatarProps> = ({ author, avatarUrl }) =>
   avatarUrl ? (
     // 프로필 이미지 렌더링
-    <img src={avatarUrl} alt={`${author}의 프로필 사진`} className="avatar" />
+    <img src={avatarUrl} alt={`${author}의 프로필 사진`} className='avatar' />
   ) : (
     // 프로필 이미지가 없을 때 플레이스홀더 렌더링
     <div
-      className="avatar-placeholder"
+      className='avatar-placeholder'
       aria-label={`${author}의 프로필 이미지 없음`}
       style={{ backgroundColor: stringToColor(author) }}
     >
       {author && author.length > 0 ? author[0] : '?'}
     </div>
-  )
-); 
+  );
