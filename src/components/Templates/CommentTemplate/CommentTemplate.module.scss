@@ -1,0 +1,29 @@
+.commentTemplate {
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 24px 0 0 0;
+  max-width: 700px;
+  margin: 0 auto;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  padding: 0 32px 16px 32px;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+}
+.body {
+  flex: 1;
+  padding: 24px 32px;
+}
+.footer {
+  padding: 16px 32px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+  font-size: 14px;
+  color: #888;
+  border-radius: 0 0 12px 12px;
+}

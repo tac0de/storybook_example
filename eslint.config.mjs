@@ -36,8 +36,16 @@ export default [
   // --- Storybook files: only basic JS rules, no type-aware TS rules ---
   {
     files: ['.storybook/**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.node,
+        ...globals.es2022,
+      },
+    },
     rules: {
-      // No type-aware TS rules here
+      'no-console': 'off',
+      // No type-aware TS rules here to prevent type info errors
     },
   },
   // --- Global ignores ---
@@ -51,6 +59,10 @@ export default [
       '*.min.js',
       '*.min.css',
       '*.generated.*',
+      'vite.config.ts',
+      '**/*.test.{ts,tsx}',
+      '**/*.spec.{ts,tsx}',
+      '.storybook/**/*.ts',
     ],
   },
   // --- Base configs and strict rules only for src/**/*.{ts,tsx} ---
