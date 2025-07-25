@@ -13,6 +13,12 @@ const initialComments: Comment[] = [
   { id: '2', author: '김철수', text: '두 번째 댓글', timestamp: '1분 전' },
 ];
 
+/**
+ * 댓글 기능을 제공하는 완전한 페이지 컴포넌트입니다.
+ * `CommentTemplate`을 사용하여 전체 레이아웃을 구성하고,
+ * `CommentInput`과 `CommentList`를 조합하여 댓글의 입력, 추가, 삭제, 수정 기능을 관리합니다.
+ * @returns {React.ReactNode} - 렌더링된 댓글 페이지 컴포넌트.
+ */
 export const CommentPage = (): React.ReactNode => {
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [input, setInput] = useState('');

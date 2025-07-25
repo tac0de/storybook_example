@@ -2,6 +2,9 @@ import styles from './Button.module.scss';
 
 import type React from 'react';
 
+/**
+ * Button 컴포넌트의 props를 정의합니다.
+ */
 export interface ButtonProps {
   /** 버튼 텍스트 */
   readonly children: React.ReactNode;
@@ -20,7 +23,9 @@ export interface ButtonProps {
 }
 
 /**
- * Button Atom - 다양한 스타일/크기 지원 버튼
+ * 다양한 스타일과 크기를 지원하는 기본 버튼 컴포넌트입니다.
+ * @param {ButtonProps} props - 버튼 컴포넌트의 props.
+ * @returns {React.ReactElement} - 렌더링된 버튼 컴포넌트.
  */
 export const Button: React.FC<ButtonProps> = ({
   children,

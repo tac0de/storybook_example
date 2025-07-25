@@ -2,6 +2,9 @@ import styles from './Input.module.scss';
 
 import type React from 'react';
 
+/**
+ * Input 컴포넌트의 props를 정의합니다.
+ */
 export interface InputProps {
   /** 입력값 */
   readonly value: string;
@@ -21,6 +24,12 @@ export interface InputProps {
   readonly onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+/**
+ * 표준 HTML input 요소를 감싼 기본 입력 필드 컴포넌트입니다.
+ * 다양한 크기와 상태(비활성화 등)를 지원합니다.
+ * @param {InputProps} props - 입력 필드 컴포넌트의 props.
+ * @returns {React.ReactElement} - 렌더링된 입력 필드 컴포넌트.
+ */
 export const Input: React.FC<InputProps> = ({
   value,
   onChange,

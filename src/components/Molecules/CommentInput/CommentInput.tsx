@@ -5,6 +5,9 @@ import styles from './CommentInput.module.scss';
 
 import type React from 'react';
 
+/**
+ * CommentInput 컴포넌트의 props를 정의합니다.
+ */
 export interface CommentInputProps {
   /** 입력값 */
   readonly value: string;
@@ -22,6 +25,12 @@ export interface CommentInputProps {
   readonly className?: string;
 }
 
+/**
+ * 댓글 입력을 위한 `Input`과 `Button`을 조합한 분자(Molecule) 컴포넌트입니다.
+ * 사용자가 텍스트를 입력하고 '등록' 버튼을 클릭하거나 Enter 키를 눌러 댓글을 제출할 수 있습니다.
+ * @param {CommentInputProps} props - 댓글 입력 컴포넌트의 props.
+ * @returns {React.ReactElement} - 렌더링된 댓글 입력 컴포넌트.
+ */
 export const CommentInput: React.FC<CommentInputProps> = ({
   value,
   onChange,
