@@ -1,40 +1,76 @@
-import styles from './CommentTemplate.module.scss';
-
 import type React from 'react';
 
-/**
- * CommentTemplate 컴포넌트의 props를 정의합니다.
- */
 export interface CommentTemplateProps {
   /** 헤더 영역 */
   readonly header?: React.ReactNode;
-  /** 본문 영역 */
+  /** 상단 영역 (구독 프롬프트, 알림 등) */
+  readonly topSection?: React.ReactNode;
+  /** 네비게이션/정렬 영역 */
+  readonly navigation?: React.ReactNode;
+  /** 메인 콘텐츠 영역 */
   readonly children: React.ReactNode;
-  /** 푸터 영역 */
-  readonly footer?: React.ReactNode;
+  /** 하단 영역 (페이지네이션, 로드 더보기 등) */
+  readonly bottomSection?: React.ReactNode;
+  /** 전체 너비 사용 여부 */
+  readonly fullWidth?: boolean;
+  /** 최소 높이 */
+  readonly minHeight?: string;
+  /** 배경 스타일 */
+  readonly variant?: 'default' | 'minimal' | 'elevated';
   /** 추가 클래스 */
   readonly className?: string;
 }
 
-/**
- * 댓글 페이지의 전체적인 레이아웃 구조를 정의하는 템플릿(Template) 컴포넌트입니다.
- * 헤더, 본문(children), 푸터 영역으로 구성됩니다.
- * @param {CommentTemplateProps} props - 댓글 템플릿 컴포넌트의 props.
- * @returns {React.ReactElement} - 렌더링된 댓글 템플릿 컴포넌트.
- */
 export const CommentTemplate: React.FC<CommentTemplateProps> = ({
-  header = null,
+  header,
+  topSection,
+  navigation,
   children,
-  footer = null,
+  bottomSection,
+  fullWidth = false,
+  minHeight = 'min-h-96',
+  variant = 'default',
   className = '',
 }) => {
+  const variantClasses = {
+    default: 'bg-gray-50 rounded-xl shadow-sm',
+    minimal: 'bg-white border border-gray-200 rounded-lg',
+    elevated: 'bg-white rounded-xl shadow-lg',
+  };
+
+  const widthClasses = fullWidth ? 'w-full' : 'max-w-4xl mx-auto';
+  const variantClass = variantClasses[variant];
+
   return (
     <div
-      className={[styles.commentTemplate, className].filter(Boolean).join(' ')}
+      className={`${variantClass} ${widthClasses} ${minHeight} flex flex-col ${className}`}
     >
-      {header !== null && <div className={styles.header}>{header}</div>}
-      <main className={styles.body}>{children}</main>
-      {footer !== null && <div className={styles.footer}>{footer}</div>}
+      {/* 헤더 섹션 */}
+      {header && (
+        <div className='p-6 pb-4 border-b border-gray-200'>{header}</div>
+      )}
+
+      {/* 상단 섹션 */}
+      {topSection && (
+        <div className='px-6 py-4 border-b border-gray-100'>{topSection}</div>
+      )}
+
+      {/* 네비게이션 섹션 */}
+      {navigation && (
+        <div className='px-6 py-3 border-b border-gray-100 bg-gray-50/50'>
+          {navigation}
+        </div>
+      )}
+
+      {/* 메인 콘텐츠 */}
+      <div className='flex-1 p-6 pt-4'>{children}</div>
+
+      {/* 하단 섹션 */}
+      {bottomSection && (
+        <div className='px-6 py-4 border-t border-gray-100 bg-gray-50/50'>
+          {bottomSection}
+        </div>
+      )}
     </div>
   );
 };
