@@ -152,11 +152,10 @@ export const WithCustomClass: Story = {
 
 export const Interactive: Story = {
   render: () => {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = React.useState(0);
     return (
       <${componentName} 
         className="cursor-pointer hover:bg-gray-50"
-        onClick={() => setCount(count + 1)}
       >
         클릭 횟수: {count}
       </${componentName}>
@@ -271,8 +270,13 @@ export const DarkTheme: Story = {
   return templates[atomicType] || templates.Atoms;
 };
 
-const getTestTemplate =
-  componentName => `import { render, screen } from '@testing-library/react';
+const getTestTemplate = (componentName, atomicType) => {
+  // 테스트 파일은 생성하지 않음 (프로젝트에 테스트 환경이 설정되지 않음)
+  return `// ${componentName} 컴포넌트 테스트
+// 필요시 별도로 테스트 환경을 설정한 후 테스트 파일을 작성하세요
+
+/*
+import { render, screen } from '@testing-library/react';
 import { ${componentName} } from './${componentName}';
 
 describe('${componentName}', () => {
@@ -287,7 +291,9 @@ describe('${componentName}', () => {
     const element = screen.getByText('${componentName}');
     expect(element.parentElement).toHaveClass(customClass);
   });
-});`;
+});
+*/`;
+};
 
 const getScssTemplate = componentName => `// ${componentName} 컴포넌트 스타일
 // Tailwind CSS를 사용하므로 이 파일은 추가 커스텀 스타일이 필요할 때만 사용하세요
@@ -374,7 +380,6 @@ const main = () => {
       componentName,
       atomicType
     ),
-    [`${componentName}.test.tsx`]: getTestTemplate(componentName),
     [`${componentName}.module.scss`]: getScssTemplate(componentName),
     [`${componentName}.module.scss.d.ts`]: getScssTypesTemplate(componentName),
     ['index.ts']: getIndexTemplate(componentName),
