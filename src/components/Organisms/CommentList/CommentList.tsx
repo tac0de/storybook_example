@@ -1,77 +1,140 @@
-import { CommentItem } from '../../Molecules/CommentItem';
-import type React from 'react';
+import React from 'react';
+import classNames from 'classnames/bind';
+import { CommentItem } from '../CommentItem';
+import styles from './CommentList.module.scss';
+
+const cx = classNames.bind(styles);
 
 export interface Comment {
-  readonly id: string;
-  readonly author: string;
-  readonly authorAvatar?: string;
-  readonly timestamp: string;
-  readonly content: string;
-  readonly likes: number;
-  readonly dislikes: number;
-  readonly replies?: number;
-  readonly editable?: boolean;
-  readonly deletable?: boolean;
+  id: string;
+  content: string;
+  authorName: string;
+  authorAvatar?: string;
+  timestamp: string;
+  authorStatus?: 'online' | 'offline' | 'away' | 'busy';
+  likeCount: number;
+  isLiked: boolean;
+  replyCount: number;
+  canEdit?: boolean;
+  canDelete?: boolean;
+  replies?: Comment[];
+  parentId?: string;
 }
 
 export interface CommentListProps {
-  /** 댓글 목록 */
-  readonly comments: Comment[];
-  /** 답글 작성 핸들러 */
-  readonly onReplyClick?: (commentId: string) => void;
-  /** 좋아요 핸들러 */
-  readonly onLikeClick?: (commentId: string) => void;
-  /** 싫어요 핸들러 */
-  readonly onDislikeClick?: (commentId: string) => void;
-  /** 편집 핸들러 */
-  readonly onEditClick?: (commentId: string) => void;
-  /** 삭제 핸들러 */
-  readonly onDeleteClick?: (commentId: string) => void;
-  /** 추가 클래스 */
-  readonly className?: string;
+  comments: Comment[];
+  sortBy?: 'newest' | 'oldest' | 'mostLiked' | 'mostReplied';
+  loading?: boolean;
+  emptyMessage?: string;
+  onSortChange?: (
+    sortBy: 'newest' | 'oldest' | 'mostLiked' | 'mostReplied'
+  ) => void;
+  onLikeClick?: (commentId: string) => void;
+  onReplyClick?: (commentId: string) => void;
+  onReportClick?: (commentId: string) => void;
+  onEditClick?: (commentId: string) => void;
+  onDeleteClick?: (commentId: string) => void;
+  onAuthorClick?: (commentId: string) => void;
+  onSubmitReply?: (parentId: string, content: string) => void;
+  className?: string;
 }
 
+/**
+ * CommentList 유기체(Organism) 컴포넌트입니다.
+ * CommentItem 배열을 관리하고 정렬 옵션을 제공합니다.
+ */
 export const CommentList: React.FC<CommentListProps> = ({
   comments,
-  onReplyClick,
+  sortBy = 'newest',
+  loading = false,
+  emptyMessage = '댓글이 없습니다.',
+  onSortChange,
   onLikeClick,
-  onDislikeClick,
+  onReplyClick,
+  onReportClick,
   onEditClick,
   onDeleteClick,
-  className = '',
+  onAuthorClick,
+  onSubmitReply,
+  className,
 }) => {
-  if (comments.length === 0) {
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSortBy = e.target.value as
+      | 'newest'
+      | 'oldest'
+      | 'mostLiked'
+      | 'mostReplied';
+    onSortChange?.(newSortBy);
+  };
+
+  const renderSortOptions = () => {
+    if (!onSortChange) return null;
+
     return (
-      <div className={`text-center py-8 text-gray-500 ${className}`}>
-        <p>아직 댓글이 없습니다.</p>
-        <p className='text-sm mt-1'>첫 번째 댓글을 남겨보세요!</p>
+      <div className={cx('sort-section')}>
+        <label htmlFor='sort-select' className={cx('sort-label')}>
+          정렬:
+        </label>
+        <select
+          id='sort-select'
+          value={sortBy}
+          onChange={handleSortChange}
+          className={cx('sort-select')}
+        >
+          <option value='newest'>최신순</option>
+          <option value='oldest'>오래된순</option>
+          <option value='mostLiked'>좋아요순</option>
+          <option value='mostReplied'>답글순</option>
+        </select>
       </div>
     );
-  }
+  };
 
-  return (
-    <div
-      className={`w-full max-w-2xl mx-auto bg-white rounded-lg shadow-sm ${className}`}
-    >
+  const renderLoadingState = () => (
+    <div className={cx('loading-state')}>
+      <div className={cx('loading-spinner')}></div>
+      <p className={cx('loading-text')}>댓글을 불러오는 중...</p>
+    </div>
+  );
+
+  const renderEmptyState = () => (
+    <div className={cx('empty-state')}>
+      <div className={cx('empty-icon')}>💬</div>
+      <p className={cx('empty-text')}>{emptyMessage}</p>
+    </div>
+  );
+
+  const renderCommentList = () => (
+    <div className={cx('comment-list')}>
       {comments.map(comment => (
         <CommentItem
           key={comment.id}
-          author={comment.author}
-          authorAvatar={comment.authorAvatar}
-          timestamp={comment.timestamp}
-          content={comment.content}
-          likes={comment.likes}
-          dislikes={comment.dislikes}
-          replies={comment.replies}
-          editable={comment.editable}
-          deletable={comment.deletable}
-          onReplyClick={() => onReplyClick?.(comment.id)}
+          {...comment}
           onLikeClick={() => onLikeClick?.(comment.id)}
-          onDislikeClick={() => onDislikeClick?.(comment.id)}
+          onReplyClick={() => onReplyClick?.(comment.id)}
+          onReportClick={() => onReportClick?.(comment.id)}
           onEditClick={() => onEditClick?.(comment.id)}
           onDeleteClick={() => onDeleteClick?.(comment.id)}
+          onAuthorClick={() => onAuthorClick?.(comment.id)}
+          onSubmitReply={
+            onSubmitReply
+              ? (content: string) => onSubmitReply(comment.id, content)
+              : undefined
+          }
         />
       ))}
     </div>
+  );
+
+  return (
+    <section className={cx('comment-list-container', className)}>
+      {renderSortOptions()}
+
+      {loading
+        ? renderLoadingState()
+        : comments.length === 0
+          ? renderEmptyState()
+          : renderCommentList()}
+    </section>
   );
 };

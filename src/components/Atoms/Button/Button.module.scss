@@ -1,0 +1,192 @@
+.button {
+  @include button-base();
+  position: relative;
+
+  &:focus {
+    @include focus-ring();
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &.icon-only {
+    padding: $spacing-2;
+    min-width: auto;
+
+    .icon {
+      margin: 0;
+    }
+  }
+}
+
+// Size variants
+.size-xs {
+  padding: $spacing-2 $spacing-3;
+  font-size: $font-size-xs;
+  min-height: $spacing-6;
+
+  &.icon-only {
+    padding: $spacing-1;
+    min-width: $spacing-6;
+    min-height: $spacing-6;
+  }
+}
+
+.size-sm {
+  padding: $spacing-3 $spacing-4;
+  font-size: $font-size-sm;
+  min-height: $spacing-8;
+
+  &.icon-only {
+    padding: $spacing-2;
+    min-width: $spacing-8;
+    min-height: $spacing-8;
+  }
+}
+
+.size-md {
+  padding: $spacing-4 $spacing-6;
+  font-size: $font-size-base;
+  min-height: $spacing-10;
+
+  &.icon-only {
+    padding: $spacing-3;
+    min-width: $spacing-10;
+    min-height: $spacing-10;
+  }
+}
+
+.size-lg {
+  padding: $spacing-5 $spacing-8;
+  font-size: $font-size-lg;
+  min-height: $spacing-12;
+
+  &.icon-only {
+    padding: $spacing-4;
+    min-width: $spacing-12;
+    min-height: $spacing-12;
+  }
+}
+
+// Border radius variants
+.border-radius-none {
+  border-radius: 0;
+}
+
+.border-radius-sm {
+  border-radius: $border-radius-sm;
+}
+
+.border-radius-md {
+  border-radius: $border-radius-base;
+}
+
+.border-radius-lg {
+  border-radius: $border-radius-lg;
+}
+
+.border-radius-xl {
+  border-radius: $border-radius-xl;
+}
+
+.border-radius-full {
+  border-radius: 9999px;
+}
+
+// Variant styles
+.variant-primary {
+  background-color: $primary-color;
+  color: white;
+  border: 1px solid $primary-color;
+
+  &:hover:not(.disabled) {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+    border-color: color.adjust($primary-color, $lightness: -10%);
+  }
+}
+
+.variant-secondary {
+  background-color: $secondary-color;
+  color: white;
+  border: 1px solid $secondary-color;
+
+  &:hover:not(.disabled) {
+    background-color: color.adjust($secondary-color, $lightness: -10%);
+    border-color: color.adjust($secondary-color, $lightness: -10%);
+  }
+}
+
+.variant-outline {
+  background-color: transparent;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+
+  &:hover:not(.disabled) {
+    background-color: $primary-color;
+    color: white;
+  }
+}
+
+.variant-ghost {
+  background-color: transparent;
+  color: $gray-700;
+  border: 1px solid transparent;
+
+  &:hover:not(.disabled) {
+    background-color: $gray-100;
+    color: $info-color;
+  }
+}
+
+.variant-danger {
+  background-color: $danger-color;
+  color: white;
+  border: 1px solid $danger-color;
+
+  &:hover:not(.disabled) {
+    background-color: color.adjust($danger-color, $lightness: -10%);
+    border-color: color.adjust($danger-color, $lightness: -10%);
+  }
+}
+
+.variant-text {
+  background-color: transparent;
+  color: $primary-color;
+  border: 1px solid transparent;
+
+  &:hover:not(.disabled) {
+    background-color: rgba($primary-color, 0.1);
+  }
+}
+
+// Icon styles
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.left-icon {
+    margin-right: $spacing-2;
+  }
+
+  &.right-icon {
+    margin-left: $spacing-2;
+  }
+
+  &.icon-only {
+    margin: 0;
+  }
+}
+
+// Content wrapper
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

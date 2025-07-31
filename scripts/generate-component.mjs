@@ -80,7 +80,7 @@ export const ${componentName}: React.FC<${componentName}Props> = ({ className = 
   return (
     <div className={\`min-h-screen bg-gray-100 py-10 \${className}\`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">${componentName}</h1>
+        <h1 className="text-3xl font-bold text-light-color mb-6">${componentName}</h1>
         <div className="bg-white rounded-lg shadow-sm p-6">
           ${componentName} 페이지 내용
         </div>
@@ -262,7 +262,7 @@ export const WithCustomClass: Story = {
 
 export const DarkTheme: Story = {
   args: {
-    className: 'bg-gray-900 text-white',
+    className: 'bg-light-color text-white',
   },
 };`,
   };

@@ -1,105 +1,45 @@
-import type React from 'react';
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from './Avatar.module.scss';
+
+const cx = classNames.bind(styles);
 
 export interface AvatarProps {
-  /** 프로필 이미지 URL */
-  readonly src?: string;
-  /** 대체 텍스트 또는 이니셜 */
-  readonly alt: string;
-  /** 크기 변형 */
-  readonly size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  /** 모양 */
-  readonly shape?: 'circle' | 'square' | 'rounded';
-  /** 상태 표시 (온라인, 오프라인 등) */
-  readonly status?: 'online' | 'offline' | 'away' | 'busy';
-  /** 클릭 핸들러 */
-  readonly onClick?: () => void;
-  /** 추가 클래스 */
-  readonly className?: string;
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+  shape?: 'circle' | 'square' | 'rounded';
+  status?: 'online' | 'offline' | 'away' | 'busy';
+  className?: string;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,
-  alt,
+  alt = 'Avatar',
   size = 'md',
   shape = 'circle',
   status,
-  onClick,
-  className = '',
+  className,
 }) => {
-  // 크기 클래스 매핑
-  const sizeClasses = {
-    xs: 'w-6 h-6 text-xs',
-    sm: 'w-8 h-8 text-sm',
-    md: 'w-10 h-10 text-base',
-    lg: 'w-12 h-12 text-lg',
-    xl: 'w-16 h-16 text-xl',
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
   };
 
-  // 모양 클래스 매핑
-  const shapeClasses = {
-    circle: 'rounded-full',
-    square: 'rounded-none',
-    rounded: 'rounded-lg',
-  };
-
-  // 상태 클래스 매핑
-  const statusClasses = {
-    online: 'ring-2 ring-green-400',
-    offline: 'ring-2 ring-gray-400',
-    away: 'ring-2 ring-yellow-400',
-    busy: 'ring-2 ring-red-400',
-  };
-
-  const baseClasses =
-    'inline-flex items-center justify-center font-bold object-cover overflow-hidden bg-gray-200 text-gray-600 transition-colors';
-  const interactiveClasses = onClick ? 'cursor-pointer hover:opacity-80' : '';
-  const statusRingClasses = status ? statusClasses[status] : '';
-
-  const combinedClasses = [
-    baseClasses,
-    sizeClasses[size],
-    shapeClasses[shape],
-    statusRingClasses,
-    interactiveClasses,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  const initials = alt.slice(0, 2).toUpperCase();
+  const displayName = alt || 'User';
 
   return (
-    <div className='relative inline-block'>
+    <div className={cx('avatar', `size-${size}`, `shape-${shape}`, className)}>
       {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className={combinedClasses}
-          onClick={onClick}
-        />
+        <img src={src} alt={alt} className={cx('image')} />
       ) : (
-        <span
-          className={`${combinedClasses} bg-gray-400 text-white`}
-          onClick={onClick}
-        >
-          {initials}
-        </span>
+        <div className={cx('initials')}>{getInitials(displayName)}</div>
       )}
-
-      {/* 상태 표시 점 */}
-      {status && (
-        <span
-          className={`absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white ${
-            status === 'online'
-              ? 'bg-green-400'
-              : status === 'offline'
-                ? 'bg-gray-400'
-                : status === 'away'
-                  ? 'bg-yellow-400'
-                  : 'bg-red-400'
-          }`}
-        />
-      )}
+      {status && <div className={cx('status', `status-${status}`)} />}
     </div>
   );
 };

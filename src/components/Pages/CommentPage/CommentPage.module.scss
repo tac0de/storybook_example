@@ -1,0 +1,185 @@
+.comment-page {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-header-content {
+  @include flex-row();
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: $spacing-4;
+}
+
+.header-title-section {
+  @include flex-column();
+  flex: 1;
+  gap: $spacing-2;
+}
+
+.page-title {
+  @include text-2xl();
+  font-weight: $font-weight-bold;
+  color: $black;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  @include text-base();
+  color: $gray-600;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.header-stats {
+  @include flex-column();
+  align-items: flex-end;
+  gap: $spacing-1;
+  flex-shrink: 0;
+}
+
+.comment-count {
+  @include text-sm();
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+  background-color: $gray-100;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-md;
+}
+
+.max-comments {
+  @include text-xs();
+  color: $gray-500;
+}
+
+.page-content-wrapper {
+  @include flex-column();
+  width: 100%;
+  gap: $spacing-6;
+}
+
+.comment-form-section {
+  background-color: white;
+  border: 1px solid $gray-200;
+  border-radius: $border-radius-lg;
+  padding: $spacing-4;
+  box-shadow: $shadow-sm;
+}
+
+.comment-list-section {
+  @include flex-column();
+  width: 100%;
+}
+
+.page-footer-content {
+  @include flex-column();
+  width: 100%;
+  gap: $spacing-2;
+}
+
+.footer-info {
+  @include flex-column();
+  gap: $spacing-1;
+}
+
+.footer-text {
+  @include text-sm();
+  color: $gray-500;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+// Responsive styles
+@media (max-width: $breakpoint-sm) {
+  .page-header-content {
+    @include flex-column();
+    align-items: flex-start;
+    gap: $spacing-3;
+  }
+
+  .header-stats {
+    align-items: flex-start;
+  }
+
+  .page-title {
+    @include text-xl();
+  }
+
+  .page-subtitle {
+    @include text-sm();
+  }
+
+  .comment-form-section {
+    padding: $spacing-3;
+  }
+
+  .page-content-wrapper {
+    gap: $spacing-4;
+  }
+}
+
+@media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+  .page-header-content {
+    gap: $spacing-3;
+  }
+
+  .page-title {
+    @include text-xl();
+  }
+
+  .comment-form-section {
+    padding: $spacing-3;
+  }
+}
+
+// Tablet and desktop specific styles
+@media (min-width: $breakpoint-md) {
+  .page-header-content {
+    gap: $spacing-6;
+  }
+
+  .comment-form-section {
+    padding: $spacing-6;
+  }
+}
+
+// Focus management for accessibility
+.page-header-content:focus-within {
+  outline: none;
+}
+
+.page-content-wrapper:focus-within {
+  outline: none;
+}
+
+// Loading state styles
+.comment-page.loading {
+  .page-content-wrapper {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+// Empty state styles
+.comment-page.empty {
+  .comment-list-section {
+    min-height: 200px;
+  }
+}
+
+// Compact mode styles
+.comment-page.compact {
+  .page-content-wrapper {
+    gap: $spacing-4;
+  }
+
+  .comment-form-section {
+    padding: $spacing-3;
+  }
+
+  .page-title {
+    @include text-xl();
+  }
+}

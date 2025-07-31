@@ -1,39 +1,31 @@
-import { useState } from 'react';
-import { Button } from './Button';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
   title: 'Atoms/Button',
   component: Button,
   tags: ['autodocs'],
+  parameters: {
+    controls: {
+      disable: true,
+    },
+  },
   argTypes: {
-    children: { control: 'text', description: '버튼 텍스트' },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'danger'],
-      description: '버튼 변형',
+      options: ['primary', 'secondary', 'outline', 'ghost', 'danger', 'text'],
     },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: '버튼 크기',
+      options: ['xs', 'sm', 'md', 'lg'],
     },
-    disabled: { control: 'boolean', description: '비활성화 여부' },
-    loading: { control: 'boolean', description: '로딩 상태' },
-    fullWidth: { control: 'boolean', description: '전체 너비' },
     borderRadius: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg', 'xl', 'full'],
-      description: '테두리 반경',
     },
-    color: { control: 'color', description: '텍스트 색상' },
-    backgroundColor: { control: 'color', description: '배경 색상' },
-    onClick: { action: 'clicked' },
-  },
-  parameters: {
-    // Disable interaction testing for this component
-    interactions: {
-      disable: true,
+    type: {
+      control: 'select',
+      options: ['button', 'submit', 'reset'],
     },
   },
 };
@@ -41,10 +33,22 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 아이콘 컴포넌트들
+// SVG 아이콘들
 const PlusIcon = () => (
   <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
     <path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z' />
+  </svg>
+);
+
+const HeartIcon = () => (
+  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' />
+  </svg>
+);
+
+const SettingsIcon = () => (
+  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+    <path d='M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z' />
   </svg>
 );
 
@@ -54,212 +58,97 @@ const ArrowRightIcon = () => (
   </svg>
 );
 
-const TrashIcon = () => (
-  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
-    <path d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z' />
-  </svg>
-);
-
 export const Default: Story = {
-  render: () => {
-    const [clicked, setClicked] = useState(false);
-    return (
-      <Button onClick={() => setClicked(!clicked)}>
-        {clicked ? 'Clicked!' : 'Button'}
-      </Button>
-    );
+  args: {
+    className: 'bg-red-500',
+    children: 'melon',
+  },
+  parameters: {
+    controls: {
+      disable: false,
+    },
   },
 };
 
 export const Variants: Story = {
   render: () => (
-    <div className='flex flex-wrap gap-4'>
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
       <Button variant='primary'>Primary</Button>
       <Button variant='secondary'>Secondary</Button>
       <Button variant='outline'>Outline</Button>
       <Button variant='ghost'>Ghost</Button>
       <Button variant='danger'>Danger</Button>
+      <Button variant='text'>Text</Button>
     </div>
   ),
 };
 
 export const Sizes: Story = {
   render: () => (
-    <div className='flex items-center gap-4'>
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
       <Button size='xs'>Extra Small</Button>
       <Button size='sm'>Small</Button>
       <Button size='md'>Medium</Button>
       <Button size='lg'>Large</Button>
-      <Button size='xl'>Extra Large</Button>
     </div>
   ),
 };
 
 export const BorderRadius: Story = {
   render: () => (
-    <div className='flex flex-wrap gap-4'>
-      <Button borderRadius='none'>No Radius</Button>
-      <Button borderRadius='sm'>Small Radius</Button>
-      <Button borderRadius='md'>Medium Radius</Button>
-      <Button borderRadius='lg'>Large Radius</Button>
-      <Button borderRadius='xl'>Extra Large Radius</Button>
-      <Button borderRadius='full'>Full Radius</Button>
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <Button borderRadius='none'>None</Button>
+      <Button borderRadius='sm'>Small</Button>
+      <Button borderRadius='md'>Medium</Button>
+      <Button borderRadius='lg'>Large</Button>
+      <Button borderRadius='xl'>Extra Large</Button>
+      <Button borderRadius='full'>Full</Button>
     </div>
   ),
 };
 
-export const CustomColors: Story = {
+export const Types: Story = {
   render: () => (
-    <div className='flex flex-wrap gap-4'>
-      <Button color='#ffffff' backgroundColor='#8b5cf6'>
-        Purple Button
-      </Button>
-      <Button color='#ffffff' backgroundColor='#10b981'>
-        Green Button
-      </Button>
-      <Button color='#ffffff' backgroundColor='#f59e0b'>
-        Orange Button
-      </Button>
-      <Button color='#1f2937' backgroundColor='#fbbf24'>
-        Yellow Button
-      </Button>
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <Button type='button'>Button</Button>
+      <Button type='submit'>Submit</Button>
+      <Button type='reset'>Reset</Button>
     </div>
   ),
 };
 
-export const WithIcons: Story = {
+export const States: Story = {
   render: () => (
-    <div className='flex flex-wrap gap-4'>
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <Button>Normal</Button>
+      <Button disabled>Disabled</Button>
+      <Button fullWidth>Full Width</Button>
+    </div>
+  ),
+};
+
+export const IconOnly: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <Button icon={<PlusIcon />} />
+      <Button icon={<HeartIcon />} variant='danger' />
+      <Button icon={<SettingsIcon />} variant='outline' />
+      <Button icon={<ArrowRightIcon />} size='lg' />
+    </div>
+  ),
+};
+
+export const IconWithText: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
       <Button leftIcon={<PlusIcon />}>Add Item</Button>
       <Button rightIcon={<ArrowRightIcon />}>Continue</Button>
-      <Button leftIcon={<PlusIcon />} rightIcon={<ArrowRightIcon />}>
-        Add & Continue
+      <Button leftIcon={<HeartIcon />} variant='danger'>
+        Like
       </Button>
-    </div>
-  ),
-};
-
-export const Loading: Story = {
-  render: () => (
-    <div className='flex flex-wrap gap-4'>
-      <Button loading>Loading...</Button>
-      <Button loading variant='outline'>
-        Loading...
+      <Button leftIcon={<SettingsIcon />} rightIcon={<ArrowRightIcon />}>
+        Settings
       </Button>
-      <Button loading variant='danger'>
-        Deleting...
-      </Button>
-    </div>
-  ),
-};
-
-export const Disabled: Story = {
-  render: () => (
-    <div className='flex flex-wrap gap-4'>
-      <Button disabled>Disabled</Button>
-      <Button disabled variant='outline'>
-        Disabled
-      </Button>
-      <Button disabled variant='danger'>
-        Disabled
-      </Button>
-    </div>
-  ),
-};
-
-export const FullWidth: Story = {
-  render: () => (
-    <div className='space-y-4 max-w-md'>
-      <Button fullWidth>Full Width Button</Button>
-      <Button fullWidth variant='outline'>
-        Full Width Outline
-      </Button>
-    </div>
-  ),
-};
-
-export const Interactive: Story = {
-  render: () => {
-    const [count, setCount] = useState(0);
-    return (
-      <Button onClick={() => setCount(count + 1)}>Clicked {count} times</Button>
-    );
-  },
-};
-
-export const AllVariants: Story = {
-  render: () => (
-    <div className='space-y-6'>
-      <div>
-        <h3 className='font-semibold mb-2'>Variants</h3>
-        <div className='flex flex-wrap gap-2'>
-          <Button variant='primary'>Primary</Button>
-          <Button variant='secondary'>Secondary</Button>
-          <Button variant='outline'>Outline</Button>
-          <Button variant='ghost'>Ghost</Button>
-          <Button variant='danger'>Danger</Button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className='font-semibold mb-2'>Sizes</h3>
-        <div className='flex items-center gap-2'>
-          <Button size='xs'>XS</Button>
-          <Button size='sm'>SM</Button>
-          <Button size='md'>MD</Button>
-          <Button size='lg'>LG</Button>
-          <Button size='xl'>XL</Button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className='font-semibold mb-2'>Border Radius</h3>
-        <div className='flex flex-wrap gap-2'>
-          <Button borderRadius='none'>None</Button>
-          <Button borderRadius='sm'>Small</Button>
-          <Button borderRadius='md'>Medium</Button>
-          <Button borderRadius='lg'>Large</Button>
-          <Button borderRadius='xl'>XL</Button>
-          <Button borderRadius='full'>Full</Button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className='font-semibold mb-2'>Custom Colors</h3>
-        <div className='flex flex-wrap gap-2'>
-          <Button color='#ffffff' backgroundColor='#8b5cf6'>
-            Purple
-          </Button>
-          <Button color='#ffffff' backgroundColor='#10b981'>
-            Green
-          </Button>
-          <Button color='#ffffff' backgroundColor='#f59e0b'>
-            Orange
-          </Button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className='font-semibold mb-2'>With Icons</h3>
-        <div className='flex flex-wrap gap-2'>
-          <Button leftIcon={<PlusIcon />}>Add</Button>
-          <Button rightIcon={<ArrowRightIcon />}>Next</Button>
-          <Button leftIcon={<TrashIcon />} variant='danger'>
-            Delete
-          </Button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className='font-semibold mb-2'>States</h3>
-        <div className='flex flex-wrap gap-2'>
-          <Button loading>Loading</Button>
-          <Button disabled>Disabled</Button>
-          <Button loading disabled>
-            Loading Disabled
-          </Button>
-        </div>
-      </div>
     </div>
   ),
 };

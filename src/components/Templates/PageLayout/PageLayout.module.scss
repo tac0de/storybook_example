@@ -1,0 +1,136 @@
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  background-color: $white;
+  border-bottom: 1px solid $gray-200;
+  padding: $spacing-4 $spacing-6;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-header;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-3 $spacing-4;
+  }
+}
+
+.page-main {
+  flex: 1;
+  display: flex;
+
+  &.has-sidebar {
+    gap: $spacing-8;
+
+    @media (max-width: $breakpoint-lg) {
+      flex-direction: column;
+      gap: $spacing-6;
+    }
+  }
+}
+
+.page-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: $gray-50;
+  border-right: 1px solid $gray-200;
+  padding: $spacing-6;
+
+  @media (max-width: $breakpoint-lg) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid $gray-200;
+    padding: $spacing-4;
+  }
+}
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+
+  &.max-width-sm {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  &.max-width-md {
+    max-width: 768px;
+    margin: 0 auto;
+  }
+
+  &.max-width-lg {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  &.max-width-xl {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  &.padding-sm {
+    padding: $spacing-4;
+  }
+
+  &.padding-md {
+    padding: $spacing-6;
+  }
+
+  &.padding-lg {
+    padding: $spacing-8;
+  }
+
+  &.padding-xl {
+    padding: $spacing-12;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    &.padding-sm,
+    &.padding-md,
+    &.padding-lg,
+    &.padding-xl {
+      padding: $spacing-4;
+    }
+  }
+}
+
+.page-footer {
+  background-color: $gray-50;
+  border-top: 1px solid $gray-200;
+  padding: $spacing-6 $spacing-8;
+  margin-top: auto;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-4 $spacing-6;
+  }
+}
+
+// Print styles
+@media print {
+  .page-header,
+  .page-sidebar,
+  .page-footer {
+    display: none;
+  }
+
+  .page-content {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+}
+
+// Focus styles for accessibility
+.page-layout:focus-within {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .page-layout * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

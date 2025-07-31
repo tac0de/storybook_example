@@ -1,1 +1,0 @@
-export { CommentTemplate } from './CommentTemplate';

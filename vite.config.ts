@@ -18,4 +18,14 @@ export default defineConfig({
       '@': path.resolve(dirname, './src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "sass:color"; @import "@/styles/abstracts/variables"; @import "@/styles/abstracts/mixins";`,
+      },
+    },
+    modules: {
+      localsConvention: 'camelCase',
+    },
+  },
 });
