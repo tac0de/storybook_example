@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from './TestComponent.module.scss';
 
@@ -30,11 +30,13 @@ export interface TestComponentProps {
  *
  * 이 컴포넌트는 다음 개념들을 보여줍니다:
  * 1. TypeScript를 사용한 타입 안전성
- * 2. React Hooks (useState)를 사용한 상태 관리
+ * 2. React Hooks (useState, useEffect, useRef)를 사용한 상태 관리
  * 3. CSS Modules와 classnames/bind를 사용한 스타일링
  * 4. Props를 통한 컴포넌트 커스터마이징
  * 5. 이벤트 핸들링
  * 6. 조건부 렌더링
+ * 7. 사이드 이펙트 관리 (useEffect)
+ * 8. DOM 요소 직접 접근 (useRef)
  */
 export const TestComponent: React.FC<TestComponentProps> = ({
   text,
@@ -48,6 +50,38 @@ export const TestComponent: React.FC<TestComponentProps> = ({
   // useState는 컴포넌트 내부에서 상태를 관리할 때 사용합니다.
   const [isHovered, setIsHovered] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [renderCount, setRenderCount] = useState(0);
+
+  // useRef를 사용한 DOM 요소 참조
+  // useRef는 DOM 요소에 직접 접근하거나 값을 저장할 때 사용합니다.
+  const componentRef = useRef<HTMLDivElement>(null);
+  const previousClickCountRef = useRef<number>(0);
+
+  // useEffect를 사용한 사이드 이펙트 관리
+  // useEffect는 컴포넌트의 생명주기와 관련된 작업을 처리합니다.
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 실행
+    console.log('TestComponent mounted');
+    setRenderCount(prev => prev + 1);
+
+    // 클린업 함수 (컴포넌트가 언마운트될 때 실행)
+    return () => {
+      console.log('TestComponent unmounted');
+    };
+  }, []); // 빈 배열: 마운트/언마운트 시에만 실행
+
+  useEffect(() => {
+    // clickCount가 변경될 때마다 실행
+    console.log(
+      `Click count changed from ${previousClickCountRef.current} to ${clickCount}`
+    );
+    previousClickCountRef.current = clickCount;
+
+    // DOM 요소에 직접 접근 예시
+    if (componentRef.current) {
+      componentRef.current.style.transform = `scale(${1 + clickCount * 0.1})`;
+    }
+  }, [clickCount]); // clickCount가 변경될 때마다 실행
 
   /**
    * 클릭 이벤트 핸들러
@@ -101,6 +135,7 @@ export const TestComponent: React.FC<TestComponentProps> = ({
 
   return (
     <div
+      ref={componentRef}
       className={componentClasses}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
@@ -126,6 +161,7 @@ export const TestComponent: React.FC<TestComponentProps> = ({
         <span className={cx('status', { active: disabled })}>
           {disabled ? '🔴 Disabled' : '🟢 Enabled'}
         </span>
+        <span className={cx('status')}>🔄 렌더: {renderCount}회</span>
       </div>
     </div>
   );

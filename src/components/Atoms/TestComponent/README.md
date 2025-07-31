@@ -16,9 +16,11 @@
 ### 2. React
 
 - **함수형 컴포넌트**: 최신 React 패턴
-- **Hooks**: useState를 사용한 상태 관리
+- **Hooks**: useState, useEffect, useRef를 사용한 상태 관리
 - **이벤트 핸들링**: 클릭, 마우스 이벤트
 - **조건부 렌더링**: 상태에 따른 UI 변화
+- **사이드 이펙트**: useEffect를 사용한 생명주기 관리
+- **DOM 접근**: useRef를 사용한 DOM 요소 직접 조작
 - **Props 전달**: 부모-자식 컴포넌트 통신
 
 ### 3. CSS Modules
@@ -89,9 +91,44 @@ function App() {
 ```tsx
 const [isHovered, setIsHovered] = useState(false);
 const [clickCount, setClickCount] = useState(0);
+const [renderCount, setRenderCount] = useState(0);
 ```
 
-### 2. 이벤트 핸들링
+### 2. useRef를 사용한 DOM 접근
+
+```tsx
+const componentRef = useRef<HTMLDivElement>(null);
+const previousClickCountRef = useRef<number>(0);
+```
+
+### 3. useEffect를 사용한 사이드 이펙트
+
+```tsx
+// 컴포넌트 마운트/언마운트 시 실행
+useEffect(() => {
+  console.log('TestComponent mounted');
+  setRenderCount(prev => prev + 1);
+
+  return () => {
+    console.log('TestComponent unmounted');
+  };
+}, []);
+
+// clickCount 변경 시 실행
+useEffect(() => {
+  console.log(
+    `Click count changed from ${previousClickCountRef.current} to ${clickCount}`
+  );
+  previousClickCountRef.current = clickCount;
+
+  // DOM 요소 직접 조작
+  if (componentRef.current) {
+    componentRef.current.style.transform = `scale(${1 + clickCount * 0.1})`;
+  }
+}, [clickCount]);
+```
+
+### 4. 이벤트 핸들링
 
 ```tsx
 const handleClick = () => {
@@ -101,7 +138,7 @@ const handleClick = () => {
 };
 ```
 
-### 3. 조건부 렌더링
+### 5. 조건부 렌더링
 
 ```tsx
 const renderClickMessage = () => {
@@ -112,7 +149,7 @@ const renderClickMessage = () => {
 };
 ```
 
-### 4. CSS Modules 스타일링
+### 6. CSS Modules 스타일링
 
 ```tsx
 const componentClasses = cx(
@@ -156,6 +193,8 @@ Storybook에서 다음 스토리들을 확인할 수 있습니다:
 - 실제 상태 변화 데모
 - 클릭할 때마다 색상 변경
 - 5회 이상 클릭 시 특별 메시지
+- useEffect와 useRef 동작 확인
+- DOM 요소 직접 조작 (크기 증가)
 
 ### 6. AllCombinations
 

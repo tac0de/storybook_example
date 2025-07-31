@@ -27,11 +27,13 @@ const meta: Meta<typeof TestComponent> = {
 ### 주요 학습 포인트
 
 1. **TypeScript Props 정의**: 인터페이스를 통한 타입 안전성
-2. **React Hooks**: useState를 사용한 상태 관리
+2. **React Hooks**: useState, useEffect, useRef를 사용한 상태 관리
 3. **이벤트 핸들링**: 클릭, 마우스 이벤트 처리
 4. **조건부 렌더링**: 상태에 따른 UI 변화
-5. **CSS Modules**: 컴포넌트별 스타일 관리
-6. **접근성**: ARIA 속성과 키보드 네비게이션
+5. **사이드 이펙트**: useEffect를 사용한 생명주기 관리
+6. **DOM 접근**: useRef를 사용한 DOM 요소 직접 조작
+7. **CSS Modules**: 컴포넌트별 스타일 관리
+8. **접근성**: ARIA 속성과 키보드 네비게이션
 
 ### Props 설명
 
@@ -267,9 +269,12 @@ export const Interactive: Story = {
 
 ### 학습 포인트
 1. **useState Hook**: 컴포넌트 내부 상태 관리
-2. **이벤트 핸들링**: onClick 이벤트 처리
-3. **조건부 렌더링**: 클릭 횟수에 따른 UI 변화
-4. **동적 props**: 상태에 따른 props 변경
+2. **useEffect Hook**: 사이드 이펙트와 생명주기 관리
+3. **useRef Hook**: DOM 요소 직접 접근과 값 저장
+4. **이벤트 핸들링**: onClick 이벤트 처리
+5. **조건부 렌더링**: 클릭 횟수에 따른 UI 변화
+6. **동적 props**: 상태에 따른 props 변경
+7. **DOM 조작**: 클릭할 때마다 컴포넌트 크기 증가
         `,
       },
     },
