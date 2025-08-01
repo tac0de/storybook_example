@@ -1,0 +1,503 @@
+@import '../../styles/abstracts/variables.scss';
+@import '../../styles/abstracts/mixins.scss';
+
+.comment-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+// Page Header
+.page-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: $spacing-8 $spacing-6;
+  border-radius: $border-radius-2xl;
+  margin-bottom: $spacing-8;
+  box-shadow: $shadow-lg;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+  }
+}
+
+.page-title {
+  @include text-2xl;
+  font-weight: $font-weight-bold;
+  margin: 0 0 $spacing-2 0;
+  position: relative;
+  z-index: 1;
+}
+
+.page-subtitle {
+  @include text-base;
+  margin: 0 0 $spacing-4 0;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+
+.page-stats {
+  @include flex-row;
+  gap: $spacing-4;
+  position: relative;
+  z-index: 1;
+
+  span {
+    @include text-sm;
+    background: rgba(255, 255, 255, 0.2);
+    padding: $spacing-2 $spacing-3;
+    border-radius: $border-radius-full;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Page Content
+.page-content {
+  @include flex-column;
+  gap: $spacing-8;
+}
+
+// Comment Form Section
+.comment-form-section {
+  background: white;
+  border-radius: $border-radius-2xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-lg;
+  border: 1px solid $gray-200;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+  }
+}
+
+.comment-form {
+  @include flex-row;
+  gap: $spacing-4;
+  align-items: flex-end;
+}
+
+.comment-input {
+  max-width: calc(100% - 32px);
+  flex: 1;
+  min-height: 60px;
+  resize: vertical;
+  border: 2px solid $gray-200;
+  border-radius: $border-radius-lg;
+  padding: $spacing-4;
+  font-size: $font-size-base;
+  transition: all $transition-base;
+  background: $gray-50;
+
+  &:focus {
+    border-color: $primary-color;
+    background: white;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  textarea {
+    max-width: calc(100% - 32px);
+  }
+
+  &::placeholder {
+    color: $gray-400;
+  }
+}
+
+.submit-button {
+  min-width: 80px;
+  height: 60px;
+  border-radius: $border-radius-lg;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+  background: linear-gradient(
+    135deg,
+    $primary-color,
+    darken($primary-color, 10%)
+  );
+  border: none;
+  color: white;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Comment List Section
+.comment-list-section {
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+.sort-section {
+  @include flex-row;
+  justify-content: flex-end;
+  margin-bottom: $spacing-4;
+}
+
+.sort-select {
+  @include text-sm;
+  padding: $spacing-2 $spacing-4;
+  border: 2px solid $gray-200;
+  border-radius: $border-radius-lg;
+  background: white;
+  color: $gray-700;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+}
+
+.comment-list {
+  @include flex-column;
+  gap: $spacing-6;
+}
+
+// Comment Item
+.comment-item {
+  background: white;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-base;
+  border: 1px solid $gray-200;
+  transition: all $transition-base;
+  position: relative;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+
+  &.depth-1 {
+    border-left: 4px solid $primary-color;
+    background: linear-gradient(135deg, #f8f9fa 0%, white 100%);
+  }
+
+  &.depth-2 {
+    border-left: 4px solid $secondary-color;
+    background: linear-gradient(135deg, #f1f3f4 0%, white 100%);
+  }
+}
+
+// Comment Header
+.comment-header {
+  @include flex-row;
+  gap: $spacing-4;
+  margin-bottom: $spacing-4;
+}
+
+.avatar-section {
+  flex-shrink: 0;
+}
+
+.content-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.author-info {
+  @include flex-row;
+  align-items: center;
+  gap: $spacing-3;
+  margin-bottom: $spacing-1;
+}
+
+.author-name {
+  @include text-base;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  text-decoration: none;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.author-status {
+  @include text-xs;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.status-online {
+    background: rgba($success-color, 0.1);
+    color: $success-color;
+  }
+
+  &.status-offline {
+    background: rgba($gray-500, 0.1);
+    color: $gray-500;
+  }
+
+  &.status-away {
+    background: rgba($warning-color, 0.1);
+    color: $warning-color;
+  }
+
+  &.status-busy {
+    background: rgba($danger-color, 0.1);
+    color: $danger-color;
+  }
+}
+
+.timestamp {
+  @include text-sm;
+  color: $gray-500;
+}
+
+// Comment Text
+.comment-text {
+  @include text-base;
+  color: $gray-700;
+  line-height: $line-height-relaxed;
+  margin-bottom: $spacing-4;
+  word-wrap: break-word;
+}
+
+// Comment Actions
+.comment-actions {
+  @include flex-row;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  @include text-sm;
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-lg;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+  background: $gray-100;
+  border: 1px solid $gray-200;
+  color: $gray-600;
+
+  &:hover {
+    background: $gray-200;
+    color: $gray-800;
+    transform: translateY(-1px);
+  }
+
+  &.liked {
+    background: rgba($danger-color, 0.1);
+    color: $danger-color;
+    border-color: rgba($danger-color, 0.2);
+
+    &:hover {
+      background: rgba($danger-color, 0.15);
+    }
+  }
+}
+
+// Reply Toggle
+.reply-toggle {
+  @include text-sm;
+  color: $primary-color;
+  font-weight: $font-weight-medium;
+  margin-top: $spacing-3;
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-lg;
+  transition: all $transition-base;
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+  }
+}
+
+// Replies
+.replies {
+  margin-top: $spacing-4;
+  padding-top: $spacing-4;
+  border-top: 1px solid $gray-200;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+// Loading State
+.loading {
+  @include flex-center;
+  padding: $spacing-16;
+  color: $gray-500;
+  font-weight: $font-weight-medium;
+
+  &::before {
+    content: '';
+    @include loading-spinner(1.5rem, $gray-400);
+    margin-right: $spacing-3;
+  }
+}
+
+// Empty State
+.empty {
+  @include flex-center;
+  flex-direction: column;
+  padding: $spacing-16;
+  text-align: center;
+  color: $gray-500;
+
+  &::before {
+    content: '💬';
+    font-size: 3rem;
+    margin-bottom: $spacing-4;
+    opacity: 0.5;
+  }
+}
+
+// Page Footer
+.page-footer {
+  background: white;
+  border-radius: $border-radius-2xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-base;
+  border: 1px solid $gray-200;
+  text-align: center;
+  margin-top: $spacing-8;
+
+  p {
+    @include text-sm;
+    color: $gray-600;
+    margin: 0 0 $spacing-2 0;
+    line-height: $line-height-relaxed;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-sm) {
+  .page-header {
+    padding: $spacing-6 $spacing-4;
+    margin-bottom: $spacing-6;
+  }
+
+  .page-title {
+    @include text-xl;
+  }
+
+  .page-subtitle {
+    @include text-sm;
+  }
+
+  .page-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-2;
+  }
+
+  .comment-form-section {
+    padding: $spacing-4;
+  }
+
+  .comment-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+
+  .comment-item {
+    padding: $spacing-4;
+
+    // &.depth-1 {
+    //   margin-left: $spacing-4;
+    // }
+
+    // &.depth-2 {
+    //   margin-left: $spacing-8;
+    // }
+  }
+
+  .comment-actions {
+    gap: $spacing-1;
+  }
+
+  .action-button {
+    padding: $spacing-1 $spacing-2;
+    @include text-xs;
+  }
+}
+
+@media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+  .page-header {
+    padding: $spacing-6;
+  }
+
+  .comment-form-section {
+    padding: $spacing-5;
+  }
+
+  .comment-item {
+    padding: $spacing-5;
+  }
+}
+
+// Animation for new comments
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comment-item {
+  animation: slideIn 0.3s ease-out;
+}
+
+// Focus styles for accessibility
+.comment-input:focus,
+.sort-select:focus,
+.action-button:focus {
+  @include focus-ring;
+}
+
+// Custom scrollbar for long comment lists
+.comment-list {
+  @include custom-scrollbar;
+}
+
+// Hover effects for interactive elements
+.author-name:hover,
+.action-button:hover,
+.reply-toggle:hover {
+  @include hover-scale(1.02);
+}
