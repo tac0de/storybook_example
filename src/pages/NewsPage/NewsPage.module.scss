@@ -1,0 +1,271 @@
+// 🗞️ NewsPage 컴포넌트 스타일
+// 중앙일보 뉴스 사이트 스타일을 반영한 메인 페이지 디자인
+
+@import '../../styles/abstracts/variables';
+@import '../../styles/abstracts/mixins';
+
+// 🎯 뉴스 페이지 기본 스타일
+.news-page {
+  min-height: 100vh;
+  background-color: $gray-50;
+}
+
+// 📰 페이지 헤더
+.news-page__header {
+  background-color: $white;
+  border-bottom: 1px solid $news-border;
+  padding: $spacing-6 0;
+  margin-bottom: $spacing-8;
+}
+
+.news-page__title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $news-primary;
+  text-align: center;
+  margin: 0 0 $spacing-2 0;
+  line-height: $line-height-tight;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-2xl;
+  }
+}
+
+.news-page__subtitle {
+  font-size: $font-size-lg;
+  color: $news-meta;
+  text-align: center;
+  margin: 0 0 $spacing-6 0;
+  line-height: $line-height-normal;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-base;
+  }
+}
+
+// 📄 페이지 내용
+.news-page__content {
+  max-width: $news-content-max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+}
+
+// ⭐ 주요 뉴스 섹션
+.news-page__main-section {
+  margin-bottom: $spacing-12;
+
+  .news-page__section-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $news-secondary;
+    margin: 0 0 $spacing-6 0;
+    padding-bottom: $spacing-3;
+    border-bottom: 2px solid $news-primary;
+  }
+
+  .news-page__main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: $spacing-6;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: $spacing-4;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+      gap: $spacing-3;
+    }
+  }
+}
+
+// 📰 일반 뉴스 섹션
+.news-page__regular-section {
+  margin-bottom: $spacing-12;
+
+  .news-page__section-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $news-secondary;
+    margin: 0 0 $spacing-6 0;
+    padding-bottom: $spacing-2;
+    border-bottom: 1px solid $news-border;
+  }
+
+  .news-page__regular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-4;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: $spacing-3;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: $spacing-2;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// 📱 로딩 상태
+.news-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-16 0;
+  text-align: center;
+  color: $news-meta;
+
+  .news-page__loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $gray-200;
+    border-top: 3px solid $news-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: $spacing-4;
+  }
+}
+
+// 🎨 빈 상태
+.news-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-16 0;
+  text-align: center;
+  color: $news-meta;
+
+  p {
+    font-size: $font-size-lg;
+    margin: 0;
+  }
+}
+
+// 📄 페이지 푸터
+.news-page__footer {
+  background-color: $white;
+  border-top: 1px solid $news-border;
+  padding: $spacing-6 0;
+  text-align: center;
+  color: $news-meta;
+  margin-top: $spacing-12;
+
+  p {
+    margin: $spacing-1 0;
+    font-size: $font-size-sm;
+  }
+}
+
+// 🎨 애니메이션 정의
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// 📱 반응형 디자인
+@media (max-width: $breakpoint-xl) {
+  .news-page__content {
+    padding: 0 $spacing-3;
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .news-page__header {
+    padding: $spacing-4 0;
+    margin-bottom: $spacing-6;
+  }
+
+  .news-page__main-section,
+  .news-page__regular-section {
+    margin-bottom: $spacing-8;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .news-page__header {
+    padding: $spacing-3 0;
+    margin-bottom: $spacing-4;
+  }
+
+  .news-page__content {
+    padding: 0 $spacing-2;
+  }
+
+  .news-page__main-section,
+  .news-page__regular-section {
+    margin-bottom: $spacing-6;
+
+    .news-page__section-title {
+      margin-bottom: $spacing-4;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .news-page__title {
+    font-size: $font-size-xl;
+  }
+
+  .news-page__subtitle {
+    font-size: $font-size-sm;
+  }
+
+  .news-page__main-section .news-page__section-title {
+    font-size: $font-size-lg;
+  }
+
+  .news-page__regular-section .news-page__section-title {
+    font-size: $font-size-base;
+  }
+}
+
+// 🎨 다크 모드 지원 (선택적)
+@media (prefers-color-scheme: dark) {
+  .news-page {
+    background-color: $dark-color;
+  }
+
+  .news-page__header {
+    background-color: $gray-900;
+    border-bottom-color: $gray-700;
+  }
+
+  .news-page__title {
+    color: $news-accent;
+  }
+
+  .news-page__subtitle {
+    color: $gray-400;
+  }
+
+  .news-page__main-section .news-page__section-title,
+  .news-page__regular-section .news-page__section-title {
+    color: $white;
+    border-bottom-color: $news-primary;
+  }
+
+  .news-page__loading,
+  .news-page__empty {
+    color: $gray-400;
+  }
+
+  .news-page__footer {
+    background-color: $gray-900;
+    border-top-color: $gray-700;
+    color: $gray-400;
+  }
+} 

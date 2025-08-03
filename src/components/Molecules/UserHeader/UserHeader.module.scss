@@ -1,0 +1,126 @@
+@import '../../../styles/abstracts/variables.scss';
+@import '../../../styles/abstracts/mixins.scss';
+
+.user-header {
+  @include flex-row;
+  align-items: flex-start;
+  gap: $spacing-3;
+  padding: $spacing-3;
+  border-radius: $border-radius-base;
+  transition: background-color $transition-base;
+
+  &:hover {
+    background-color: rgba($gray-100, 0.5);
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name-section {
+    @include flex-row;
+    align-items: center;
+    gap: $spacing-2;
+    margin-bottom: $spacing-1;
+  }
+
+  &__name-button {
+    font-weight: $font-weight-semibold;
+    color: $gray-800;
+    padding: 0;
+    min-height: auto;
+    height: auto;
+
+    &:hover {
+      color: $primary-color;
+      background-color: transparent;
+    }
+
+    &:focus {
+      outline: none;
+      text-decoration: underline;
+    }
+  }
+
+  &__timestamp {
+    @include text-sm;
+    color: $gray-500;
+    display: block;
+  }
+}
+
+// 인증 아이콘 스타일
+.verified-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: $primary-color;
+  color: white;
+  border-radius: $border-radius-full;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+// 상태 아이콘 스타일
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: $border-radius-full;
+  font-size: 8px;
+  flex-shrink: 0;
+
+  &--online {
+    color: $success-color;
+  }
+
+  &--offline {
+    color: $gray-400;
+  }
+
+  &--away {
+    color: $warning-color;
+  }
+
+  &--busy {
+    color: $danger-color;
+  }
+}
+
+// 사용자 상태별 스타일 (기존 스타일 유지)
+.user-header {
+  &--online {
+    .user-header__name-button {
+      color: $success-color;
+    }
+  }
+
+  &--offline {
+    .user-header__name-button {
+      color: $gray-500;
+    }
+  }
+
+  &--away {
+    .user-header__name-button {
+      color: $warning-color;
+    }
+  }
+
+  &--busy {
+    .user-header__name-button {
+      color: $danger-color;
+    }
+  }
+} 

@@ -1,4 +1,4 @@
-// Atomic Components exports
-export * from './Avatar';
-export * from './Button';
-export * from './Input';
+// Components exports - Atomic Design Structure
+export * from './Atoms';
+export * from './Molecules';
+export * from './Organisms';

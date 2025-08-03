@@ -1,0 +1,238 @@
+// 🎯 Input 컴포넌트 스타일
+// 중앙일보 뉴스 사이트 스타일을 반영한 입력 필드 디자인
+
+@import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  @include input-base();
+  resize: vertical;
+  min-height: $spacing-10;
+  font-family: $font-family-base;
+  transition: all $transition-base;
+  border: 1px solid $news-border;
+  border-radius: $border-radius-lg;
+  background-color: $white;
+  color: $news-secondary;
+  box-shadow: $shadow-sm;
+
+  &:focus {
+    outline: none;
+    border-color: $news-primary;
+    box-shadow: 0 0 0 3px rgba($news-primary, 0.1), $shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:hover:not(:disabled):not(.readonly) {
+    border-color: $news-accent;
+    box-shadow: $shadow-base;
+  }
+
+  &::placeholder {
+    color: $news-meta;
+    opacity: 1;
+    font-style: italic;
+  }
+
+  &.disabled {
+    background-color: $gray-100;
+    color: $gray-500;
+    cursor: not-allowed;
+    border-color: $gray-300;
+    box-shadow: none;
+  }
+
+  &.readonly {
+    background-color: $gray-50;
+    color: $news-secondary;
+    border-color: $gray-200;
+  }
+
+  &.error {
+    border-color: $danger-color;
+    box-shadow: 0 0 0 3px rgba($danger-color, 0.1);
+
+    &:focus {
+      border-color: $danger-color;
+      box-shadow: 0 0 0 3px rgba($danger-color, 0.2), $shadow-md;
+    }
+  }
+}
+
+// 📏 크기 변형
+.size-sm {
+  padding: $spacing-2 $spacing-3;
+  font-size: $font-size-sm;
+  min-height: $spacing-8;
+  border-radius: $border-radius-base;
+}
+
+.size-md {
+  padding: $spacing-3 $spacing-4;
+  font-size: $font-size-base;
+  min-height: $spacing-10;
+  border-radius: $border-radius-lg;
+}
+
+.size-lg {
+  padding: $spacing-4 $spacing-5;
+  font-size: $font-size-lg;
+  min-height: $spacing-12;
+  border-radius: $border-radius-xl;
+}
+
+// 🎨 스타일 변형
+.variant-default {
+  border: 1px solid $news-border;
+  border-radius: $border-radius-lg;
+  background-color: $white;
+}
+
+.variant-underline {
+  border: none;
+  border-bottom: 2px solid $news-border;
+  border-radius: 0;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+  box-shadow: none;
+
+  &:focus {
+    border-bottom-color: $news-primary;
+    box-shadow: 0 2px 0 0 $news-primary;
+    transform: none;
+  }
+
+  &:hover:not(:disabled):not(.readonly) {
+    border-bottom-color: $news-accent;
+    box-shadow: none;
+  }
+
+  &.error {
+    border-bottom-color: $danger-color;
+
+    &:focus {
+      border-bottom-color: $danger-color;
+      box-shadow: 0 2px 0 0 $danger-color;
+    }
+  }
+}
+
+// 🎨 중앙일보 전용 스타일
+.variant-news {
+  border: 2px solid $news-border;
+  border-radius: $border-radius-xl;
+  background-color: $white;
+  font-weight: $font-weight-medium;
+  box-shadow: $shadow-sm;
+
+  &:focus {
+    border-color: $news-primary;
+    box-shadow: 0 0 0 4px rgba($news-primary, 0.15), $shadow-lg;
+    transform: translateY(-2px);
+  }
+
+  &:hover:not(:disabled):not(.readonly) {
+    border-color: $news-accent;
+    box-shadow: $shadow-md;
+  }
+}
+
+.variant-search {
+  border: 1px solid $news-border;
+  border-radius: $border-radius-full;
+  background-color: $gray-50;
+  padding-left: $spacing-8;
+  box-shadow: $shadow-sm;
+
+  &:focus {
+    background-color: $white;
+    border-color: $news-primary;
+    box-shadow: 0 0 0 3px rgba($news-primary, 0.1), $shadow-md;
+  }
+
+  &:hover:not(:disabled):not(.readonly) {
+    background-color: $white;
+    border-color: $news-accent;
+  }
+}
+
+// 📊 문자 카운터
+.character-counter {
+  @include text-xs();
+  color: $news-meta;
+  text-align: right;
+  margin-top: $spacing-1;
+  font-family: $font-family-mono;
+  font-weight: $font-weight-medium;
+}
+
+// ⚠️ 에러 메시지
+.error-message {
+  @include text-sm();
+  color: $danger-color;
+  margin-top: $spacing-1;
+  font-weight: $font-weight-medium;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+
+  &::before {
+    content: '⚠️';
+    font-size: $font-size-xs;
+  }
+}
+
+// 🎨 성공 메시지
+.success-message {
+  @include text-sm();
+  color: $success-color;
+  margin-top: $spacing-1;
+  font-weight: $font-weight-medium;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+
+  &::before {
+    content: '✅';
+    font-size: $font-size-xs;
+  }
+}
+
+// 📱 반응형 디자인
+@media (max-width: $breakpoint-md) {
+  .input {
+    font-size: $font-size-base;
+  }
+
+  .size-lg {
+    padding: $spacing-3 $spacing-4;
+    font-size: $font-size-base;
+    min-height: $spacing-10;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .input {
+    font-size: $font-size-sm;
+  }
+
+  .size-md {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-sm;
+    min-height: $spacing-8;
+  }
+
+  .size-lg {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-sm;
+    min-height: $spacing-8;
+  }
+}
+
+// 🎨 라이트 모드 전용 스타일 (다크 모드 제거)

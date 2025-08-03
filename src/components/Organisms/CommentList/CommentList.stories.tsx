@@ -1,16 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CommentPage } from './CommentPage';
-import type { Comment } from '../../components/Organisms/CommentItem';
+import { CommentList, type Comment } from './CommentList';
 
-const meta: Meta<typeof CommentPage> = {
-  title: 'Pages/CommentPage',
-  component: CommentPage,
+const meta: Meta<typeof CommentList> = {
+  title: 'Organisms/CommentList',
+  component: CommentList,
   tags: ['autodocs'],
   parameters: {
-    layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A complete comment page built with atomic design components - Atoms, Molecules, and Organisms.',
+        component: 'A comment list organism that displays multiple comments with sorting functionality and loading/empty states.',
       },
     },
   },
@@ -20,40 +18,16 @@ const meta: Meta<typeof CommentPage> = {
       control: false,
     },
     sortBy: {
-      description: 'Current sort method for comments',
+      description: 'Current sort method',
       control: 'select',
       options: ['newest', 'oldest', 'mostLiked', 'mostReplied'],
     },
     loading: {
-      description: 'Whether the page is in loading state',
+      description: 'Whether the list is in loading state',
       control: 'boolean',
-    },
-    title: {
-      description: 'Page title',
-      control: 'text',
-    },
-    subtitle: {
-      description: 'Page subtitle',
-      control: 'text',
-    },
-    canComment: {
-      description: 'Whether users can add new comments',
-      control: 'boolean',
-    },
-    maxComments: {
-      description: 'Maximum number of comments allowed',
-      control: 'number',
     },
     onSortChange: {
       description: 'Callback when sort method changes',
-      control: false,
-    },
-    onSubmitComment: {
-      description: 'Callback when a new comment is submitted',
-      control: false,
-    },
-    onSubmitReply: {
-      description: 'Callback when a reply is submitted',
       control: false,
     },
     onLikeClick: {
@@ -80,23 +54,23 @@ const meta: Meta<typeof CommentPage> = {
       description: 'Callback when author name is clicked',
       control: false,
     },
+    onSubmitReply: {
+      description: 'Callback when a reply is submitted',
+      control: false,
+    },
     className: {
       description: 'Additional CSS class names',
       control: false,
     },
   },
   args: {
-    title: '댓글',
-    subtitle: '이 글에 대한 의견을 남겨주세요',
-    canComment: true,
-    maxComments: 100,
     sortBy: 'newest',
     loading: false,
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof CommentPage>;
+type Story = StoryObj<typeof CommentList>;
 
 const sampleComments: Comment[] = [
   {
@@ -148,19 +122,11 @@ export const Default: Story = {
     comments: sampleComments,
   },
   render: (args) => (
-    <CommentPage
+    <CommentList
       {...args}
       onSortChange={(sortBy) => {
         console.log('Sort changed:', sortBy);
         alert(`정렬이 ${sortBy}로 변경되었습니다.`);
-      }}
-      onSubmitComment={(content) => {
-        console.log('Comment submitted:', content);
-        alert(`새 댓글이 작성되었습니다: ${content}`);
-      }}
-      onSubmitReply={(parentId, content) => {
-        console.log('Reply submitted:', { parentId, content });
-        alert(`답글이 작성되었습니다: ${content}`);
       }}
       onLikeClick={(commentId) => {
         console.log('Like clicked for comment:', commentId);
@@ -188,6 +154,10 @@ export const Default: Story = {
         console.log('Author clicked:', authorName);
         alert(`${authorName}의 프로필을 확인합니다.`);
       }}
+      onSubmitReply={(parentId, content) => {
+        console.log('Reply submitted:', { parentId, content });
+        alert(`답글이 작성되었습니다: ${content}`);
+      }}
     />
   ),
 };
@@ -206,32 +176,31 @@ export const Empty: Story = {
   },
 };
 
-export const ReadOnly: Story = {
-  args: {
-    comments: sampleComments,
-    canComment: false,
-  },
-};
-
-export const CustomTitle: Story = {
-  args: {
-    comments: sampleComments,
-    title: '사용자 후기',
-    subtitle: '제품에 대한 여러분의 소중한 의견을 들려주세요',
-  },
-};
-
-export const LimitedComments: Story = {
-  args: {
-    comments: sampleComments,
-    maxComments: 5,
-  },
-};
-
 export const MostLiked: Story = {
   args: {
     comments: sampleComments,
     sortBy: 'mostLiked',
+  },
+};
+
+export const MostReplied: Story = {
+  args: {
+    comments: sampleComments,
+    sortBy: 'mostReplied',
+  },
+};
+
+export const Oldest: Story = {
+  args: {
+    comments: sampleComments,
+    sortBy: 'oldest',
+  },
+};
+
+export const NoSorting: Story = {
+  args: {
+    comments: sampleComments,
+    onSortChange: undefined,
   },
 };
 
@@ -269,4 +238,4 @@ export const ManyComments: Story = {
       },
     ],
   },
-};
+}; 

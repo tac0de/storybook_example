@@ -8,7 +8,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'danger', 'text'],
+      options: ['primary', 'secondary', 'success', 'warning', 'danger', 'outline', 'ghost', 'text', 'link', 'soft'],
       description: 'Button visual style variant',
     },
     size: {
@@ -127,17 +127,29 @@ export const Variants: Story = {
       >
         Secondary
       </Button>
+      <Button variant='success' onClick={() => console.log('Success clicked')}>
+        Success
+      </Button>
+      <Button variant='warning' onClick={() => console.log('Warning clicked')}>
+        Warning
+      </Button>
+      <Button variant='danger' onClick={() => console.log('Danger clicked')}>
+        Danger
+      </Button>
       <Button variant='outline' onClick={() => console.log('Outline clicked')}>
         Outline
       </Button>
       <Button variant='ghost' onClick={() => console.log('Ghost clicked')}>
         Ghost
       </Button>
-      <Button variant='danger' onClick={() => console.log('Danger clicked')}>
-        Danger
-      </Button>
       <Button variant='text' onClick={() => console.log('Text clicked')}>
         Text
+      </Button>
+      <Button variant='link' onClick={() => console.log('Link clicked')}>
+        Link
+      </Button>
+      <Button variant='soft' onClick={() => console.log('Soft clicked')}>
+        Soft
       </Button>
     </div>
   ),
