@@ -155,6 +155,7 @@ export const Button: React.FC<ButtonProps> = ({
   rightIcon, // 기본값 없음 (선택적 prop)
   icon, // 기본값 없음 (선택적 prop)
 }) => {
+
   /**
    * 🎨 CSS 클래스 조합 로직
    *
@@ -212,6 +213,7 @@ export const Button: React.FC<ButtonProps> = ({
     if (icon) {
       return <span className={cx('icon', 'icon-only')}>{icon}</span>;
     }
+
 
     // 🎯 일반적인 경우: leftIcon + children + rightIcon
     return (

@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj, StoryFn} from '@storybook/react-vite';
+import type { InputProps } from './Input';
 import { Input } from './Input';
 import { useState } from 'react';
+
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',
@@ -79,26 +81,39 @@ const meta: Meta<typeof Input> = {
     readOnly: false,
     error: false,
     autoResize: false,
+    // ← 이 두 줄을 추가하세요
+    value: '',
+    errorMessage: ''
   },
 };
+
+
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <Input
-        value={value}
-        onChange={setValue}
-        placeholder='Enter text...'
-        onFocus={() => console.log('Input focused')}
-        onBlur={() => console.log('Input blurred')}
-      />
-    );
-  },
+const Template: StoryFn<InputProps> = (args) => {
+  const [value, setValue] = useState('');
+  return <Input {...args} value={value} onChange={setValue} />;
 };
+
+export const Default = Template.bind({});
+Default.args = {};
+
+// export const Default: Story = {
+//   render: (args, { updateArgs }) => (
+//     <Input
+//       {...args}
+//       onChange={newValue => updateArgs({ value: newValue })}
+//       placeholder='Interactive input...'
+//       onFocus={() => console.log('Input focused')}
+//       onBlur={() => console.log('Input blurred')}
+//       onKeyDown={e => {
+//         if (e.key === 'Enter') console.log('Enter pressed:', args.value);
+//       }}
+//     />
+//   ),
+// };
 
 export const Interactive: Story = {
   render: () => {

@@ -94,8 +94,8 @@ export default [
       // Essential React rules
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'react-hooks/rules-of-hooks': 'warn',
-      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
       'react-refresh/only-export-components': 'warn',
 
       // Basic code quality
@@ -109,7 +109,8 @@ export default [
     files: ['**/*.stories.{ts,tsx}'],
     rules: {
       'no-console': 'off',
-      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
     },
   },
 ];

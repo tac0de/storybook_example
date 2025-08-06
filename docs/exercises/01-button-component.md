@@ -4,11 +4,11 @@
 
 이 실습을 통해 다음을 학습합니다:
 
-- React 함수형 컴포넌트 작성법
-- TypeScript 인터페이스 정의
-- Props와 이벤트 핸들링
-- SCSS Modules를 활용한 스타일링
-- 컴포넌트 재사용성 설계
+* React 함수형 컴포넌트 기본 구조 이해
+* TypeScript로 인터페이스(Props) 정의하는 방법
+* Props를 통한 데이터 전달과 이벤트 처리
+* Storybook을 활용해 컴포넌트를 문서화하고 테스트하는 방법
+* 컴포넌트 재사용성 설계
 
 ## ⏱️ 예상 소요 시간
 
@@ -16,335 +16,222 @@
 
 ## 🛠️ 준비사항
 
-- VS Code 또는 선호하는 코드 에디터
-- Node.js 개발 환경
-- 기본적인 HTML, CSS, JavaScript 지식
+* VS Code 또는 선호하는 코드 에디터
+* Node.js 개발 환경
+* 기본적인 HTML, CSS, JavaScript 기초 지식
+
+## 📘 사전 개념 설명
+
+### React 함수형 컴포넌트
+
+* **React**는 UI를 컴포넌트 단위로 구성합니다.
+* 함수형 컴포넌트는 자바스크립트 함수 형태로, `props`를 받아서 JSX를 반환합니다.
+
+### TypeScript 인터페이스
+
+* **TypeScript**는 자바스크립트에 타입을 추가한 언어입니다.
+* 인터페이스(`interface`)로 컴포넌트에 넘겨줄 `props`의 형태를 정의해 오류를 줄이고, 개발 자동완성을 돕습니다.
+
+### Storybook
+
+* **Storybook**은 컴포넌트를 독립적으로 실행해 보고, 다양한 상태를 문서화하는 도구입니다.
+* `.stories.tsx` 파일에 컴포넌트 사용 예시를 작성하면, 웹에서 미리 보기와 Controls(조작)를 제공합니다.
+
+---
 
 ## 📋 단계별 실습
 
 ### 1단계: 프로젝트 구조 이해 (10분)
 
-먼저 Button 컴포넌트의 폴더 구조를 확인해보세요:
-
 ```
-src/components/Atoms/Button/
-├── Button.tsx              # 🎯 컴포넌트 로직
-├── Button.module.scss      # 🎨 스타일 정의
-├── Button.stories.tsx      # 📖 Storybook 스토리
-└── index.ts               # 📦 내보내기
+src/components/atoms/Button/
+├── Button.tsx             # 컴포넌트 구현
+├── Button.stories.tsx     # Storybook 스토리
+└── index.ts               # 컴포넌트 내보내기
 ```
 
-**질문**: 각 파일의 역할이 무엇인지 설명해보세요.
+> **질문**: 각 파일의 역할을 설명해보세요.
 
 ### 2단계: TypeScript 인터페이스 작성 (20분)
 
 #### 🎯 학습 포인트
 
-- TypeScript 인터페이스의 필요성
-- Props 타입 정의 방법
-- 선택적 속성과 필수 속성 구분
+* 인터페이스로 `props` 타입 정의
+* 선택적 속성(`?`)과 필수 속성 구분
 
 #### 📝 실습 과제
 
-`Button.tsx` 파일을 열고 `ButtonProps` 인터페이스를 살펴보세요:
+`Button.tsx` 파일에서 `ButtonProps` 인터페이스를 확인하세요:
 
 ```typescript
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'text';
-  size?: 'sm' | 'md' | 'lg';
-  borderRadius?: 'sm' | 'md' | 'lg' | 'full';
-  type?: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
-  fullWidth?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  children: React.ReactNode;
-  className?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  icon?: React.ReactNode;
+  text: string;                             // 버튼 텍스트 (필수)
+  onClick?: (e: React.MouseEvent) => void;  // 클릭 이벤트 (선택)
+  disabled?: boolean;                       // 비활성화 여부 (선택)
+  fullWidth?: boolean;                      // 가로 100% 여부 (선택)
 }
 ```
 
-**실습 문제**:
-
-1. `?` 기호가 있는 속성과 없는 속성의 차이점은?
-2. `children: React.ReactNode`가 필수인 이유는?
-3. `onClick` 함수의 매개변수 타입이 복잡한 이유는?
+> **실습 문제**:
+>
+> 1. `?`가 있는 속성과 없는 속성 차이
+> 2. `onClick`이 선택적인 이유
 
 ### 3단계: 컴포넌트 구조 이해 (30분)
 
 #### 🎯 학습 포인트
 
-- 함수형 컴포넌트 작성법
-- Props 구조 분해 할당
-- 기본값 설정 방법
+* 함수형 컴포넌트 선언
+* Props 구조 분해 할당
+* 기본값 설정
 
 #### 📝 실습 과제
-
-Button 컴포넌트의 구조를 분석해보세요:
 
 ```typescript
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary', // 기본값 설정
-  size = 'md',
-  borderRadius = 'md',
-  type = 'button',
+  text,
+  onClick,
   disabled = false,
   fullWidth = false,
-  onClick,
-  children, // 필수 prop
-  className,
-  leftIcon,
-  rightIcon,
-  icon,
 }) => {
-  // 컴포넌트 로직
+  const handleClick = (e: React.MouseEvent) => {
+    if (disabled) return;
+    onClick && onClick(e);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={disabled}
+      className={fullWidth ? 'full-width' : ''}
+    >
+      {text}
+    </button>
+  );
 };
 ```
 
-**실습 문제**:
+> **실습 문제**:
+>
+> 1. `React.FC<ButtonProps>` 의미
+> 2. 기본값 설정 이유
 
-1. `React.FC<ButtonProps>`의 의미는?
-2. 왜 일부 props에는 기본값이 있고, 일부는 없을까요?
-3. `children`이 필수인 이유는?
+### 4단계: CSS Module 적용 (20분)
 
-### 4단계: CSS 클래스 조합 로직 (20분)
+> SCSS 스타일링 대신 기본 CSS Modules로 연습합니다.
 
-#### 🎯 학습 포인트
+1. `Button.module.scss` 대신 `Button.module.css` 생성
+2. `import styles from './Button.module.css'`
+3. `<button className={styles.button}>`
 
-- classnames 라이브러리 활용
-- 조건부 클래스 적용
-- CSS Modules와의 연동
-
-#### 📝 실습 과제
-
-CSS 클래스 조합 로직을 이해해보세요:
-
-```typescript
-const buttonClasses = cx(
-  'button', // 기본 클래스
-  `button--${variant}`, // variant에 따른 클래스
-  `button--${size}`, // size에 따른 클래스
-  `button--radius-${borderRadius}`, // borderRadius에 따른 클래스
-  {
-    'button--full-width': fullWidth, // 조건부 클래스
-  },
-  className // 사용자 정의 클래스
-);
-```
-
-**실습 문제**:
-
-1. `cx()` 함수의 역할은?
-2. 템플릿 리터럴을 사용하는 이유는?
-3. 객체 형태로 조건부 클래스를 적용하는 방법은?
+> **실습 문제**:
+>
+> * CSS Modules 사용 장점
 
 ### 5단계: 이벤트 핸들링 (15분)
 
 #### 🎯 학습 포인트
 
-- React 이벤트 핸들링
-- 조건부 함수 실행
-- 이벤트 객체 활용
+* React 이벤트 처리 패턴
 
 #### 📝 실습 과제
 
-클릭 이벤트 핸들러를 분석해보세요:
-
 ```typescript
-const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  if (disabled) {
-    return; // 비활성화된 버튼은 아무것도 하지 않음
-  }
-
-  if (onClick) {
-    onClick(event); // 전달받은 함수 실행
-  }
+const handleClick = (e: React.MouseEvent) => {
+  if (disabled) return;
+  onClick && onClick(e);
 };
 ```
 
-**실습 문제**:
-
-1. `disabled` 상태일 때 왜 `return`하나요?
-2. `onClick` 함수가 없을 수 있는 이유는?
-3. `event` 객체를 전달하는 이유는?
+> **실습 문제**:
+>
+> * `disabled` 체크 이유
 
 ### 6단계: 조건부 렌더링 (15분)
 
 #### 🎯 학습 포인트
 
-- 조건부 렌더링 패턴
-- JSX 조각(Fragment) 활용
-- 컴포넌트 내부 구조 설계
+* 조건에 따라 다른 JSX 반환
 
 #### 📝 실습 과제
 
-버튼 내용 렌더링 로직을 이해해보세요:
-
 ```typescript
-const renderContent = () => {
-  if (icon) {
-    return <span className={cx('button__icon')}>{icon}</span>;
-  }
-
-  return (
-    <>
-      {leftIcon && (
-        <span className={cx('button__icon', 'button__icon--left')}>
-          {leftIcon}
-        </span>
-      )}
-      <span className={cx('button__content')}>{children}</span>
-      {rightIcon && (
-        <span className={cx('button__icon', 'button__icon--right')}>
-          {rightIcon}
-        </span>
-      )}
-    </>
-  );
-};
+return (
+  <button onClick={handleClick} disabled={disabled}>
+    {icon ? (
+      <span>{icon}</span>
+    ) : (
+      text
+    )}
+  </button>
+);
 ```
 
-**실습 문제**:
+> **실습 문제**:
+>
+> * `icon` 있을 때와 없을 때 차이
 
-1. `icon` prop이 있을 때와 없을 때의 차이점은?
-2. `<>` (Fragment)를 사용하는 이유는?
-3. 조건부 렌더링 `{leftIcon && ...}`의 의미는?
-
-### 7단계: SCSS 스타일링 (20분)
+### 7단계: Storybook 스토리 작성 (20분)
 
 #### 🎯 학습 포인트
 
-- SCSS Modules 사용법
-- BEM 방법론 적용
-- 반응형 디자인
+* 스토리를 통한 컴포넌트 문서화
+* Controls 활용
 
 #### 📝 실습 과제
-
-`Button.module.scss` 파일을 열고 스타일 구조를 분석해보세요:
-
-```scss
-.button {
-  // 기본 스타일
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  // variant별 스타일
-  &--primary {
-    background: $primary-color;
-    color: white;
-  }
-
-  &--secondary {
-    background: $gray-200;
-    color: $gray-800;
-  }
-
-  // size별 스타일
-  &--sm {
-    height: 24px;
-  }
-  &--md {
-    height: 32px;
-  }
-  &--lg {
-    height: 40px;
-  }
-}
-```
-
-**실습 문제**:
-
-1. `&` 기호의 역할은?
-2. BEM 방법론에서 `button--primary`의 의미는?
-3. 왜 CSS Modules를 사용하나요?
-
-### 8단계: Storybook 스토리 작성 (20분)
-
-#### 🎯 학습 포인트
-
-- Storybook 활용법
-- 컴포넌트 문서화
-- 다양한 사용 예시 제공
-
-#### 📝 실습 과제
-
-`Button.stories.tsx` 파일을 확인하고 스토리 구조를 이해해보세요:
 
 ```typescript
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from './Button';
+
 const meta: Meta<typeof Button> = {
   title: 'Atoms/Button',
   component: Button,
   argTypes: {
-    variant: { control: 'select' },
-    size: { control: 'select' },
-    onClick: { control: false },
+    text: { control: 'text' },
+    disabled: { control: 'boolean' },
+    fullWidth: { control: 'boolean' },
+    onClick: { action: 'clicked' },
   },
 };
 
-export const Default: Story = {
-  render: (args) => (
-    <Button {...args} onClick={() => alert('클릭!')}>
-      클릭하세요
-    </Button>
-  ),
+export default meta;
+export const Default: StoryObj<typeof Button> = {
+  args: {
+    text: '클릭하세요',
+    disabled: false,
+    fullWidth: false,
+  },
 };
 ```
 
-**실습 문제**:
-
-1. `argTypes`의 역할은?
-2. `control: false`의 의미는?
-3. `render` 함수에서 `alert`를 사용하는 이유는?
-
-## 🎯 실습 과제
-
-### 기본 과제
-
-1. **Button 컴포넌트 복사하기**: 기존 Button 컴포넌트를 참고하여 새로운 버튼 컴포넌트를 만들어보세요.
-2. **Props 추가하기**: `loading` prop을 추가하여 로딩 상태를 표시하는 기능을 구현해보세요.
-3. **새로운 variant 만들기**: `danger` variant를 추가하여 위험한 액션용 버튼을 만들어보세요.
-
-### 심화 과제
-
-1. **애니메이션 추가**: 버튼 클릭 시 ripple 효과를 추가해보세요.
-2. **접근성 개선**: 키보드 네비게이션과 스크린 리더 지원을 추가해보세요.
-3. **테스트 작성**: Jest와 React Testing Library를 사용하여 테스트 코드를 작성해보세요.
-
-## 📝 체크리스트
-
-- [ ] TypeScript 인터페이스 이해
-- [ ] Props 구조 분해 할당 이해
-- [ ] CSS 클래스 조합 로직 이해
-- [ ] 이벤트 핸들링 패턴 이해
-- [ ] 조건부 렌더링 이해
-- [ ] SCSS Modules 사용법 이해
-- [ ] Storybook 스토리 작성법 이해
-
-## 🤔 자주 묻는 질문
-
-### Q: 왜 TypeScript를 사용하나요?
-
-**A**: 타입 안전성을 보장하고, 개발 시 자동완성과 오류 검출을 통해 생산성을 높일 수 있습니다.
-
-### Q: CSS Modules 대신 일반 CSS를 사용하면 안 되나요?
-
-**A**: CSS Modules를 사용하면 클래스명 충돌을 방지하고 컴포넌트별로 스타일을 격리할 수 있습니다.
-
-### Q: 왜 이벤트 핸들러를 props로 전달하나요?
-
-**A**: React에서는 데이터가 위에서 아래로 흐르는 단방향 데이터 플로우를 따르기 때문입니다.
-
-## 🎉 완료 후 다음 단계
-
-Button 컴포넌트 실습을 완료했다면:
-
-1. **Input 컴포넌트 실습**으로 이동하세요
-2. **Avatar 컴포넌트 실습**으로 이동하세요
-3. **Molecules 컴포넌트 실습**으로 이동하세요
+> **실습 문제**:
+>
+> * `argTypes` 역할
 
 ---
 
-**💡 팁**: 각 단계를 완료할 때마다 코드를 커밋하고, 변경사항을 기록해두세요.
-나중에 복습할 때 매우 유용합니다!
+## 🎯 실습 과제
+
+1. 새로운 버튼 컴포넌트 복제 및 수정
+2. `loading` prop 추가
+3. `danger` variant 구현
+
+## 📝 체크리스트
+
+* [ ] React 함수형 컴포넌트 작성
+* [ ] TypeScript 인터페이스 정의
+* [ ] CSS Modules 적용
+* [ ] 이벤트 핸들링 패턴 이해
+* [ ] 조건부 렌더링 이해
+* [ ] Storybook 스토리 작성
+
+## 🤔 자주 묻는 질문
+
+**Q1: CSS Modules 대신 직접 CSS 파일 사용하면 안 되나요?**
+A: CSS Modules는 클래스 충돌을 막고, 파일 단위로 스타일을 격리해줍니다.
+
+**Q2: Storybook이 꼭 필요한가요?**
+A: 단독으로 컴포넌트를 미리 보고, 문서화하며 테스트할 수 있어 개발 효율이 올라갑니다.
+
+---

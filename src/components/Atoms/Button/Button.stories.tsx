@@ -8,7 +8,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'warning', 'danger', 'outline', 'ghost', 'text', 'link', 'soft'],
+      options: ['primary', 'warning', 'danger', 'outline', 'ghost', 'text', 'link', 'soft'],
       description: 'Button visual style variant',
     },
     size: {
@@ -99,9 +99,9 @@ const ArrowRightIcon = () => (
 
 export const Default: Story = {
   args: {
-    children: 'Click me',
+    children: 'Hi',
     onClick: () => console.log('Button clicked!'),
-  },
+  }
 };
 
 export const Interactive: Story = {
