@@ -195,7 +195,7 @@ export const CommentList: React.FC<CommentListProps> = ({
         <SortSelector
           value={sortBy}
           options={sortOptions}
-          onChange={(value) => onSortChange(value as any)}
+          onChange={onSortChange}
         />
       )}
 

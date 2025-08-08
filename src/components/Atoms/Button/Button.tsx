@@ -16,9 +16,18 @@ import classNames from 'classnames/bind';
 // CSS Modules를 사용하므로 클래스명이 자동으로 고유화됩니다
 import styles from './Button.module.scss';
 
+import commentItemStyles from '../../Organisms/CommentItem/CommentItemConsolidated.module.scss';
+
 // classnames의 bind 함수를 사용하여 스타일 객체와 바인딩합니다
 // 이렇게 하면 cx('button', 'primary') 같은 방식으로 클래스를 조합할 수 있습니다
-const cx = classNames.bind(styles);
+
+const combinedStyles = {
+  ...styles,
+ ...commentItemStyles,
+}
+
+
+const cx = classNames.bind(combinedStyles);
 
 /**
  * 🎯 Button 컴포넌트의 Props 인터페이스 정의
@@ -162,24 +171,25 @@ export const Button: React.FC<ButtonProps> = ({
    * cx() 함수를 사용하여 여러 클래스를 조건부로 조합합니다.
    * 이렇게 하면 props에 따라 동적으로 스타일이 적용됩니다.
    */
-  const buttonClasses = cx(
+  const buttonClasses =
+    cx(
     // 🎯 기본 클래스 (항상 적용)
     'button',
-
+    
     // 🎨 variant에 따른 클래스 (조건부 적용)
     `variant-${variant}`,
-
+    
     // 📏 size에 따른 클래스 (조건부 적용)
     `size-${size}`,
-
+    
     // 🔄 borderRadius에 따른 클래스 (조건부 적용)
     `border-radius-${borderRadius}`,
-
+    
     // 📐 fullWidth가 true일 때 적용되는 클래스
     {
       'full-width': fullWidth,
     },
-
+    
     // 🎨 사용자가 전달한 추가 클래스
     className
   );

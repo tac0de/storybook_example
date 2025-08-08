@@ -181,41 +181,43 @@ export const Default: Story = {
 //   ),
 // };
 
-export const Collapsible: Story = {
-  render: args => {
-    const [collapsed, setCollapsed] = useState(false);
+const CollapsibleRenderer: StoryFn<typeof Sidebar> = (args) => {
+  const [collapsed, setCollapsed] = useState(false);
 
-    return (
-      <div
-        style={{ padding: '2rem', background: '#f8f9fa', minHeight: '100vh' }}
-      >
-        <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              padding: '0.5rem 1rem',
-              background: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: '500',
-            }}
-          >
-            {collapsed ? 'Expand' : 'Collapse'} Sidebar
-          </button>
-        </div>
-        <SidebarWrapper>
-          <Sidebar
-            {...args}
-            collapsible
-            collapsed={collapsed}
-            onToggle={() => setCollapsed(!collapsed)}
-          >
-            <SampleSidebarContent />
-          </Sidebar>
-        </SidebarWrapper>
+  return (
+    <div
+      style={{ padding: '2rem', background: '#f8f9fa', minHeight: '100vh' }}
+    >
+      <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          style={{
+            padding: '0.5rem 1rem',
+            background: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: '500',
+          }}
+        >
+          {collapsed ? 'Expand' : 'Collapse'} Sidebar
+        </button>
       </div>
-    );
-  },
+      <SidebarWrapper>
+        <Sidebar
+          {...args}
+          collapsible
+          collapsed={collapsed}
+          onToggle={() => setCollapsed(!collapsed)}
+        >
+          <SampleSidebarContent />
+        </Sidebar>
+      </SidebarWrapper>
+    </div>
+  );
+};
+
+export const Collapsible: Story = {
+  render: CollapsibleRenderer,
 };

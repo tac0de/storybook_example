@@ -9,7 +9,7 @@
 
 // React 라이브러리에서 필요한 기능들을 가져옵니다
 // useState: 컴포넌트 내부 상태를 관리할 때 사용하는 React Hook
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 // classnames 라이브러리를 가져와서 CSS 클래스를 동적으로 조합할 수 있게 합니다
 // bind 함수를 사용하면 CSS Modules와 함께 사용할 때 더 편리합니다
@@ -22,9 +22,16 @@ import { UserHeader } from '../../Molecules/UserHeader';
 import { ActionButtons } from '../../Molecules/ActionButtons';
 import { TextInputForm } from '../../Molecules/TextInputForm';
 
+// 유틸리티 함수들을 가져옵니다
+import {
+  MAX_COMMENT_DEPTH,
+  validateCommentDepth,
+  sortReplies
+} from './commentUtils';
+
 // 이 컴포넌트의 스타일을 가져옵니다
 // CSS Modules를 사용하므로 클래스명이 자동으로 고유화됩니다
-import styles from './CommentItem.module.scss';
+import styles from './CommentItemConsolidated.module.scss';
 
 // classnames의 bind 함수를 사용하여 스타일 객체와 바인딩합니다
 // 이렇게 하면 cx('comment-item') 같은 방식으로 클래스를 조합할 수 있습니다
@@ -36,7 +43,16 @@ const cx = classNames.bind(styles);
  * 댓글의 모든 정보를 포함하는 구조체입니다.
  * 이 인터페이스를 통해 댓글 데이터의 구조를 명확하게 정의합니다.
  */
-export interface Comment {
+export interface Comment extends EnhancedComment {
+}
+
+/**
+ * 🎯 Enhanced Comment 데이터를 정의하는 인터페이스
+ *
+ * 댓글의 모든 정보를 포함하는 구조체로, parentId와 replyTo 필드를 추가로 포함합니다.
+ * 이 인터페이스를 통해 댓글 데이터의 구조를 명확하게 정의합니다.
+ */
+export interface EnhancedComment {
   /**
    * 🔑 댓글의 고유 식별자입니다
    * 데이터베이스에서 가져온 ID이거나 생성된 UUID입니다
@@ -78,6 +94,12 @@ export interface Comment {
   replies: number;
 
   /**
+   * 💬 답글 목록입니다
+   * 이 댓글에 대한 실제 답글 데이터 배열입니다
+   */
+  replyComments?: EnhancedComment[];
+
+  /**
    * ❤️ 현재 사용자가 이 댓글에 좋아요를 눌렀는지 여부입니다
    * true일 때 좋아요 버튼이 활성화된 상태로 표시됩니다
    */
@@ -88,6 +110,18 @@ export interface Comment {
    * true일 때 수정/삭제 버튼이 표시됩니다
    */
   isAuthor: boolean;
+
+  /**
+   * 🔗 부모 댓글의 ID입니다 (답글인 경우)
+   * 계층 구조에서 상위 댓글을 가리킵니다
+   */
+  parentId?: string;
+
+  /**
+   * 🔗 답글 대상 사용자의 이름입니다 (멘션 스타일 답글인 경우)
+   * 직접 답글을 보내는 사용자를 가리킬 수 있습니다 (parentId와 다를 수 있음)
+   */
+  replyTo?: string;
 }
 
 /**
@@ -99,7 +133,7 @@ export interface Comment {
 export interface CommentItemProps {
   /**
    * 📝 표시할 댓글 데이터입니다
-   * Comment 인터페이스를 따르는 댓글 객체입니다
+   * EnhancedComment 인터페이스를 따르는 댓글 객체입니다
    */
   comment: Comment;
 
@@ -155,6 +189,30 @@ export interface CommentItemProps {
   onSubmitReply?: (parentId: string, content: string) => void;
 
   /**
+   * 📤 답글 삭제를 처리하는 콜백 함수입니다
+   * @param commentId - 삭제할 답글의 ID
+   */
+  onReplyDelete?: (commentId: string) => void;
+
+  /**
+   * 🔄 답글 제출 후 호출되는 콜백 함수입니다
+   * @param replyComment - 새로 추가된 답글 객체
+   */
+  onReplySubmit?: (replyComment: EnhancedComment) => void;
+
+  /**
+   * 🔄 댓글이 업데이트되었을 때 호출되는 콜백 함수입니다
+   * @param updatedComment - 업데이트된 댓글 객체
+   */
+  onCommentUpdate?: (updatedComment: Comment) => void;
+
+  /**
+   * 🗑️ 댓글이 삭제되었을 때 호출되는 콜백 함수입니다
+   * @param commentId - 삭제할 댓글의 ID
+   */
+  onCommentDelete?: (commentId: string) => void;
+
+  /**
    * 🎨 추가적인 CSS 클래스를 적용할 수 있습니다
    * 컴포넌트의 기본 스타일을 유지하면서 추가 스타일링이 가능합니다
    */
@@ -180,11 +238,15 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   onDeleteClick,             // 삭제 핸들러 (선택적)
   onAuthorClick,             // 작성자 클릭 핸들러 (선택적)
   onSubmitReply,             // 답글 제출 핸들러 (선택적)
+  onReplyDelete,
+  onReplySubmit,
+  onCommentUpdate,
+  onCommentDelete,
   className,                 // 추가 CSS 클래스 (선택적)
 }) => {
   /**
    * 📊 답글 목록 표시 여부를 관리하는 상태
-   * 
+   *
    * useState는 React Hook으로, 컴포넌트 내부에서 상태를 관리할 때 사용합니다.
    * [현재값, 값을 변경하는 함수] 형태로 반환됩니다.
    * 초기값은 false로 설정되어 답글이 숨겨진 상태로 시작합니다.
@@ -193,26 +255,34 @@ export const CommentItem: React.FC<CommentItemProps> = ({
 
   /**
    * 📝 답글 작성 폼 표시 여부를 관리하는 상태
-   * 
+   *
    * 답글 작성 폼이 열려있는지 닫혀있는지를 관리합니다.
    * 초기값은 false로 설정되어 폼이 숨겨진 상태로 시작합니다.
    */
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   /**
+   * 📊 답글 정렬 기준을 관리하는 상태
+   *
+   * 답글을 정렬하는 기준을 관리합니다.
+   * 기본값은 'newest'로 설정되어 최신순으로 정렬합니다.
+   */
+  const [replySortBy, setReplySortBy] = useState<'newest' | 'oldest' | 'mostLiked'>('newest');
+
+  /**
    * 📤 답글 제출 핸들러
-   * 
+   *
    * 사용자가 답글을 작성하고 제출했을 때 실행되는 함수입니다.
    * 부모 컴포넌트에 답글 데이터를 전달하고 답글 작성 폼을 닫습니다.
-   * 
+   *
    * @param content - 작성된 답글 내용
    */
-  const handleReplySubmit = (content: string) => {
+  const handleReplySubmit = useCallback((content: string) => {
     // 📤 부모 컴포넌트에 답글 데이터 전달
     onSubmitReply?.(comment.id, content);
     // 🔄 답글 작성 폼 닫기
     setShowReplyForm(false);
-  };
+  }, [comment.id, onSubmitReply]);
 
   /**
    * 📅 날짜 포맷팅 함수
@@ -308,27 +378,16 @@ export const CommentItem: React.FC<CommentItemProps> = ({
         </Button>
       )}
 
-      {/* 📋 답글 목록 (현재 구현되지 않았으므로 주석 처리) */}
-      {/* 
-      {showReplies && comment.replies && (
+      {/* 📋 답글 목록 (답글이 있고, 사용자가 답글 보기 버튼을 클릭했을 때 표시) */}
+      {showReplies && comment.replyComments && comment.replyComments.length > 0 && (
         <div className={cx('replies')}>
-          {comment.replies.map(reply => (
-            <CommentItem
-              key={reply.id}
-              comment={reply}
-              depth={depth + 1}
-              onLikeClick={onLikeClick}
-              onReplyClick={onReplyClick}
-              onReportClick={onReportClick}
-              onEditClick={onEditClick}
-              onDeleteClick={onDeleteClick}
-              onAuthorClick={onAuthorClick}
-              onSubmitReply={onSubmitReply}
-            />
-          ))}
+          <RepliedCommentList
+            comments={comment.replyComments}
+            onCommentUpdate={onCommentUpdate}
+            onCommentDelete={onCommentDelete}
+          />
         </div>
       )}
-      */}
     </article>
   );
 };

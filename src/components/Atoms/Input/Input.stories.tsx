@@ -326,25 +326,28 @@ export const Sizes: Story = {
   },
 };
 
+const AutoResizeRenderer: StoryFn<InputProps> = (args) => {
+  const [value, setValue] = useState('');
+  return (
+    <div style={{ maxWidth: '400px' }}>
+      <Input
+        {...args}
+        value={value}
+        onChange={newValue => {
+          setValue(newValue);
+          console.log('Auto-resize input changed:', newValue);
+        }}
+        placeholder='This input auto-resizes...'
+        autoResize={true}
+        onFocus={() => console.log('Auto-resize input focused')}
+      />
+      <p style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
+        Try typing a long message to see the auto-resize in action
+      </p>
+    </div>
+  );
+};
+
 export const AutoResize: Story = {
-  render: () => {
-    const [value, setValue] = useState('');
-    return (
-      <div style={{ maxWidth: '400px' }}>
-        <Input
-          value={value}
-          onChange={newValue => {
-            setValue(newValue);
-            console.log('Auto-resize input changed:', newValue);
-          }}
-          placeholder='This input auto-resizes...'
-          autoResize={true}
-          onFocus={() => console.log('Auto-resize input focused')}
-        />
-        <p style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
-          Try typing a long message to see the auto-resize in action
-        </p>
-      </div>
-    );
-  },
+  render: AutoResizeRenderer,
 };

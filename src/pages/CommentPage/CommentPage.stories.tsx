@@ -184,6 +184,14 @@ export const Default: Story = {
           alert('삭제되었습니다!');
         }
       }}
+      onCommentUpdate={(updatedComment) => {
+        console.log('Comment updated:', updatedComment);
+        alert(`댓글이 업데이트되었습니다: ${updatedComment.content}`);
+      }}
+      onCommentDelete={(commentId) => {
+        console.log('Comment deleted:', commentId);
+        alert('댓글이 삭제되었습니다!');
+      }}
       onAuthorClick={(authorName) => {
         console.log('Author clicked:', authorName);
         alert(`${authorName}의 프로필을 확인합니다.`);
