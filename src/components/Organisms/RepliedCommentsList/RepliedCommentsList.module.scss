@@ -1,0 +1,158 @@
+/*
+  CommentsList.module.scss
+  -------------------------
+
+  This stylesheet defines the SCSS styles for the CommentsList component. It uses
+  class names that will be bound via the classnames/bind utility in the
+  corresponding React component. The styles focus on readability and a clean,
+  modern layout while remaining flexible for integration into a variety of
+  applications.
+
+  Each class corresponds to an element or group of elements in the CommentsList
+  component. BEM‑like naming is used for clarity. The styles emphasize
+  typographic hierarchy, whitespace, and subtle colors to distinguish
+  comments, replies, and interactive controls.
+*/
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: sans-serif;
+}
+
+.commentItem {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.commentContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.commentAuthor {
+  font-weight: 600;
+  color: #333;
+}
+
+.commentTimestamp {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.commentText {
+  margin-bottom: 0.5rem;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+.replyButton {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.replyButton:hover {
+  text-decoration: underline;
+}
+
+.repliesList {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.replyItem {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.replyHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.replyAuthor {
+  font-weight: 500;
+  color: #555;
+}
+
+.replyTimestamp {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.replyText {
+  color: #555;
+  white-space: pre-wrap;
+}
+
+.replyForm {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.replyTextarea {
+  resize: vertical;
+  min-height: 50px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.replyFormActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.submitButton {
+  background-color: #28a745;
+  color: #fff;
+  border: 1px solid #28a745;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}

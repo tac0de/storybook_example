@@ -22,13 +22,6 @@ import { UserHeader } from '../../Molecules/UserHeader';
 import { ActionButtons } from '../../Molecules/ActionButtons';
 import { TextInputForm } from '../../Molecules/TextInputForm';
 
-// 유틸리티 함수들을 가져옵니다
-import {
-  MAX_COMMENT_DEPTH,
-  validateCommentDepth,
-  sortReplies
-} from './commentUtils';
-
 // 이 컴포넌트의 스타일을 가져옵니다
 // CSS Modules를 사용하므로 클래스명이 자동으로 고유화됩니다
 import styles from './CommentItemConsolidated.module.scss';
