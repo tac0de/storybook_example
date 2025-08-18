@@ -1,6 +1,6 @@
 /**
  * 🎓 ActionButtons 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 React + TypeScript로 만든 재사용 가능한 ActionButtons 컴포넌트입니다.
  * 댓글이나 게시물에 대한 액션 버튼들(좋아요, 답글, 신고, 수정, 삭제)을 표시합니다.
  * Atoms 레벨의 Button 컴포넌트를 조합하여 만든 Molecules 레벨 컴포넌트입니다.
@@ -28,7 +28,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 ActionButtons 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * TypeScript를 사용하여 컴포넌트가 받을 수 있는 속성들을 명확하게 정의합니다.
  * 이렇게 하면 타입 안전성과 자동완성을 보장할 수 있습니다.
  */
@@ -100,92 +100,90 @@ export interface ActionButtonsProps {
   className?: string;
 }
 
-
 /**
  * 🚀 ActionButtons 컴포넌트 정의
- * 
+ *
  * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
  * <ActionButtonsProps>는 이 컴포넌트가 ActionButtonsProps 타입의 props를 받는다는 의미입니다.
- * 
+ *
  * 이 컴포넌트는 화살표 함수로 정의되어 있으며, 즉시 반환하는 형태입니다.
  * 복잡한 로직이 없고 단순히 JSX를 반환하는 경우에 적합한 패턴입니다.
  */
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
-  likeCount,                 // 좋아요 개수 (필수)
-  isLiked,                   // 좋아요 상태 (필수)
-  replyCount,                // 답글 개수 (필수)
-  onLikeClick,               // 좋아요 클릭 핸들러 (선택적)
-  onReplyClick,              // 답글 클릭 핸들러 (선택적)
-  onReportClick,             // 신고 클릭 핸들러 (선택적)
-  onEditClick,               // 수정 클릭 핸들러 (선택적)
-  onDeleteClick,             // 삭제 클릭 핸들러 (선택적)
-  canEdit = false,           // 수정 권한 (기본값: false)
-  canDelete = false,         // 삭제 권한 (기본값: false)
-  className,                 // 추가 CSS 클래스 (선택적)
+  likeCount, // 좋아요 개수 (필수)
+  isLiked, // 좋아요 상태 (필수)
+  replyCount, // 답글 개수 (필수)
+  onLikeClick, // 좋아요 클릭 핸들러 (선택적)
+  onReplyClick, // 답글 클릭 핸들러 (선택적)
+  onReportClick, // 신고 클릭 핸들러 (선택적)
+  onEditClick, // 수정 클릭 핸들러 (선택적)
+  onDeleteClick, // 삭제 클릭 핸들러 (선택적)
+  canEdit = false, // 수정 권한 (기본값: false)
+  canDelete = false, // 삭제 권한 (기본값: false)
+  className, // 추가 CSS 클래스 (선택적)
 }) => (
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * 액션 버튼들을 포함하는 컨테이너를 반환합니다.
    * 각 버튼은 Atoms 레벨의 Button 컴포넌트를 사용하여 구현됩니다.
    */
 
-
   <div className={cx('action-buttons', className)}>
     {/* ❤️ 좋아요 버튼 */}
     <Button
-      variant='ghost'                    // 투명 배경 스타일
-      size='sm'                          // 작은 크기
-      onClick={onLikeClick}              // 클릭 핸들러
-      className={cx('action-button', { 
-        liked: isLiked                   // 좋아요 상태에 따른 클래스
+      variant="ghost" // 투명 배경 스타일
+      size="sm" // 작은 크기
+      onClick={onLikeClick} // 클릭 핸들러
+      className={cx('action-button', {
+        liked: isLiked, // 좋아요 상태에 따른 클래스
       })}
     >
-      ♥ {likeCount}                      {/* 하트 이모지와 좋아요 개수 */}
+      ♥ {likeCount} {/* 하트 이모지와 좋아요 개수 */}
     </Button>
 
     {/* 💬 답글 버튼 */}
     <Button
-      variant='ghost'                    // 투명 배경 스타일
-      size='sm'                          // 작은 크기
-      onClick={onReplyClick}             // 클릭 핸들러
-      className={cx('action-button')}    // 기본 액션 버튼 클래스
+      variant="ghost" // 투명 배경 스타일
+      size="sm" // 작은 크기
+      onClick={onReplyClick} // 클릭 핸들러
+      className={cx('action-button')} // 기본 액션 버튼 클래스
     >
-      💬 {replyCount}                    {/* 말풍선 이모지와 답글 개수 */}
+      💬 {replyCount} {/* 말풍선 이모지와 답글 개수 */}
     </Button>
 
     {/* ⚠️ 신고 버튼 */}
     <Button
-      variant='ghost'                    // 투명 배경 스타일
-      size='sm'                          // 작은 크기
-      onClick={onReportClick}            // 클릭 핸들러
-      className={cx('action-button')}    // 기본 액션 버튼 클래스
+      variant="ghost" // 투명 배경 스타일
+      size="sm" // 작은 크기
+      onClick={onReportClick} // 클릭 핸들러
+      className={cx('action-button')} // 기본 액션 버튼 클래스
     >
-      ⚠️                                  {/* 경고 이모지 */}
+      ⚠️ {/* 경고 이모지 */}
     </Button>
 
     {/* ✏️ 수정 버튼 (권한이 있을 때만 표시) */}
     {canEdit && (
       <Button
-        variant='ghost'                  // 투명 배경 스타일
-        size='sm'                        // 작은 크기
-        onClick={onEditClick}            // 클릭 핸들러
-        className={cx('action-button')}  // 기본 액션 버튼 클래스
+        variant="ghost" // 투명 배경 스타일
+        size="sm" // 작은 크기
+        onClick={onEditClick} // 클릭 핸들러
+        className={cx('action-button')} // 기본 액션 버튼 클래스
       >
-        ✏️                                {/* 연필 이모지 */}
+        ✏️ {/* 연필 이모지 */}
       </Button>
     )}
 
     {/* 🗑️ 삭제 버튼 (권한이 있을 때만 표시) */}
     {canDelete && (
       <Button
-        variant='ghost'                  // 투명 배경 스타일
-        size='sm'                        // 작은 크기
-        onClick={onDeleteClick}          // 클릭 핸들러
-        className={cx('action-button')}  // 기본 액션 버튼 클래스
+        variant="ghost" // 투명 배경 스타일
+        size="sm" // 작은 크기
+        onClick={onDeleteClick} // 클릭 핸들러
+        className={cx('action-button')} // 기본 액션 버튼 클래스
       >
-        🗑️                                {/* 휴지통 이모지 */}
+        🗑️ {/* 휴지통 이모지 */}
       </Button>
     )}
   </div>
@@ -193,34 +191,34 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 액션 버튼들
- * <ActionButtons 
- *   likeCount={42} 
- *   isLiked={true} 
- *   replyCount={5} 
- *   onLikeClick={() => handleLike()} 
- *   onReplyClick={() => handleReply()} 
- *   onReportClick={() => handleReport()} 
+ * <ActionButtons
+ *   likeCount={42}
+ *   isLiked={true}
+ *   replyCount={5}
+ *   onLikeClick={() => handleLike()}
+ *   onReplyClick={() => handleReply()}
+ *   onReportClick={() => handleReport()}
  * />
- * 
+ *
  * // 수정/삭제 권한이 있는 사용자용
- * <ActionButtons 
- *   likeCount={42} 
- *   isLiked={false} 
- *   replyCount={5} 
- *   canEdit={true} 
- *   canDelete={true} 
- *   onEditClick={() => handleEdit()} 
- *   onDeleteClick={() => handleDelete()} 
+ * <ActionButtons
+ *   likeCount={42}
+ *   isLiked={false}
+ *   replyCount={5}
+ *   canEdit={true}
+ *   canDelete={true}
+ *   onEditClick={() => handleEdit()}
+ *   onDeleteClick={() => handleDelete()}
  * />
- * 
+ *
  * // 읽기 전용 사용자용 (수정/삭제 버튼 없음)
- * <ActionButtons 
- *   likeCount={42} 
- *   isLiked={false} 
- *   replyCount={5} 
- *   canEdit={false} 
- *   canDelete={false} 
+ * <ActionButtons
+ *   likeCount={42}
+ *   isLiked={false}
+ *   replyCount={5}
+ *   canEdit={false}
+ *   canDelete={false}
  * />
- */ 
+ */

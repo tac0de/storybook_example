@@ -1,9 +1,9 @@
 /**
  * 🎓 CommentPage 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 Pages 레벨의 컴포넌트로, 완전한 댓글 페이지를 구현합니다.
  * Atoms, Molecules, Organisms를 모두 조합하여 실제 사용 가능한 페이지를 만듭니다.
- * 
+ *
  * 🎯 학습 포인트:
  * - 페이지 컴포넌트 설계 방법
  * - 여러 레벨의 컴포넌트 조합
@@ -41,7 +41,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 CommentPage 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * 이 컴포넌트는 완전한 페이지이므로, 페이지와 관련된 모든 설정을 props로 받습니다.
  * 실제 애플리케이션에서는 이 props들이 API나 상태 관리 라이브러리에서 전달됩니다.
  */
@@ -101,9 +101,7 @@ export interface CommentPageProps {
    * 📊 정렬 방식 변경 이벤트 핸들러 (선택적)
    * 사용자가 정렬 방식을 변경했을 때 호출됩니다
    */
-  onSortChange?: (
-    sortBy: 'newest' | 'oldest' | 'mostLiked' | 'mostReplied'
-  ) => void;
+  onSortChange?: (sortBy: 'newest' | 'oldest' | 'mostLiked' | 'mostReplied') => void;
 
   /**
    * ✏️ 새 댓글 작성 이벤트 핸들러 (선택적)
@@ -156,7 +154,7 @@ export interface CommentPageProps {
 
 /**
  * 🚀 CommentPage 컴포넌트 정의
- * 
+ *
  * 이 컴포넌트는 완전한 댓글 페이지로, 다음과 같은 기능을 제공합니다:
  * - 댓글 목록 표시
  * - 새 댓글 작성
@@ -166,27 +164,27 @@ export interface CommentPageProps {
  */
 export const CommentPage: React.FC<CommentPageProps> = ({
   // 🎯 Props 구조 분해 할당
-  comments,                    // 필수 prop (기본값 없음)
-  sortBy = 'newest',          // 기본값: 'newest'
-  loading = false,            // 기본값: false
-  title = '댓글',             // 기본값: '댓글'
+  comments, // 필수 prop (기본값 없음)
+  sortBy = 'newest', // 기본값: 'newest'
+  loading = false, // 기본값: false
+  title = '댓글', // 기본값: '댓글'
   subtitle = '이 글에 대한 의견을 남겨주세요', // 기본값
-  canComment = true,          // 기본값: true
-  maxComments = 100,          // 기본값: 100
-  className,                  // 선택적 prop (기본값 없음)
-  onSortChange,               // 선택적 prop (기본값 없음)
-  onSubmitComment,            // 선택적 prop (기본값 없음)
-  onSubmitReply,              // 선택적 prop (기본값 없음)
-  onLikeClick,                // 선택적 prop (기본값 없음)
-  onReplyClick,               // 선택적 prop (기본값 없음)
-  onReportClick,              // 선택적 prop (기본값 없음)
-  onEditClick,                // 선택적 prop (기본값 없음)
-  onDeleteClick,              // 선택적 prop (기본값 없음)
-  onAuthorClick,              // 선택적 prop (기본값 없음)
+  canComment = true, // 기본값: true
+  maxComments = 100, // 기본값: 100
+  className, // 선택적 prop (기본값 없음)
+  onSortChange, // 선택적 prop (기본값 없음)
+  onSubmitComment, // 선택적 prop (기본값 없음)
+  onSubmitReply, // 선택적 prop (기본값 없음)
+  onLikeClick, // 선택적 prop (기본값 없음)
+  onReplyClick, // 선택적 prop (기본값 없음)
+  onReportClick, // 선택적 prop (기본값 없음)
+  onEditClick, // 선택적 prop (기본값 없음)
+  onDeleteClick, // 선택적 prop (기본값 없음)
+  onAuthorClick, // 선택적 prop (기본값 없음)
 }) => {
   /**
    * 🎯 새 댓글 제출 핸들러
-   * 
+   *
    * TextInputForm에서 새 댓글이 제출되었을 때 호출됩니다.
    * onSubmitComment 함수가 전달되었다면 실행하고, 콘솔에 로그를 남깁니다.
    */
@@ -195,14 +193,14 @@ export const CommentPage: React.FC<CommentPageProps> = ({
     if (onSubmitComment) {
       onSubmitComment(content);
     }
-    
+
     // 📝 개발용 로그 (실제 프로젝트에서는 제거)
     console.log('새 댓글 제출:', content);
   };
 
   /**
    * 🎨 페이지 헤더 렌더링 함수
-   * 
+   *
    * 페이지 상단에 제목, 부제목, 통계 정보를 표시합니다.
    * PageLayout의 header prop으로 전달됩니다.
    */
@@ -210,10 +208,10 @@ export const CommentPage: React.FC<CommentPageProps> = ({
     <div className={cx('page-header')}>
       {/* 📝 페이지 제목 */}
       <h1 className={cx('page-title')}>{title}</h1>
-      
+
       {/* 📄 페이지 부제목 (있는 경우에만 표시) */}
       {subtitle && <p className={cx('page-subtitle')}>{subtitle}</p>}
-      
+
       {/* 📊 페이지 통계 정보 */}
       <div className={cx('page-stats')}>
         <span>댓글 {comments.length}개</span>
@@ -224,11 +222,11 @@ export const CommentPage: React.FC<CommentPageProps> = ({
 
   /**
    * 🎨 페이지 내용 렌더링 함수
-   * 
+   *
    * 페이지의 주요 내용을 렌더링합니다:
    * - 댓글 작성 폼 (canComment가 true일 때)
    * - 댓글 목록
-   * 
+   *
    * PageLayout의 children prop으로 전달됩니다.
    */
   const renderContent = () => (
@@ -238,9 +236,9 @@ export const CommentPage: React.FC<CommentPageProps> = ({
         <div className={cx('comment-form-section')}>
           <TextInputForm
             onSubmit={handleSubmitComment}
-            placeholder='댓글을 입력하세요...'
+            placeholder="댓글을 입력하세요..."
             maxLength={500}
-            submitText='작성'
+            submitText="작성"
           />
         </div>
       )}
@@ -266,7 +264,7 @@ export const CommentPage: React.FC<CommentPageProps> = ({
 
   /**
    * 🎨 페이지 푸터 렌더링 함수
-   * 
+   *
    * 페이지 하단에 안내 문구를 표시합니다.
    * PageLayout의 footer prop으로 전달됩니다.
    */
@@ -279,17 +277,17 @@ export const CommentPage: React.FC<CommentPageProps> = ({
 
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * PageLayout을 사용하여 페이지 구조를 만들고,
    * 각 섹션을 적절한 위치에 배치합니다.
    */
   return (
     <PageLayout
-      header={renderHeader()}      // 🏗️ 페이지 헤더
-      footer={renderFooter()}      // 🏗️ 페이지 푸터
+      header={renderHeader()} // 🏗️ 페이지 헤더
+      footer={renderFooter()} // 🏗️ 페이지 푸터
       className={cx('comment-page', className)} // 🎨 CSS 클래스
-      maxWidth='xl'                // 📐 최대 너비 설정
-      padding='lg'                 // 📏 패딩 설정
+      maxWidth="xl" // 📐 최대 너비 설정
+      padding="lg" // 📏 패딩 설정
     >
       {/* 📄 페이지 내용 */}
       {renderContent()}
@@ -299,35 +297,35 @@ export const CommentPage: React.FC<CommentPageProps> = ({
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 사용법
  * <CommentPage
  *   comments={commentData}
  *   onSubmitComment={handleNewComment}
  *   onLikeClick={handleLike}
  * />
- * 
+ *
  * // 읽기 전용 모드
  * <CommentPage
  *   comments={commentData}
  *   canComment={false}
  *   title="댓글 (읽기 전용)"
  * />
- * 
+ *
  * // 로딩 상태
  * <CommentPage
  *   comments={[]}
  *   loading={true}
  *   title="댓글 로딩 중..."
  * />
- * 
+ *
  * 🎯 이 컴포넌트의 장점:
  * 1. 완전성: 댓글 시스템의 모든 기능을 포함
  * 2. 재사용성: 다양한 페이지에서 사용 가능
  * 3. 유연성: props로 모든 동작을 제어 가능
  * 4. 확장성: 새로운 기능 추가가 용이
  * 5. 접근성: 적절한 HTML 구조와 ARIA 속성
- * 
+ *
  * 🏗️ 컴포넌트 계층 구조:
  * CommentPage (Pages)
  * ├── PageLayout (Layouts)

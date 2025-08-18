@@ -1,6 +1,6 @@
 /**
  * 🎓 Input 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 React + TypeScript로 만든 재사용 가능한 Input 컴포넌트입니다.
  * 텍스트 입력 필드로, textarea 기반으로 구현되어 여러 줄 입력이 가능합니다.
  * 초보자를 위해 각 부분에 상세한 주석을 추가했습니다.
@@ -25,7 +25,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 Input 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * TypeScript를 사용하여 컴포넌트가 받을 수 있는 속성들을 명확하게 정의합니다.
  * 이렇게 하면 타입 안전성과 자동완성을 보장할 수 있습니다.
  */
@@ -133,32 +133,32 @@ export interface InputProps {
 
 /**
  * 🚀 Input 컴포넌트 정의
- * 
+ *
  * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
  * <InputProps>는 이 컴포넌트가 InputProps 타입의 props를 받는다는 의미입니다.
  */
 export const Input: React.FC<InputProps> = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
-  value,                     // 현재 값 (필수)
-  onChange,                  // 값 변경 핸들러 (필수)
-  placeholder,               // 플레이스홀더 (선택적)
-  maxLength,                 // 최대 길이 (선택적)
-  minLength,                 // 최소 길이 (선택적)
-  disabled = false,          // 비활성화 여부 (기본값: false)
-  readOnly = false,          // 읽기 전용 여부 (기본값: false)
-  error = false,             // 오류 여부 (기본값: false)
-  errorMessage,              // 오류 메시지 (선택적)
-  size = 'md',               // 크기 (기본값: 'md')
-  variant = 'default',       // 스타일 변형 (기본값: 'default')
-  autoResize = false,        // 자동 크기 조정 (기본값: false)
-  onFocus,                   // 포커스 핸들러 (선택적)
-  onBlur,                    // 블러 핸들러 (선택적)
-  onKeyDown,                 // 키보드 이벤트 핸들러 (선택적)
-  className,                 // 추가 CSS 클래스 (선택적)
+  value, // 현재 값 (필수)
+  onChange, // 값 변경 핸들러 (필수)
+  placeholder, // 플레이스홀더 (선택적)
+  maxLength, // 최대 길이 (선택적)
+  minLength, // 최소 길이 (선택적)
+  disabled = false, // 비활성화 여부 (기본값: false)
+  readOnly = false, // 읽기 전용 여부 (기본값: false)
+  error = false, // 오류 여부 (기본값: false)
+  errorMessage, // 오류 메시지 (선택적)
+  size = 'md', // 크기 (기본값: 'md')
+  variant = 'default', // 스타일 변형 (기본값: 'default')
+  autoResize = false, // 자동 크기 조정 (기본값: false)
+  onFocus, // 포커스 핸들러 (선택적)
+  onBlur, // 블러 핸들러 (선택적)
+  onKeyDown, // 키보드 이벤트 핸들러 (선택적)
+  className, // 추가 CSS 클래스 (선택적)
 }) => {
   /**
    * 🎯 textarea DOM 요소에 대한 참조
-   * 
+   *
    * useRef는 DOM 요소에 직접 접근할 때 사용하는 React Hook입니다.
    * 여기서는 autoResize 기능을 위해 textarea의 높이를 조정하는 데 사용됩니다.
    */
@@ -166,7 +166,7 @@ export const Input: React.FC<InputProps> = ({
 
   /**
    * 🔄 자동 크기 조정 효과
-   * 
+   *
    * useEffect는 컴포넌트가 렌더링된 후 실행되는 React Hook입니다.
    * 여기서는 value나 autoResize가 변경될 때마다 textarea의 높이를 조정합니다.
    */
@@ -182,39 +182,39 @@ export const Input: React.FC<InputProps> = ({
 
   /**
    * 🔄 입력 값 변경 핸들러
-   * 
+   *
    * 사용자가 텍스트를 입력할 때마다 호출되는 함수입니다.
    * maxLength 제한을 확인하고 부모 컴포넌트에 새로운 값을 전달합니다.
-   * 
+   *
    * @param e - React의 ChangeEvent 객체 (textarea의 변경 이벤트)
    */
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
-    
+
     // 📏 maxLength 제한 확인
     if (maxLength && newValue.length > maxLength) return;
-    
+
     // 🔄 부모 컴포넌트에 새로운 값 전달
     onChange(newValue);
   };
 
   /**
    * 📊 현재 입력된 문자 수 계산
-   * 
+   *
    * 문자 카운터를 표시하기 위해 현재 값의 길이를 계산합니다.
    */
   const characterCount = value.length;
-  
+
   /**
    * 📊 문자 카운터 표시 여부 결정
-   * 
+   *
    * maxLength가 설정되어 있을 때만 카운터를 표시합니다.
    */
   const showCounter = maxLength !== undefined;
 
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * React 컴포넌트는 JSX를 반환해야 합니다.
    * 여기서는 입력 필드 컨테이너를 반환하되, 다양한 상태와 기능을 포함합니다.
    */
@@ -224,41 +224,38 @@ export const Input: React.FC<InputProps> = ({
       <textarea
         // 🎯 DOM 참조 연결 (autoResize 기능용)
         ref={textareaRef}
-        
         // 📝 입력 필드의 기본 속성들
-        value={value}                    // 현재 값
-        onChange={handleChange}          // 값 변경 핸들러
-        placeholder={placeholder}        // 플레이스홀더
-        maxLength={maxLength}            // 최대 길이
-        minLength={minLength}            // 최소 길이
-        disabled={disabled}              // 비활성화 여부
-        readOnly={readOnly}              // 읽기 전용 여부
-        
+        value={value} // 현재 값
+        onChange={handleChange} // 값 변경 핸들러
+        placeholder={placeholder} // 플레이스홀더
+        maxLength={maxLength} // 최대 길이
+        minLength={minLength} // 최소 길이
+        disabled={disabled} // 비활성화 여부
+        readOnly={readOnly} // 읽기 전용 여부
         // 🎯 이벤트 핸들러들
-        onFocus={onFocus}                // 포커스 이벤트
-        onBlur={onBlur}                  // 블러 이벤트
-        onKeyDown={onKeyDown}            // 키보드 이벤트
-        
+        onFocus={onFocus} // 포커스 이벤트
+        onBlur={onBlur} // 블러 이벤트
+        onKeyDown={onKeyDown} // 키보드 이벤트
         // 🎨 CSS 클래스 조합
         className={cx(
-          'input',                       // 기본 입력 필드 클래스
-          `size-${size}`,               // 크기에 따른 클래스
-          `variant-${variant}`,         // 스타일 변형에 따른 클래스
+          'input', // 기본 입력 필드 클래스
+          `size-${size}`, // 크기에 따른 클래스
+          `variant-${variant}`, // 스타일 변형에 따른 클래스
           {
-            error: error,               // 오류 상태 클래스
-            disabled: disabled,         // 비활성화 상태 클래스
-            readonly: readOnly,         // 읽기 전용 상태 클래스
+            error, // 오류 상태 클래스
+            disabled, // 비활성화 상태 클래스
+            readonly: readOnly, // 읽기 전용 상태 클래스
           }
         )}
       />
-      
+
       {/* 📊 문자 카운터 (maxLength가 설정되어 있을 때만 표시) */}
       {showCounter && (
         <div className={cx('character-counter')}>
           {characterCount}/{maxLength}
         </div>
       )}
-      
+
       {/* ❌ 오류 메시지 (오류가 있고 메시지가 있을 때만 표시) */}
       {error && errorMessage && (
         <div className={cx('error-message')}>{errorMessage}</div>
@@ -269,43 +266,43 @@ export const Input: React.FC<InputProps> = ({
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 입력 필드
- * <Input 
- *   value={text} 
- *   onChange={setText} 
- *   placeholder="메시지를 입력하세요" 
+ * <Input
+ *   value={text}
+ *   onChange={setText}
+ *   placeholder="메시지를 입력하세요"
  * />
- * 
+ *
  * // 최대 길이 제한이 있는 입력 필드
- * <Input 
- *   value={text} 
- *   onChange={setText} 
- *   maxLength={100} 
- *   placeholder="100자 이내로 입력하세요" 
+ * <Input
+ *   value={text}
+ *   onChange={setText}
+ *   maxLength={100}
+ *   placeholder="100자 이내로 입력하세요"
  * />
- * 
+ *
  * // 오류 상태의 입력 필드
- * <Input 
- *   value={text} 
- *   onChange={setText} 
- *   error={true} 
- *   errorMessage="필수 입력 항목입니다" 
+ * <Input
+ *   value={text}
+ *   onChange={setText}
+ *   error={true}
+ *   errorMessage="필수 입력 항목입니다"
  * />
- * 
+ *
  * // 자동 크기 조정이 가능한 입력 필드
- * <Input 
- *   value={text} 
- *   onChange={setText} 
- *   autoResize={true} 
- *   placeholder="여러 줄 입력 가능" 
+ * <Input
+ *   value={text}
+ *   onChange={setText}
+ *   autoResize={true}
+ *   placeholder="여러 줄 입력 가능"
  * />
- * 
+ *
  * // 밑줄 스타일의 입력 필드
- * <Input 
- *   value={text} 
- *   onChange={setText} 
- *   variant="underline" 
- *   placeholder="밑줄 스타일" 
+ * <Input
+ *   value={text}
+ *   onChange={setText}
+ *   variant="underline"
+ *   placeholder="밑줄 스타일"
  * />
  */

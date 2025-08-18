@@ -1,4 +1,4 @@
 // Organisms exports
 export * from './CommentItem';
-export * from './CommentList'; 
-export * from './RepliedCommentsList'
+export * from './CommentList';
+export * from './RepliedCommentsList';

@@ -23,31 +23,21 @@ export default meta;
  * 페이지를 새로고침할 필요 없이 Storybook에 반영됩니다.
  */
 export const Default: StoryObj<typeof RepliedCommentsList> = {
-  render: (args) => {
-    const [comments, setComments] = useState<RepliedComment[]>(
-      args.comments as RepliedComment[]
-    );
+  render(args) {
+    const [comments, setComments] = useState<RepliedComment[]>(args.comments as RepliedComment[]);
 
     // 답글이 추가되면 로컬 댓글 상태를 업데이트하여 CommentsList가
     // 새 답글을 포함하여 다시 렌더링되도록 합니다. 실제 애플리케이션에서는
     // 이 로직이 부모 컴포넌트에 있거나 전역 상태 또는 API 호출을 통해 관리될 수 있습니다.
     const handleAddReply = (commentId: RepliedComment['id'], reply: Reply) => {
-      setComments((prev) =>
-        prev.map((comment) =>
-          comment.id === commentId
-            ? { ...comment, replies: [...(comment.replies ?? []), reply] }
-            : comment
-        )
+      setComments(prev =>
+        prev.map(comment =>
+          comment.id === commentId ? { ...comment, replies: [...(comment.replies ?? []), reply] } : comment,
+        ),
       );
     };
 
-    return (
-      <RepliedCommentsList
-        {...args}
-        comments={comments}
-        onAddReply={handleAddReply}
-      />
-    );
+    return <RepliedCommentsList {...args} comments={comments} onAddReply={handleAddReply} />;
   },
   args: {
     comments: [

@@ -1,6 +1,6 @@
 /**
  * 🎓 Header 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 React + TypeScript로 만든 재사용 가능한 Header 컴포넌트입니다.
  * 웹 페이지의 상단 헤더 영역을 정의하는 레이아웃 컴포넌트로, 다양한 스타일과 동작을 지원합니다.
  * 네비게이션, 로고, 사용자 메뉴 등을 포함할 수 있는 유연한 헤더 컴포넌트입니다.
@@ -24,7 +24,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 Header 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * TypeScript를 사용하여 컴포넌트가 받을 수 있는 속성들을 명확하게 정의합니다.
  * 이렇게 하면 타입 안전성과 자동완성을 보장할 수 있습니다.
  */
@@ -71,40 +71,40 @@ export interface HeaderProps {
 
 /**
  * 🚀 Header 컴포넌트 정의
- * 
+ *
  * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
  * <HeaderProps>는 이 컴포넌트가 HeaderProps 타입의 props를 받는다는 의미입니다.
- * 
+ *
  * 이 컴포넌트는 HTML header 요소를 기반으로 하며, 다양한 스타일 옵션을 제공합니다.
  */
 export const Header: React.FC<HeaderProps> = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
-  children,                   // 내부 콘텐츠 (필수)
-  className,                  // 추가 CSS 클래스 (선택적)
-  variant = 'default',       // 스타일 변형 (기본값: 'default')
-  sticky = false,            // 고정 여부 (기본값: false)
-  transparent = false,       // 투명 여부 (기본값: false)
+  children, // 내부 콘텐츠 (필수)
+  className, // 추가 CSS 클래스 (선택적)
+  variant = 'default', // 스타일 변형 (기본값: 'default')
+  sticky = false, // 고정 여부 (기본값: false)
+  transparent = false, // 투명 여부 (기본값: false)
 }) => {
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * React 컴포넌트는 JSX를 반환해야 합니다.
    * 여기서는 HTML header 요소를 반환하되, 다양한 스타일 옵션을 CSS 클래스로 적용합니다.
    */
   return (
     <header
       className={cx(
-        'header',                           // 기본 헤더 클래스
-        className,                          // 사용자가 전달한 추가 클래스
+        'header', // 기본 헤더 클래스
+        className, // 사용자가 전달한 추가 클래스
         {
           // 🎨 스타일 변형 클래스 (variant에 따른 클래스)
           [`variant-${variant}`]: variant,
-          
+
           // 📌 고정 클래스 (sticky가 true일 때만 적용)
-          sticky: sticky,
-          
+          sticky,
+
           // 🌫️ 투명 클래스 (transparent가 true일 때만 적용)
-          transparent: transparent,
+          transparent,
         }
       )}
     >
@@ -116,48 +116,48 @@ export const Header: React.FC<HeaderProps> = ({
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 헤더
  * <Header>
  *   <div className="logo">로고</div>
  *   <nav>네비게이션 메뉴</nav>
  *   <div className="user-menu">사용자 메뉴</div>
  * </Header>
- * 
+ *
  * // 고정된 헤더 (스크롤 시에도 상단에 고정)
  * <Header sticky>
  *   <div className="logo">로고</div>
  *   <nav>네비게이션 메뉴</nav>
  * </Header>
- * 
+ *
  * // 투명한 헤더 (배경이 투명)
  * <Header transparent>
  *   <div className="logo">로고</div>
  *   <nav>네비게이션 메뉴</nav>
  * </Header>
- * 
+ *
  * // 미니멀 스타일 헤더
  * <Header variant="minimal">
  *   <div className="logo">로고</div>
  *   <nav>네비게이션 메뉴</nav>
  * </Header>
- * 
+ *
  * // 고급 스타일 헤더 (강한 그림자)
  * <Header variant="elevated" sticky>
  *   <div className="logo">로고</div>
  *   <nav>네비게이션 메뉴</nav>
  * </Header>
- * 
+ *
  * // 커스텀 클래스 추가
  * <Header className="my-custom-header">
  *   <div>커스텀 스타일이 적용된 헤더</div>
  * </Header>
- * 
+ *
  * // 복합적인 사용 예시
- * <Header 
- *   variant="elevated" 
- *   sticky 
- *   transparent 
+ * <Header
+ *   variant="elevated"
+ *   sticky
+ *   transparent
  *   className="main-header"
  * >
  *   <div className="header-content">
@@ -172,24 +172,24 @@ export const Header: React.FC<HeaderProps> = ({
  *     </div>
  *   </div>
  * </Header>
- * 
+ *
  * 🎯 이 컴포넌트의 특징:
  * 1. 유연성: 다양한 스타일과 동작 옵션 제공
  * 2. 접근성: HTML header 요소를 사용하여 시맨틱 마크업 준수
  * 3. 재사용성: 모든 페이지에서 일관된 헤더 스타일 제공
  * 4. 커스터마이징: className prop으로 추가 스타일링 가능
  * 5. 조합 가능: 다른 레이아웃 컴포넌트들과 함께 사용 가능
- * 
+ *
  * 🏗️ 컴포넌트 구조:
  * Header (Layout)
  * └── header element (시맨틱 HTML 요소)
  *     └── children (동적으로 전달되는 콘텐츠)
- * 
+ *
  * 💡 팁:
  * - sticky 옵션은 position: sticky를 사용하므로 브라우저 지원을 확인해야 합니다
  * - transparent 옵션은 배경이 투명해지므로 텍스트 가독성을 고려해야 합니다
  * - variant 옵션들은 CSS로 미리 정의된 스타일을 적용합니다
  * - 이 컴포넌트는 Container, Sidebar 등 다른 레이아웃 컴포넌트들과 조합하여 사용할 수 있습니다
  * - 반응형 디자인을 위해 CSS 미디어 쿼리와 함께 사용하는 것을 권장합니다
- * 
+ *
  **/

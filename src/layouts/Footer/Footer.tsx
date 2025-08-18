@@ -1,6 +1,6 @@
 /**
  * 🎓 Footer 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 React + TypeScript로 만든 재사용 가능한 Footer 컴포넌트입니다.
  * 웹 페이지의 하단 푸터 영역을 정의하는 레이아웃 컴포넌트로, 다양한 스타일과 동작을 지원합니다.
  * 저작권 정보, 링크, 연락처 정보 등을 포함할 수 있는 유연한 푸터 컴포넌트입니다.
@@ -24,7 +24,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 Footer 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * TypeScript를 사용하여 컴포넌트가 받을 수 있는 속성들을 명확하게 정의합니다.
  * 이렇게 하면 타입 안전성과 자동완성을 보장할 수 있습니다.
  */
@@ -57,7 +57,7 @@ export interface FooterProps {
    * true일 때 position: fixed가 적용되어 푸터가 화면 하단에 고정됩니다
    * 사용자가 페이지를 스크롤해도 푸터가 항상 하단에 보이게 됩니다
    * 기본값: false
-   * 
+   *
    * 주의: fixed가 true일 때는 메인 콘텐츠에 하단 패딩을 추가해야 푸터와 겹치지 않습니다
    */
   fixed?: boolean;
@@ -65,36 +65,36 @@ export interface FooterProps {
 
 /**
  * 🚀 Footer 컴포넌트 정의
- * 
+ *
  * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
  * <FooterProps>는 이 컴포넌트가 FooterProps 타입의 props를 받는다는 의미입니다.
- * 
+ *
  * 이 컴포넌트는 HTML footer 요소를 기반으로 하며, 다양한 스타일 옵션을 제공합니다.
  */
 export const Footer: React.FC<FooterProps> = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
-  children,                   // 내부 콘텐츠 (필수)
-  className,                  // 추가 CSS 클래스 (선택적)
-  variant = 'default',       // 스타일 변형 (기본값: 'default')
-  fixed = false,             // 고정 여부 (기본값: false)
+  children, // 내부 콘텐츠 (필수)
+  className, // 추가 CSS 클래스 (선택적)
+  variant = 'default', // 스타일 변형 (기본값: 'default')
+  fixed = false, // 고정 여부 (기본값: false)
 }) => {
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * React 컴포넌트는 JSX를 반환해야 합니다.
    * 여기서는 HTML footer 요소를 반환하되, 다양한 스타일 옵션을 CSS 클래스로 적용합니다.
    */
   return (
     <footer
       className={cx(
-        'footer',                           // 기본 푸터 클래스
-        className,                          // 사용자가 전달한 추가 클래스
+        'footer', // 기본 푸터 클래스
+        className, // 사용자가 전달한 추가 클래스
         {
           // 🎨 스타일 변형 클래스 (variant에 따른 클래스)
           [`variant-${variant}`]: variant,
-          
+
           // 📌 고정 클래스 (fixed가 true일 때만 적용)
-          fixed: fixed,
+          fixed,
         }
       )}
     >
@@ -106,7 +106,7 @@ export const Footer: React.FC<FooterProps> = ({
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 푸터
  * <Footer>
  *   <div className="footer-content">
@@ -114,14 +114,14 @@ export const Footer: React.FC<FooterProps> = ({
  *     <nav>링크 목록</nav>
  *   </div>
  * </Footer>
- * 
+ *
  * // 고정된 푸터 (화면 하단에 고정)
  * <Footer fixed>
  *   <div className="footer-content">
  *     <p>&copy; 2024 MyApp. All rights reserved.</p>
  *   </div>
  * </Footer>
- * 
+ *
  * // 다크 스타일 푸터
  * <Footer variant="dark">
  *   <div className="footer-content">
@@ -129,14 +129,14 @@ export const Footer: React.FC<FooterProps> = ({
  *     <nav>링크 목록</nav>
  *   </div>
  * </Footer>
- * 
+ *
  * // 미니멀 스타일 푸터
  * <Footer variant="minimal">
  *   <div className="footer-content">
  *     <p>&copy; 2024 MyApp. All rights reserved.</p>
  *   </div>
  * </Footer>
- * 
+ *
  * // 고정된 다크 푸터
  * <Footer variant="dark" fixed>
  *   <div className="footer-content">
@@ -144,16 +144,16 @@ export const Footer: React.FC<FooterProps> = ({
  *     <nav>링크 목록</nav>
  *   </div>
  * </Footer>
- * 
+ *
  * // 커스텀 클래스 추가
  * <Footer className="my-custom-footer">
  *   <div>커스텀 스타일이 적용된 푸터</div>
  * </Footer>
- * 
+ *
  * // 복합적인 사용 예시
- * <Footer 
- *   variant="dark" 
- *   fixed 
+ * <Footer
+ *   variant="dark"
+ *   fixed
  *   className="main-footer"
  * >
  *   <div className="footer-container">
@@ -179,25 +179,25 @@ export const Footer: React.FC<FooterProps> = ({
  *     </div>
  *   </div>
  * </Footer>
- * 
+ *
  * 🎯 이 컴포넌트의 특징:
  * 1. 유연성: 다양한 스타일과 동작 옵션 제공
  * 2. 접근성: HTML footer 요소를 사용하여 시맨틱 마크업 준수
  * 3. 재사용성: 모든 페이지에서 일관된 푸터 스타일 제공
  * 4. 커스터마이징: className prop으로 추가 스타일링 가능
  * 5. 조합 가능: 다른 레이아웃 컴포넌트들과 함께 사용 가능
- * 
+ *
  * 🏗️ 컴포넌트 구조:
  * Footer (Layout)
  * └── footer element (시맨틱 HTML 요소)
  *     └── children (동적으로 전달되는 콘텐츠)
- * 
+ *
  * 💡 팁:
  * - fixed 옵션을 사용할 때는 메인 콘텐츠에 하단 패딩을 추가해야 합니다
  * - variant 옵션들은 CSS로 미리 정의된 스타일을 적용합니다
  * - 이 컴포넌트는 Header, Container 등 다른 레이아웃 컴포넌트들과 조합하여 사용할 수 있습니다
  * - 반응형 디자인을 위해 CSS 미디어 쿼리와 함께 사용하는 것을 권장합니다
  * - 푸터에는 일반적으로 저작권 정보, 링크, 연락처 정보가 포함됩니다
- * 
- * 
- **/ 
+ *
+ *
+ **/

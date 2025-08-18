@@ -1,1 +1,1 @@
-export * from './RepliedCommentsList'
+export * from './RepliedCommentsList';

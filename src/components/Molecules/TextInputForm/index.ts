@@ -1,1 +1,1 @@
-export * from './TextInputForm'; 
+export * from './TextInputForm';

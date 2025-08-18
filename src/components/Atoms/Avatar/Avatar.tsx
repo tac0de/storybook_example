@@ -1,6 +1,6 @@
 /**
  * 🎓 Avatar 컴포넌트 학습 가이드
- * 
+ *
  * 이 파일은 React + TypeScript로 만든 재사용 가능한 Avatar 컴포넌트입니다.
  * 사용자 프로필 이미지나 이니셜을 표시하는 데 사용됩니다.
  * 초보자를 위해 각 부분에 상세한 주석을 추가했습니다.
@@ -23,7 +23,7 @@ const cx = classNames.bind(styles);
 
 /**
  * 🎯 Avatar 컴포넌트의 Props 인터페이스 정의
- * 
+ *
  * TypeScript를 사용하여 컴포넌트가 받을 수 있는 속성들을 명확하게 정의합니다.
  * 이렇게 하면 타입 안전성과 자동완성을 보장할 수 있습니다.
  */
@@ -74,40 +74,40 @@ export interface AvatarProps {
 
 /**
  * 🚀 Avatar 컴포넌트 정의
- * 
+ *
  * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
  * <AvatarProps>는 이 컴포넌트가 AvatarProps 타입의 props를 받는다는 의미입니다.
  */
 export const Avatar: React.FC<AvatarProps> = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
-  src,                       // 이미지 URL (선택적)
-  alt = 'Avatar',           // 대체 텍스트 (기본값: 'Avatar')
-  size = 'md',              // 크기 (기본값: 'md')
-  shape = 'circle',         // 모양 (기본값: 'circle')
-  status,                   // 온라인 상태 (선택적)
-  className,                // 추가 CSS 클래스 (선택적)
+  src, // 이미지 URL (선택적)
+  alt = 'Avatar', // 대체 텍스트 (기본값: 'Avatar')
+  size = 'md', // 크기 (기본값: 'md')
+  shape = 'circle', // 모양 (기본값: 'circle')
+  status, // 온라인 상태 (선택적)
+  className, // 추가 CSS 클래스 (선택적)
 }) => {
   /**
    * 🎯 이니셜 생성 함수
-   * 
+   *
    * 사용자 이름에서 이니셜을 추출하는 함수입니다.
    * 예: "John Doe" → "JD", "홍길동" → "홍"
-   * 
+   *
    * @param name - 사용자 이름
    * @returns 대문자로 변환된 이니셜 (최대 2글자)
    */
   const getInitials = (name: string) => {
     return name
-      .split(' ')                    // 공백으로 이름을 분할
-      .map(word => word.charAt(0))   // 각 단어의 첫 글자 추출
-      .join('')                      // 글자들을 하나로 합침
-      .toUpperCase()                 // 대문자로 변환
-      .slice(0, 2);                  // 최대 2글자만 사용
+      .split(' ') // 공백으로 이름을 분할
+      .map(word => word.charAt(0)) // 각 단어의 첫 글자 추출
+      .join('') // 글자들을 하나로 합침
+      .toUpperCase() // 대문자로 변환
+      .slice(0, 2); // 최대 2글자만 사용
   };
 
   /**
    * 🏷️ 표시할 이름 결정
-   * 
+   *
    * alt prop이 있으면 그것을 사용하고, 없으면 'User'를 기본값으로 사용합니다.
    * 이 값은 이미지가 없을 때 이니셜을 생성하는 데 사용됩니다.
    */
@@ -115,57 +115,49 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   /**
    * 🎨 JSX 반환
-   * 
+   *
    * React 컴포넌트는 JSX를 반환해야 합니다.
    * 여기서는 아바타 컨테이너를 반환하되, 조건에 따라 이미지 또는 이니셜을 표시합니다.
    */
   return (
-    <div 
+    <div
       className={cx(
-        'avatar',                    // 기본 아바타 클래스
-        `size-${size}`,             // 크기에 따른 클래스
-        `shape-${shape}`,           // 모양에 따른 클래스
-        className                    // 사용자가 전달한 추가 클래스
+        'avatar', // 기본 아바타 클래스
+        `size-${size}`, // 크기에 따른 클래스
+        `shape-${shape}`, // 모양에 따른 클래스
+        className // 사용자가 전달한 추가 클래스
       )}
     >
       {/* 🖼️ 이미지 또는 이니셜 렌더링 */}
       {src ? (
         // 🖼️ src가 있으면 이미지 표시
-        <img 
-          src={src} 
-          alt={alt} 
-          className={cx('image')} 
-        />
+        <img src={src} alt={alt} className={cx('image')} />
       ) : (
         // 🎯 src가 없으면 이니셜 표시
-        <div className={cx('initials')}>
-          {getInitials(displayName)}
-        </div>
+        <div className={cx('initials')}>{getInitials(displayName)}</div>
       )}
-      
+
       {/* 🟢 온라인 상태 표시 (status prop이 있을 때만) */}
-      {status && (
-        <div className={cx('status', `status-${status}`)} />
-      )}
+      {status && <div className={cx('status', `status-${status}`)} />}
     </div>
   );
 };
 
 /**
  * 📝 사용 예시:
- * 
+ *
  * // 기본 아바타 (이니셜 표시)
  * <Avatar alt="John Doe" />
- * 
+ *
  * // 이미지가 있는 아바타
  * <Avatar src="/path/to/image.jpg" alt="John Doe" />
- * 
+ *
  * // 큰 크기의 원형 아바타
  * <Avatar size="lg" shape="circle" alt="Jane Smith" />
- * 
+ *
  * // 온라인 상태가 표시되는 아바타
  * <Avatar alt="User" status="online" />
- * 
+ *
  * // 정사각형 아바타
  * <Avatar shape="square" alt="User" />
  */

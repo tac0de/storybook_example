@@ -1,8 +1,7 @@
-import type { Meta, StoryObj, StoryFn} from '@storybook/react-vite';
+import type { Meta, StoryObj, StoryFn } from '@storybook/react-vite';
 import type { InputProps } from './Input';
 import { Input } from './Input';
 import { useState } from 'react';
-
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',
@@ -83,16 +82,14 @@ const meta: Meta<typeof Input> = {
     autoResize: false,
     // ← 이 두 줄을 추가하세요
     value: '',
-    errorMessage: ''
+    errorMessage: '',
   },
 };
-
-
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Template: StoryFn<InputProps> = (args) => {
+const Template: StoryFn<InputProps> = args => {
   const [value, setValue] = useState('');
   return <Input {...args} value={value} onChange={setValue} />;
 };
@@ -116,7 +113,7 @@ Default.args = {};
 // };
 
 export const Interactive: Story = {
-  render: () => {
+  render() {
     const [value, setValue] = useState('');
     return (
       <Input
@@ -139,7 +136,7 @@ export const Interactive: Story = {
 };
 
 export const Variants: Story = {
-  render: () => {
+  render() {
     const [values, setValues] = useState({
       default: '',
       withValue: 'With value',
@@ -206,7 +203,7 @@ export const Variants: Story = {
 };
 
 export const Underline: Story = {
-  render: () => {
+  render() {
     const [values, setValues] = useState({
       default: '',
       withValue: 'With value',
@@ -279,7 +276,7 @@ export const Underline: Story = {
 };
 
 export const Sizes: Story = {
-  render: () => {
+  render() {
     const [values, setValues] = useState({
       small: '',
       medium: '',
@@ -326,7 +323,7 @@ export const Sizes: Story = {
   },
 };
 
-const AutoResizeRenderer: StoryFn<InputProps> = (args) => {
+const AutoResizeRenderer: StoryFn<InputProps> = args => {
   const [value, setValue] = useState('');
   return (
     <div style={{ maxWidth: '400px' }}>

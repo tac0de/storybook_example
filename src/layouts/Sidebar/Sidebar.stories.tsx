@@ -181,13 +181,11 @@ export const Default: Story = {
 //   ),
 // };
 
-const CollapsibleRenderer: StoryFn<typeof Sidebar> = (args) => {
+const CollapsibleRenderer: StoryFn<typeof Sidebar> = args => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div
-      style={{ padding: '2rem', background: '#f8f9fa', minHeight: '100vh' }}
-    >
+    <div style={{ padding: '2rem', background: '#f8f9fa', minHeight: '100vh' }}>
       <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
         <button
           onClick={() => setCollapsed(!collapsed)}

@@ -4,4 +4,4 @@ export * from './ActionButtons';
 export * from './TextInputForm';
 export * from './SortSelector';
 export * from './NewsCard';
-export * from './NewsNavigation'; 
+export * from './NewsNavigation';

@@ -8,7 +8,8 @@ const meta: Meta<typeof TextInputForm> = {
   parameters: {
     docs: {
       description: {
-        component: 'A reusable text input form component with submit button for comments, replies, and other text submissions.',
+        component:
+          'A reusable text input form component with submit button for comments, replies, and other text submissions.',
       },
     },
   },
@@ -45,10 +46,10 @@ export default meta;
 type Story = StoryObj<typeof TextInputForm>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: args => (
     <TextInputForm
       {...args}
-      onSubmit={(value) => {
+      onSubmit={value => {
         console.log('Form submitted:', value);
         alert(`제출된 내용: ${value}`);
       }}
@@ -91,4 +92,4 @@ export const CustomSubmitText: Story = {
     placeholder: '메시지를 입력하세요...',
     submitText: '보내기',
   },
-}; 
+};

@@ -8,7 +8,8 @@ const meta: Meta<typeof ActionButtons> = {
   parameters: {
     docs: {
       description: {
-        component: 'A reusable action buttons component that displays like, reply, report, edit, and delete actions.',
+        component:
+          'A reusable action buttons component that displays like, reply, report, edit, and delete actions.',
       },
     },
   },
@@ -71,7 +72,7 @@ export default meta;
 type Story = StoryObj<typeof ActionButtons>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: args => (
     <ActionButtons
       {...args}
       onLikeClick={() => {
@@ -137,4 +138,4 @@ export const ZeroCounts: Story = {
     likeCount: 0,
     replyCount: 0,
   },
-}; 
+};

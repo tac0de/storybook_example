@@ -12,7 +12,7 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
-  viteFinal: async config => {
+  viteFinal(config) {
     if (config.css?.preprocessorOptions?.scss) {
       config.css.preprocessorOptions.scss.additionalData = `@use "sass:color"; @import "@/styles/abstracts/variables"; @import "@/styles/abstracts/mixins";`;
     } else {

@@ -1,15 +1,24 @@
-import prettierPlugin from 'eslint-plugin-prettier';
-import jconfig from './esconfig.joongang';
-import pluginCypress from 'eslint-plugin-cypress/flat';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import react from 'eslint-plugin-react';
 import hooks from 'eslint-plugin-react-hooks';
+import prettierPlugin from 'eslint-plugin-prettier';
+import pluginCypress from 'eslint-plugin-cypress/flat';
+import react from 'eslint-plugin-react';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import jRules from './eslint.rules.js';
 
 export default [
-  pluginCypress.configs.recommended,
-  react.configs.flat.recommended,
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         PRODUCTION: true,
         window: false,
@@ -30,35 +39,37 @@ export default [
         ResizeObserver: 'readonly',
         localStorage: 'readonly',
       },
-      parserOptions: {
-        ecmaVersion: 12,
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
     plugins: {
       react,
       'react-hooks': hooks,
       cypress: pluginCypress,
-      prettier: prettierPlugin, // Prettier 플러그인
+      prettier: prettierPlugin,
+      '@typescript-eslint': typescriptEslint,
     },
     rules: {
-      ...jconfig.rules,
+      ...jRules.rules,
       ...eslintPluginPrettierRecommended.rules,
-      'react/no-unescaped-entities': 0,
-      'react/react-in-jsx-scope': 0,
-      'react/no-unknown-property': 0,
-      'react/no-danger': 0,
-      'react/prop-types': 0,
-      'react-hooks/exhaustive-deps': 0,
-      'react/no-danger': 0,
-      complexity: 0,
-      'no-undefined': 0,
-      'no-new': 0,
-      'require-jsdoc': 0,
-      'max-len': 'off',
-      'react/jsx-no-target-blank': 0,
+      'react/no-unescaped-entities': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/no-unknown-property': 'off',
+      'react/no-danger': 'off',
+      'react/prop-types': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      complexity: 'off',
+      'no-undefined': 'off',
+      'no-new': 'off',
+      'require-jsdoc': 'off',
+      'max-len': [
+        'error',
+        {
+          code: 120,
+          ignoreComments: false,
+          ignoreUrls: true,
+          ignoreStrings: true,
+        },
+      ],
+      'react/jsx-no-target-blank': 'off',
       'prettier/prettier': [
         'error',
         {
@@ -69,12 +80,11 @@ export default [
     },
     settings: {
       react: {
-        pragma: 'h',
-        version: '17.0',
+        version: 'detect',
       },
     },
   },
   {
-    ignores: ['node_modules', 'dist'],
+    ignores: ['node_modules', 'dist', '*.config.js', '*.config.mjs', 'eslint.rules.js'],
   },
 ];

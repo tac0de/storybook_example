@@ -8,7 +8,8 @@ const meta: Meta<typeof CommentItem> = {
   parameters: {
     docs: {
       description: {
-        component: 'A comment item organism that combines UserHeader, ActionButtons, and TextInputForm to display a complete comment with replies.',
+        component:
+          'A comment item organism that combines UserHeader, ActionButtons, and TextInputForm to display a complete comment with replies.',
       },
     },
   },
@@ -64,10 +65,12 @@ type Story = StoryObj<typeof CommentItem>;
 
 const sampleComment: Comment = {
   id: '1',
-  content: '정말 유용한 정보네요! 감사합니다. 이 내용이 많은 도움이 될 것 같아요.',
+  content:
+    '정말 유용한 정보네요! 감사합니다. 이 내용이 많은 도움이 될 것 같아요.',
   author: {
     name: '김민수',
-    avatar: 'https://ui-avatars.com/api/?name=김민수&background=007bff&color=ffffff&size=40',
+    avatar:
+      'https://ui-avatars.com/api/?name=김민수&background=007bff&color=ffffff&size=40',
     isVerified: true,
   },
   createdAt: '2024-01-15T10:30:00Z',
@@ -81,32 +84,32 @@ export const Default: Story = {
   args: {
     comment: sampleComment,
   },
-  render: (args) => (
+  render: args => (
     <CommentItem
       {...args}
-      onLikeClick={(commentId) => {
+      onLikeClick={commentId => {
         console.log('Like clicked for comment:', commentId);
         alert('좋아요를 눌렀습니다!');
       }}
-      onReplyClick={(commentId) => {
+      onReplyClick={commentId => {
         console.log('Reply clicked for comment:', commentId);
         alert('답글 버튼을 눌렀습니다!');
       }}
-      onReportClick={(commentId) => {
+      onReportClick={commentId => {
         console.log('Report clicked for comment:', commentId);
         alert('신고 버튼을 눌렀습니다!');
       }}
-      onEditClick={(commentId) => {
+      onEditClick={commentId => {
         console.log('Edit clicked for comment:', commentId);
         alert('수정 버튼을 눌렀습니다!');
       }}
-      onDeleteClick={(commentId) => {
+      onDeleteClick={commentId => {
         console.log('Delete clicked for comment:', commentId);
         if (confirm('정말로 삭제하시겠습니까?')) {
           alert('삭제되었습니다!');
         }
       }}
-      onAuthorClick={(authorName) => {
+      onAuthorClick={authorName => {
         console.log('Author clicked:', authorName);
         alert(`${authorName}의 프로필을 확인합니다.`);
       }}
@@ -188,7 +191,8 @@ export const LongContent: Story = {
   args: {
     comment: {
       ...sampleComment,
-      content: '이것은 매우 긴 댓글 내용입니다. 여러 줄에 걸쳐서 작성된 긴 텍스트를 보여주기 위한 예시입니다. 실제로는 이런 긴 댓글이 있을 수 있고, 컴포넌트가 이를 적절히 처리해야 합니다. 줄바꿈과 텍스트 래핑이 제대로 작동하는지 확인해보세요.',
+      content:
+        '이것은 매우 긴 댓글 내용입니다. 여러 줄에 걸쳐서 작성된 긴 텍스트를 보여주기 위한 예시입니다. 실제로는 이런 긴 댓글이 있을 수 있고, 컴포넌트가 이를 적절히 처리해야 합니다. 줄바꿈과 텍스트 래핑이 제대로 작동하는지 확인해보세요.',
     },
   },
 };
@@ -203,4 +207,4 @@ export const NoAvatar: Story = {
       },
     },
   },
-}; 
+};

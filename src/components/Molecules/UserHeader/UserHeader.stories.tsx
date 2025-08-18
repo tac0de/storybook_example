@@ -8,7 +8,8 @@ const meta: Meta<typeof UserHeader> = {
   parameters: {
     docs: {
       description: {
-        component: 'A reusable user header component that displays user information with avatar, name, status, and timestamp.',
+        component:
+          'A reusable user header component that displays user information with avatar, name, status, and timestamp.',
       },
     },
   },
@@ -41,7 +42,8 @@ const meta: Meta<typeof UserHeader> = {
   },
   args: {
     authorName: '김민수',
-    authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    authorAvatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     timestamp: '2시간 전',
     authorStatus: 'online',
   },
@@ -51,7 +53,7 @@ export default meta;
 type Story = StoryObj<typeof UserHeader>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: args => (
     <UserHeader
       {...args}
       onAuthorClick={() => {
@@ -93,4 +95,4 @@ export const LongName: Story = {
   args: {
     authorName: '매우 긴 사용자 이름입니다',
   },
-}; 
+};

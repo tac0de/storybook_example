@@ -147,14 +147,14 @@ export const Default: Story = {
   args: {
     comments: sampleComments,
   },
-  render: (args) => (
+  render: args => (
     <CommentPage
       {...args}
-      onSortChange={(sortBy) => {
+      onSortChange={sortBy => {
         console.log('Sort changed:', sortBy);
         alert(`정렬이 ${sortBy}로 변경되었습니다.`);
       }}
-      onSubmitComment={(content) => {
+      onSubmitComment={content => {
         console.log('Comment submitted:', content);
         alert(`새 댓글이 작성되었습니다: ${content}`);
       }}
@@ -162,37 +162,37 @@ export const Default: Story = {
         console.log('Reply submitted:', { parentId, content });
         alert(`답글이 작성되었습니다: ${content}`);
       }}
-      onLikeClick={(commentId) => {
+      onLikeClick={commentId => {
         console.log('Like clicked for comment:', commentId);
         alert('좋아요를 눌렀습니다!');
       }}
-      onReplyClick={(commentId) => {
+      onReplyClick={commentId => {
         console.log('Reply clicked for comment:', commentId);
         alert('답글 버튼을 눌렀습니다!');
       }}
-      onReportClick={(commentId) => {
+      onReportClick={commentId => {
         console.log('Report clicked for comment:', commentId);
         alert('신고 버튼을 눌렀습니다!');
       }}
-      onEditClick={(commentId) => {
+      onEditClick={commentId => {
         console.log('Edit clicked for comment:', commentId);
         alert('수정 버튼을 눌렀습니다!');
       }}
-      onDeleteClick={(commentId) => {
+      onDeleteClick={commentId => {
         console.log('Delete clicked for comment:', commentId);
         if (confirm('정말로 삭제하시겠습니까?')) {
           alert('삭제되었습니다!');
         }
       }}
-      onCommentUpdate={(updatedComment) => {
+      onCommentUpdate={updatedComment:any => {
         console.log('Comment updated:', updatedComment);
         alert(`댓글이 업데이트되었습니다: ${updatedComment.content}`);
       }}
-      onCommentDelete={(commentId) => {
+      onCommentDelete={commentId => {
         console.log('Comment deleted:', commentId);
         alert('댓글이 삭제되었습니다!');
       }}
-      onAuthorClick={(authorName) => {
+      onAuthorClick={authorName => {
         console.log('Author clicked:', authorName);
         alert(`${authorName}의 프로필을 확인합니다.`);
       }}

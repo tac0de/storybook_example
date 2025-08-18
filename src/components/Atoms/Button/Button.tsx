@@ -23,9 +23,8 @@ import commentItemStyles from '../../Organisms/CommentItem/CommentItemConsolidat
 
 const combinedStyles = {
   ...styles,
- ...commentItemStyles,
-}
-
+  ...commentItemStyles,
+};
 
 const cx = classNames.bind(combinedStyles);
 
@@ -164,32 +163,30 @@ export const Button: React.FC<ButtonProps> = ({
   rightIcon, // 기본값 없음 (선택적 prop)
   icon, // 기본값 없음 (선택적 prop)
 }) => {
-
   /**
    * 🎨 CSS 클래스 조합 로직
    *
    * cx() 함수를 사용하여 여러 클래스를 조건부로 조합합니다.
    * 이렇게 하면 props에 따라 동적으로 스타일이 적용됩니다.
    */
-  const buttonClasses =
-    cx(
+  const buttonClasses = cx(
     // 🎯 기본 클래스 (항상 적용)
     'button',
-    
+
     // 🎨 variant에 따른 클래스 (조건부 적용)
     `variant-${variant}`,
-    
+
     // 📏 size에 따른 클래스 (조건부 적용)
     `size-${size}`,
-    
+
     // 🔄 borderRadius에 따른 클래스 (조건부 적용)
     `border-radius-${borderRadius}`,
-    
+
     // 📐 fullWidth가 true일 때 적용되는 클래스
     {
       'full-width': fullWidth,
     },
-    
+
     // 🎨 사용자가 전달한 추가 클래스
     className
   );
@@ -223,7 +220,6 @@ export const Button: React.FC<ButtonProps> = ({
     if (icon) {
       return <span className={cx('icon', 'icon-only')}>{icon}</span>;
     }
-
 
     // 🎯 일반적인 경우: leftIcon + children + rightIcon
     return (

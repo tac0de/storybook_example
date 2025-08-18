@@ -77,25 +77,15 @@ const ReplyForm: React.FC<ReplyFormProps> = ({ onSubmit, onCancel }) => {
       <textarea
         className={cx('replyTextarea')}
         value={replyText}
-        onChange={(e) => setReplyText(e.target.value)}
+        onChange={e => setReplyText(e.target.value)}
         placeholder="답글을 작성하세요…"
         data-testid="reply-textarea"
       />
       <div className={cx('replyFormActions')} data-testid="reply-form-actions">
-        <button
-          type="button"
-          className={cx('cancelButton')}
-          onClick={onCancel}
-          data-testid="cancel-reply-button"
-        >
+        <button type="button" className={cx('cancelButton')} onClick={onCancel} data-testid="cancel-reply-button">
           취소
         </button>
-        <button
-          type="button"
-          className={cx('submitButton')}
-          onClick={handleSubmit}
-          data-testid="submit-reply-button"
-        >
+        <button type="button" className={cx('submitButton')} onClick={handleSubmit} data-testid="submit-reply-button">
           등록
         </button>
       </div>
@@ -154,7 +144,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onAddReply }) => {
       {/* 답글이 있는 경우 렌더링 */}
       {comment.replies && comment.replies.length > 0 && (
         <div className={cx('repliesList')} data-testid="replies-list">
-          {comment.replies.map((reply) => (
+          {comment.replies.map(reply => (
             <div key={reply.id} className={cx('replyItem')} data-testid="reply-item">
               <div className={cx('replyHeader')} data-testid="reply-header">
                 <span className={cx('replyAuthor')} data-testid="reply-author">
@@ -172,12 +162,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onAddReply }) => {
         </div>
       )}
       {/* 답글 달기 폼 */}
-      {isReplying && (
-        <ReplyForm
-          onSubmit={handleAddReply}
-          onCancel={() => setIsReplying(false)}
-        />
-      )}
+      {isReplying && <ReplyForm onSubmit={handleAddReply} onCancel={() => setIsReplying(false)} />}
     </div>
   );
 };
@@ -187,13 +172,10 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, onAddReply }) => {
  * 이 컴포넌트는 댓글 목록을 순회하며 각 댓글에 대해 CommentItem을 렌더링하는
  * 역할만 담당하여 구조를 단순화합니다.
  */
-const RepliedCommentsList: React.FC<RepliedCommentsListProps> = ({
-  comments,
-  onAddReply,
-}) => {
+const RepliedCommentsList: React.FC<RepliedCommentsListProps> = ({ comments, onAddReply }) => {
   return (
     <div className={cx('commentsList')} data-testid="comments-list">
-      {comments.map((comment) => (
+      {comments.map(comment => (
         <CommentItem key={comment.id} comment={comment} onAddReply={onAddReply} />
       ))}
     </div>

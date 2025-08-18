@@ -8,7 +8,8 @@ const meta: Meta<typeof SortSelector> = {
   parameters: {
     docs: {
       description: {
-        component: 'A reusable sort selector component that allows users to choose sorting options.',
+        component:
+          'A reusable sort selector component that allows users to choose sorting options.',
       },
     },
   },
@@ -45,10 +46,10 @@ export default meta;
 type Story = StoryObj<typeof SortSelector>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: args => (
     <SortSelector
       {...args}
-      onChange={(value) => {
+      onChange={value => {
         console.log('Sort changed:', value);
         alert(`정렬이 ${value}로 변경되었습니다.`);
       }}
@@ -90,4 +91,4 @@ export const UserSort: Story = {
       { value: 'last_active', label: '최근 활동순' },
     ],
   },
-}; 
+};
