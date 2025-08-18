@@ -2,16 +2,14 @@
   CommentsList.module.scss
   -------------------------
 
-  This stylesheet defines the SCSS styles for the CommentsList component. It uses
-  class names that will be bound via the classnames/bind utility in the
-  corresponding React component. The styles focus on readability and a clean,
-  modern layout while remaining flexible for integration into a variety of
-  applications.
+  이 스타일시트는 CommentsList 컴포넌트를 위한 SCSS 스타일을 정의합니다.
+  해당 React 컴포넌트에서 classnames/bind 유틸리티를 통해 바인딩될 클래스 이름을 사용합니다.
+  스타일은 가독성과 깨끗하고 현대적인 레이아웃에 중점을 두면서도 다양한 애플리케이션에
+  유연하게 통합될 수 있도록 합니다.
 
-  Each class corresponds to an element or group of elements in the CommentsList
-  component. BEM‑like naming is used for clarity. The styles emphasize
-  typographic hierarchy, whitespace, and subtle colors to distinguish
-  comments, replies, and interactive controls.
+  각 클래스는 CommentsList 컴포넌트의 요소 또는 요소 그룹에 해당합니다.
+  명확성을 위해 BEM과 유사한 명명 규칙이 사용됩니다. 스타일은 타이포그래피 계층,
+  공백, 그리고 댓글, 답글 및 상호작용 컨트롤을 구별하기 위한 미묘한 색상을 강조합니다.
 */
 
 .commentsList {

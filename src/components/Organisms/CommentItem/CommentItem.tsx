@@ -230,11 +230,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   onEditClick,               // 수정 핸들러 (선택적)
   onDeleteClick,             // 삭제 핸들러 (선택적)
   onAuthorClick,             // 작성자 클릭 핸들러 (선택적)
-  onSubmitReply,             // 답글 제출 핸들러 (선택적)
-  onReplyDelete,
-  onReplySubmit,
-  onCommentUpdate,
-  onCommentDelete,
+  onSubmitReply,  
   className,                 // 추가 CSS 클래스 (선택적)
 }) => {
   /**
@@ -260,7 +256,6 @@ export const CommentItem: React.FC<CommentItemProps> = ({
    * 답글을 정렬하는 기준을 관리합니다.
    * 기본값은 'newest'로 설정되어 최신순으로 정렬합니다.
    */
-  const [replySortBy, setReplySortBy] = useState<'newest' | 'oldest' | 'mostLiked'>('newest');
 
   /**
    * 📤 답글 제출 핸들러
@@ -374,11 +369,6 @@ export const CommentItem: React.FC<CommentItemProps> = ({
       {/* 📋 답글 목록 (답글이 있고, 사용자가 답글 보기 버튼을 클릭했을 때 표시) */}
       {showReplies && comment.replyComments && comment.replyComments.length > 0 && (
         <div className={cx('replies')}>
-          <RepliedCommentList
-            comments={comment.replyComments}
-            onCommentUpdate={onCommentUpdate}
-            onCommentDelete={onCommentDelete}
-          />
         </div>
       )}
     </article>
