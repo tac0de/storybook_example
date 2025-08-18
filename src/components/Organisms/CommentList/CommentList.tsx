@@ -119,7 +119,7 @@ export interface CommentListProps {
 /**
  * 📋 정렬 옵션들을 정의하는 상수
  * 
- * SortSelector 컴포넌트에서 사용할 정렬 옵션들을 미리 정의합니다.
+ * SortSelector 컴포넌트에서 사용할 정렬 옵션들을 `미리 정의합니다.
  * 각 옵션은 value(실제 값)와 label(표시될 텍스트)을 가집니다.
  */
 const sortOptions: SortOption[] = [

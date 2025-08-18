@@ -1,116 +1,80 @@
-// @eslint/js: ESLint의 핵심 규칙을 적용합니다.
-import js from '@eslint/js';
-// globals: 'browser', 'node' 등 사전 정의된 전역 변수 설정을 가져옵니다.
-import globals from 'globals';
-// typescript-eslint: TypeScript 코드의 린팅 규칙을 제공합니다.
-import tseslint from 'typescript-eslint';
-// eslint-plugin-react: React 코드에 특화된 린팅 규칙을 적용합니다.
+import prettierPlugin from 'eslint-plugin-prettier';
+import jconfig from './esconfig.joongang';
+import pluginCypress from 'eslint-plugin-cypress/flat';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
-// eslint-plugin-react-hooks: React Hooks의 규칙을 강제하고 실수를 방지합니다.
-import reactHooks from 'eslint-plugin-react-hooks';
-// eslint-plugin-react-refresh: React Fast Refresh 관련 규칙을 적용합니다.
-import reactRefresh from 'eslint-plugin-react-refresh';
+import hooks from 'eslint-plugin-react-hooks';
 
 export default [
-  // Global ignores
+  pluginCypress.configs.recommended,
+  react.configs.flat.recommended,
   {
-    ignores: [
-      'dist',
-      'build',
-      'node_modules',
-      'coverage',
-      'storybook-static',
-      '*.min.js',
-      '*.min.css',
-      '*.generated.*',
-    ],
-  },
-
-  // Config files
-  {
-    files: ['**/*.config.{js,ts}', 'vite.config.ts', '**/*.d.ts'],
     languageOptions: {
-      ecmaVersion: 2022,
       globals: {
-        ...globals.node,
-        ...globals.es2022,
+        PRODUCTION: true,
+        window: false,
+        cy: true,
+        document: 'readonly',
+        navigator: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        module: 'readonly',
+        Promise: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        console: 'readonly',
+        URLSearchParams: 'readonly',
+        location: 'readonly',
+        ResizeObserver: 'readonly',
+        localStorage: 'readonly',
       },
-    },
-    rules: {
-      'no-console': 'off',
-    },
-  },
-
-  // Storybook files
-  {
-    files: ['.storybook/**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2022,
-      globals: {
-        ...globals.node,
-        ...globals.es2022,
-      },
-      parser: tseslint.parser,
       parserOptions: {
-        ecmaFeatures: { jsx: true },
+        ecmaVersion: 12,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
-    },
-    rules: {
-      'no-console': 'off',
-    },
-  },
-
-  // Main source files
-  {
-    files: ['src/**/*.{ts,tsx}'],
-    plugins: {
-      '@typescript-eslint': tseslint.plugin,
       react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'react-hooks': hooks,
+      cypress: pluginCypress,
+      prettier: prettierPlugin, // Prettier 플러그인
     },
-    languageOptions: {
-      ecmaVersion: 2022,
-      globals: {
-        ...globals.browser,
-        ...globals.es2022,
-      },
-      parser: tseslint.parser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
+    rules: {
+      ...jconfig.rules,
+      ...eslintPluginPrettierRecommended.rules,
+      'react/no-unescaped-entities': 0,
+      'react/react-in-jsx-scope': 0,
+      'react/no-unknown-property': 0,
+      'react/no-danger': 0,
+      'react/prop-types': 0,
+      'react-hooks/exhaustive-deps': 0,
+      'react/no-danger': 0,
+      complexity: 0,
+      'no-undefined': 0,
+      'no-new': 0,
+      'require-jsdoc': 0,
+      'max-len': 'off',
+      'react/jsx-no-target-blank': 0,
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+        },
+      ],
+      ...hooks.configs.recommended.rules,
     },
     settings: {
-      react: { version: 'detect' },
-    },
-    rules: {
-      // Essential TypeScript rules
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
-
-      // Essential React rules
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-      'react-refresh/only-export-components': 'warn',
-
-      // Basic code quality
-      'no-console': 'warn',
-      'no-debugger': 'error',
+      react: {
+        pragma: 'h',
+        version: '17.0',
+      },
     },
   },
-
-  // Storybook stories
   {
-    files: ['**/*.stories.{ts,tsx}'],
-    rules: {
-      'no-console': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-    },
+    ignores: ['node_modules', 'dist'],
   },
 ];

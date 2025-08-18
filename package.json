@@ -23,6 +23,8 @@
     "generate:component": "node scripts/generate-component.mjs"
   },
   "dependencies": {
+    "eslint-plugin-cypress": "^5.1.1",
+    "eslint-plugin-prettier": "^5.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
