@@ -184,7 +184,7 @@ export const Default: Story = {
           alert('삭제되었습니다!');
         }
       }}
-      onCommentUpdate={updatedComment:any => {
+      onCommentUpdate={updatedComment => {
         console.log('Comment updated:', updatedComment);
         alert(`댓글이 업데이트되었습니다: ${updatedComment.content}`);
       }}

@@ -7,8 +7,8 @@
  * 초보자를 위해 각 부분에 상세한 주석을 추가했습니다.
  */
 
-// React 라이브러리에서 필요한 기능들을 가져옵니다
-import React from 'react';
+// React 라이브러리에서 필요한 타입들을 가져옵니다
+import type { ReactNode } from 'react';
 
 // classnames 라이브러리를 가져와서 CSS 클래스를 동적으로 조합할 수 있게 합니다
 // bind 함수를 사용하면 CSS Modules와 함께 사용할 때 더 편리합니다
@@ -35,7 +35,7 @@ export interface HeaderProps {
    * 로고, 네비게이션 메뉴, 사용자 프로필 등을 포함할 수 있습니다
    * 필수 prop이므로 반드시 전달해야 합니다
    */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /**
    * 🎨 추가적인 CSS 클래스를 적용할 수 있습니다
@@ -72,19 +72,16 @@ export interface HeaderProps {
 /**
  * 🚀 Header 컴포넌트 정의
  *
- * React.FC는 "Function Component"의 줄임말로, 함수형 컴포넌트임을 명시합니다.
- * <HeaderProps>는 이 컴포넌트가 HeaderProps 타입의 props를 받는다는 의미입니다.
- *
  * 이 컴포넌트는 HTML header 요소를 기반으로 하며, 다양한 스타일 옵션을 제공합니다.
  */
-export const Header: React.FC<HeaderProps> = ({
+export const Header = ({
   // 🎯 Props 구조 분해 할당 (Destructuring Assignment)
   children, // 내부 콘텐츠 (필수)
   className, // 추가 CSS 클래스 (선택적)
   variant = 'default', // 스타일 변형 (기본값: 'default')
   sticky = false, // 고정 여부 (기본값: false)
   transparent = false, // 투명 여부 (기본값: false)
-}) => {
+}: HeaderProps) => {
   /**
    * 🎨 JSX 반환
    *
@@ -93,20 +90,12 @@ export const Header: React.FC<HeaderProps> = ({
    */
   return (
     <header
-      className={cx(
-        'header', // 기본 헤더 클래스
-        className, // 사용자가 전달한 추가 클래스
-        {
-          // 🎨 스타일 변형 클래스 (variant에 따른 클래스)
-          [`variant-${variant}`]: variant,
-
-          // 📌 고정 클래스 (sticky가 true일 때만 적용)
-          sticky,
-
-          // 🌫️ 투명 클래스 (transparent가 true일 때만 적용)
-          transparent,
-        }
-      )}
+      className={cx('header', className, {
+        [`variant-${variant}`]: !!variant,
+        sticky,
+        transparent,
+      })}
+      data-testid="header-component"
     >
       {/* 👶 내부 콘텐츠 렌더링 */}
       {children}
