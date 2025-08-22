@@ -1,10 +1,8 @@
+@use 'sass:color';
+@use 'variables' as *;
+
 // Flexbox mixins
-@mixin flex(
-  $direction: row,
-  $justify: flex-start,
-  $align: stretch,
-  $wrap: nowrap
-) {
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
   display: flex;
   flex-direction: $direction;
   justify-content: $justify;
@@ -261,11 +259,7 @@
 }
 
 // Scrollbar styling
-@mixin custom-scrollbar(
-  $width: 8px,
-  $track-color: $gray-200,
-  $thumb-color: $gray-400
-) {
+@mixin custom-scrollbar($width: 8px, $track-color: $gray-200, $thumb-color: $gray-400) {
   &::-webkit-scrollbar {
     width: $width;
   }
@@ -280,7 +274,7 @@
     border-radius: $border-radius-full;
 
     &:hover {
-      background: darken($thumb-color, 10%);
+      background: color.adjust($thumb-color, $lightness: -10%);
     }
   }
 }

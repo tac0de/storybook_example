@@ -6,6 +6,7 @@ import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import typescriptParser from '@typescript-eslint/parser';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import jRules from './eslint.rules.js';
+import globals from 'globals';
 
 export default [
   {
@@ -20,6 +21,7 @@ export default [
         },
       },
       globals: {
+        ...globals.browser,
         PRODUCTION: true,
         window: false,
         cy: true,
