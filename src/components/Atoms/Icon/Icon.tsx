@@ -19,19 +19,43 @@ type Size = 'sm' | 'md' | 'lg' | number;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {
   /** 아이콘 종류 */
   name: IconName;
-  /** sm | md | lg | number(px). 숫자는 --icon-size로 반영 */
+  /** 높이 기준 크기 (sm | md | lg | number(px)) */
   size?: Size;
+  /** 커스텀 가로 크기(px). 지정하면 height=size, width=customWidth */
+  customWidth?: number;
   /** 접근성 레이블. 없으면 aria-hidden */
   ariaLabel?: string;
 }
 
-const Icon: React.FC<IconProps> = memo(function Icon({ name, size = 'md', ariaLabel, className, ...rest }) {
-  const style = typeof size === 'number' ? { ['--icon-size' as any]: `${size}px` } : undefined;
+const Icon: React.FC<IconProps> = memo(function Icon({
+  name,
+  size = 'md',
+  customWidth,
+  ariaLabel,
+  className,
+  ...rest
+}) {
+  let style: React.CSSProperties = {};
+
+  if (typeof size === 'number') {
+    style = {
+      ['--icon-size' as any]: `${size}px`,
+      ...(customWidth ? { ['--icon-width' as any]: `${customWidth}px` } : {}),
+    };
+  } else if (customWidth) {
+    style = { ['--icon-width' as any]: `${customWidth}px` };
+  }
 
   return (
     <i
       {...rest}
-      className={cx('root', `icon-${name}`, `size-${typeof size === 'string' ? size : 'custom'}`, className)}
+      className={cx(
+        'root',
+        `icon-${name}`,
+        `size-${typeof size === 'string' ? size : 'custom'}`,
+        { customWidth: Boolean(customWidth) },
+        className
+      )}
       style={style}
       aria-hidden={!ariaLabel}
       aria-label={ariaLabel}

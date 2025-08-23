@@ -50,14 +50,30 @@ export const Variants: Story = {
 export const WithIcons: Story = {
   render: args => (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+      <Button {...args} variant="outline" trailingIcon={<Icon name="chevron_right" ariaLabel="" customWidth={7} />}>
+        Next
+      </Button>
+      <Button {...args} variant="outline" pill leadingIcon={<Icon name="navbar" ariaLabel="" size="sm" />}>
+        The JoongAng Plus
+      </Button>
+    </div>
+  ),
+};
+
+export const MultipleIcons: Story = {
+  render: args => (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
       <Button
         {...args}
-        children=""
         variant="outline"
+        iconOnly
         pill
-        leadingIcon={<Icon name="logo_plus" size="lg" ariaLabel="" />}
-        trailingIcon={<Icon name="chevron_right" size="sm" ariaLabel="" />}
-      ></Button>
+        iconsGap={8}
+        icons={[
+          <Icon name="logo_plus" ariaLabel="" customWidth={122} />,
+          <Icon name="chevron_right" ariaLabel="" customWidth={7} />,
+        ]}
+      />
     </div>
   ),
 };

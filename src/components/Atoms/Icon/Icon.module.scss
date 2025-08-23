@@ -22,9 +22,14 @@
   width: 24px;
   height: 24px;
 }
+
 .size-custom {
   width: var(--icon-size);
   height: var(--icon-size);
+}
+
+.customWidth {
+  width: var(--icon-width, auto);
 }
 
 /* 아이콘 클래스 매핑 (실제 CSS Sprite / 폰트 아이콘에 맞게 조정 필요) */
@@ -53,5 +58,5 @@
 }
 
 .icon-newspaper_black {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='7' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m1.23 10 4-4-4-4' stroke='%23000' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='15' height='15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.5 3a.5.5 0 0 0-.5-.5H3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V3Z' fill='%23333' stroke='%23333' stroke-linejoin='round'/%3E%3Cpath d='M4 7.5h7M4 5h4M4 10h7' stroke='%23fff'/%3E%3C/svg%3E");
 }

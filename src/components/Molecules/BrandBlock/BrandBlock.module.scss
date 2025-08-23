@@ -1,0 +1,26 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--brand-gap, 8px);
+  line-height: 0;
+}
+
+/* compact 모드: 살짝 간격 축소 */
+.compact {
+  --brand-gap: 6px;
+}
+
+.ms-sm.mark img,
+.ms-sm.mark {
+  height: 20px;
+}
+
+.ms-md.mark img,
+.ms-md.mark {
+  height: 28px;
+}
+
+.ms-lg.mark img,
+.ms-lg.mark {
+  height: 36px;
+}

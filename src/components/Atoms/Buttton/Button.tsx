@@ -13,12 +13,17 @@ type CommonProps = {
   pill?: boolean;
   fullWidth?: boolean;
   loading?: boolean;
+  /** If true, renders square button, ignore text */
+  iconOnly?: boolean;
+  /** One icon on left, one on right */
   leadingIcon?: React.ReactNode;
   trailingIcon?: React.ReactNode;
-  /** a 태그로 렌더하고 싶으면 href만 주면 됩니다 */
+  /** NEW: multiple icons only, no label */
+  icons?: React.ReactNode[];
+  iconsGap?: number | string; // px or rem
   href?: string;
-  /** 접근성용 로딩 텍스트(시각적 숨김). loading=true일 때만 참조 */
   loadingLabel?: string;
+  customWidth?: number | string;
   className?: string;
   children?: React.ReactNode;
 };
@@ -41,6 +46,10 @@ const Button: React.FC<ButtonProps> = memo(function Button({
   className,
   children,
   disabled,
+  customWidth,
+  iconOnly = false,
+  icons,
+  iconsGap,
   ...rest
 }) {
   const classNames = cx(
@@ -49,12 +58,55 @@ const Button: React.FC<ButtonProps> = memo(function Button({
     `s-${size}`,
     {
       pill,
-      fullWidth,
+      fullWidth: !customWidth && !iconOnly && fullWidth, // iconOnly면 fullWidth 무시
       loading,
       disabled: disabled || loading,
+      iconOnly,
     },
+    { customWidth: Boolean(customWidth) },
     className
   );
+
+  const style = customWidth
+    ? { ['--btn-width' as any]: typeof customWidth === 'number' ? `${customWidth}px` : customWidth }
+    : undefined;
+  // content builder
+  let Content: React.ReactNode;
+  if (Array.isArray(icons) && icons.length > 0) {
+    let iconsGapValue: string | undefined;
+    if (iconsGap !== undefined) {
+      if (typeof iconsGap === 'number') {
+        iconsGapValue = `${iconsGap}px`;
+      } else {
+        iconsGapValue = iconsGap;
+      }
+    }
+
+    Content = (
+      <span
+        className={cx('iconsOnly')}
+        style={{
+          ['--icons-gap' as any]: iconsGapValue,
+        }}
+      >
+        {icons.map((ic, idx) => (
+          <span key={idx} className={cx('iconMulti')}>
+            {ic}
+          </span>
+        ))}
+      </span>
+    );
+  } else {
+    Content = (
+      <>
+        {loading && <span className={cx('spinner')} aria-hidden="true" />}
+        {leadingIcon && <span className={cx('icon', 'leading')}>{leadingIcon}</span>}
+        {!iconOnly && <span className={cx('label')}>{children}</span>}
+        {trailingIcon && !iconOnly && <span className={cx('icon', 'trailing')}>{trailingIcon}</span>}
+        {loading && <span className={cx('srOnly')}>{loadingLabel}</span>}
+      </>
+    );
+  }
 
   if (href) {
     return (
@@ -64,16 +116,13 @@ const Button: React.FC<ButtonProps> = memo(function Button({
         aria-busy={loading || undefined}
         aria-disabled={disabled || loading || undefined}
         className={classNames}
+        style={style}
         onClick={e => {
           if (disabled || loading) e.preventDefault();
           (rest as AnchorNativeProps).onClick?.(e);
         }}
       >
-        {loading && <span className={cx('spinner')} aria-hidden="true" />}
-        {leadingIcon && <span className={cx('icon', 'leading')}>{leadingIcon}</span>}
-        <span className={cx('label')}>{children}</span>
-        {trailingIcon && <span className={cx('icon', 'trailing')}>{trailingIcon}</span>}
-        {loading && <span className={cx('srOnly')}>{loadingLabel}</span>}
+        {Content}
       </a>
     );
   }
@@ -85,12 +134,9 @@ const Button: React.FC<ButtonProps> = memo(function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={classNames}
+      style={style}
     >
-      {loading && <span className={cx('spinner')} aria-hidden="true" />}
-      {leadingIcon && <span className={cx('icon', 'leading')}>{leadingIcon}</span>}
-      <span className={cx('label')}>{children}</span>
-      {trailingIcon && <span className={cx('icon', 'trailing')}>{trailingIcon}</span>}
-      {loading && <span className={cx('srOnly')}>{loadingLabel}</span>}
+      {Content}
     </button>
   );
 });
