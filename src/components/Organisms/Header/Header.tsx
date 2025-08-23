@@ -53,75 +53,14 @@ const Header: React.FC<HeaderProps> = memo(function Header({
 }) {
   return (
     <header {...rest} className={cx('root', { sticky, compact }, className)}>
-      {/* Top Row (모바일/데스크탑 공통) */}
-      <div className={cx('row', 'top')}>
+      <div className={cx('row')}>
         <div className={cx('left')}>
-          <BrandBlock href={homeHref} compact={compact} />
+          <BrandBlock wordWidth={127} markWidth={56} href={homeHref} compact={compact} />
         </div>
-
-        {/* 데스크탑 우측 상단: 유틸리티 */}
-        <div className={cx('right', 'rightTop')}>
-          {showLanguage && languageItems.length > 0 && (
-            <UtilityLinks items={languageItems} separator="pipe" condensed />
-          )}
-          {showAuth && authItems.length > 0 && <UtilityLinks items={authItems} separator="pipe" condensed />}
-
-          {/* 아이콘-only 버튼 묶음 */}
-          <div className={cx('iconGroup')}>
-            {/* 메뉴(모바일 우선, 데스크탑에서도 필요하면 유지) */}
-            <Button
-              variant="ghost"
-              iconOnly
-              aria-label="Open menu"
-              onClick={onOpenMenu}
-              leadingIcon={<Icon name="navbar" ariaLabel="" />}
-            />
-            {/* 검색 */}
-            {showSearch && (
-              <Button
-                variant="ghost"
-                iconOnly
-                aria-label="Open search"
-                onClick={onOpenSearch}
-                leadingIcon={<Icon name="search" ariaLabel="" />}
-              />
-            )}
-            {/* 두 아이콘 버튼 예시(필요 시 주석 해제)
-            <Button
-              variant="ghost"
-              iconOnly
-              grouped
-              aria-label="Prev & Next"
-              iconsGap={4}
-              icons={[
-                <Icon key="l" name="chevron_right" ariaLabel="" />,
-                <Icon key="r" name="chevron_right" ariaLabel="" />
-              ]}
-            />
-            */}
-          </div>
-
-          {/* Plus 버튼 (캡슐) */}
-          {showPlus && (
-            <Button
-              variant="outline"
-              pill
-              className={cx('plusBtn')}
-              trailingIcon={<Icon name="chevron_right" ariaLabel="" />}
-              href="#"
-            >
-              The JoongAng Plus
-            </Button>
-          )}
+        <div className={cx('right')}>
+          <UtilityLinks items={languageItems} condensed={compact} />
         </div>
       </div>
-
-      {/* Bottom Row (데스크탑 네비) */}
-      <div className={cx('row', 'bottom')}>
-        <CategoryNav items={navItems} />
-      </div>
-
-      {/* 모바일 보조 바 (언어/유틸 간단 노출이 필요하면 여기 확장 가능) */}
     </header>
   );
 });
