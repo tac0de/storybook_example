@@ -5,6 +5,7 @@ import Icon from '../Icon/Icon';
 const meta: Meta<ButtonProps> = {
   title: 'Atoms/Button',
   component: Button,
+  tags: ['autodocs'],
   parameters: { layout: 'centered' },
   args: {
     children: 'Button',
