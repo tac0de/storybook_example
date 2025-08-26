@@ -20,8 +20,8 @@ const languageItems = [
 ];
 
 const authLoggedOut = [
-  { label: '로그인', href: '/login' },
-  { label: '회원가입', href: '/signup', muted: true },
+  { label: '로그인', href: '/login', muted: true },
+  { label: '지면보기', href: '/signup', muted: true },
 ];
 
 const authLoggedIn = [
@@ -77,7 +77,7 @@ export const NoPlusNoSearch: Story = {
 
 // 모바일 미리보기
 export const Mobile: Story = {
-  parameters: {
-    viewport: { defaultViewport: 'iphone14' },
+  args: {
+    authItems: authLoggedOut,
   },
 };

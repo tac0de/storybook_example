@@ -1,11 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import cxBind from 'classnames/bind';
 import styles from './Header.module.scss';
 
 import BrandBlock from '../../Molecules/BrandBlock/BrandBlock';
-import CategoryNav, { type CategoryItem } from '../../Molecules/CategoryNav/CategoryNav';
+import { type CategoryItem } from '../../Molecules/CategoryNav/CategoryNav';
 import UtilityLinks, { type UtilityLinkItem } from '../../Molecules/UtilityLinks/UtilityLinks';
-import Button from '../../Atoms/Buttton/Button';
 import Icon from '../../Atoms/Icon/Icon';
 
 const cx = cxBind.bind(styles);
@@ -51,6 +50,26 @@ const Header: React.FC<HeaderProps> = memo(function Header({
   className,
   ...rest
 }) {
+  // Animated search icon state
+  const [currentSearchIcon, setCurrentSearchIcon] = useState<'search_gra' | 'search_ai'>('search_gra');
+  // const [iconOpacity, setIconOpacity] = useState(1);
+
+  // Cycle through search icons every 0.5 seconds with fade effect
+  useEffect(() => {
+    const searchIcons: ('search_gra' | 'search_ai')[] = ['search_gra', 'search_ai'];
+    let currentIndex = 0;
+
+    const changeIcon = () => {
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % searchIcons.length;
+        setCurrentSearchIcon(searchIcons[currentIndex]);
+      }, 1000);
+    };
+
+    const interval = setInterval(changeIcon, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <header {...rest} className={cx('root', { sticky, compact }, className)}>
       <div className={cx('row')}>
@@ -58,7 +77,14 @@ const Header: React.FC<HeaderProps> = memo(function Header({
           <BrandBlock wordWidth={127} markWidth={56} href={homeHref} compact={compact} />
         </div>
         <div className={cx('right')}>
-          <UtilityLinks items={languageItems} condensed={compact} />
+          <div className={cx('rightTop')}>
+            <Icon className={cx('searchIcon')} name={currentSearchIcon} size="md" />
+            <Icon name="navbar" size="md" />
+            <div className={cx('shortcutPlus')}>
+              <Icon name="shortcut_plus" size="xl" />
+            </div>
+          </div>
+          <UtilityLinks items={authItems} condensed={compact} />
         </div>
       </div>
     </header>

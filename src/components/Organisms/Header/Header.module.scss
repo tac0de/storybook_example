@@ -3,13 +3,28 @@
   background: var(--header-bg, #fff);
   color: var(--header-fg, #111);
   height: 104px;
+  max-width: 985px;
+  margin: 0 auto;
+  border-bottom: 1px solid #f6330a;
+  padding-top: 6px;
+}
+
+.root::before {
+  background: #ededed;
+  content: '';
+  display: block;
+  height: 6px;
+  left: 50%;
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100vw;
 }
 
 .sticky {
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .compact {
@@ -49,6 +64,7 @@
 }
 .right {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
@@ -56,8 +72,12 @@
 
 /* 우측 상단 묶음(언어/유틸/아이콘/플러스) */
 .rightTop {
-  gap: 12px;
-  flex-wrap: nowrap;
+  gap: 10px;
+  display: flex;
+}
+
+.rightTop .icon {
+  transition: opacity 0.3s ease-in-out;
 }
 
 .iconGroup {
@@ -68,14 +88,60 @@
   --btn-gap-icon: 6px;
 }
 
-/* Plus 버튼은 데스크탑 우측에서만 보이게(모바일에서는 숨김) */
 .plusBtn {
   display: none;
 }
 
-/* CategoryNav 줄(데스크탑 기본 노출, 모바일에서는 가로 스크롤) */
+.root i.searchIcon {
+  animation: artwork_ai 1.5s infinite linear;
+}
+
+@keyframes artwork_ai {
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.root .shortcutPlus {
+  background: #ededed;
+  border-radius: 0 0 100% 100%;
+  margin-right: 0;
+  margin-top: -18px;
+  padding: 6px;
+  position: relative;
+}
+
+.root .shortcutPlus::before {
+  border-top-right-radius: 8px;
+  right: 100%;
+  box-shadow: 0 -6px 0 0 #ededed;
+  content: '';
+  height: 16px;
+  position: absolute;
+  top: 1px;
+  width: 8px;
+}
+
 .bottom {
   overflow: hidden;
+}
+
+.icon-group {
+  display: flex;
+  gap: 10px;
 }
 
 /* 반응형 */

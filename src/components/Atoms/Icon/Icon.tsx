@@ -14,7 +14,7 @@ export type IconName =
   | 'chevron_right'
   | 'logo_plus';
 
-type Size = 'sm' | 'md' | 'lg' | number;
+type Size = 'sm' | 'md' | 'lg' | 'xl' | number;
 
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {
   /** 아이콘 종류 */
