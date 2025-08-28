@@ -1,36 +1,51 @@
-import React, { memo, useState, useEffect } from 'react';
-import cxBind from 'classnames/bind';
-import styles from './Header.module.scss';
+import React, { memo } from 'react';
+import classNames from 'classnames';
+import './Header.scss';
 
 import BrandBlock from '../../Molecules/BrandBlock/BrandBlock';
-import { type CategoryItem } from '../../Molecules/CategoryNav/CategoryNav';
+import CategoryNav, { type CategoryItem } from '../../Molecules/CategoryNav/CategoryNav';
 import UtilityLinks, { type UtilityLinkItem } from '../../Molecules/UtilityLinks/UtilityLinks';
 import Icon from '../../Atoms/Icon/Icon';
 
-const cx = cxBind.bind(styles);
-
+/**
+ * Header 컴포넌트의 Props 인터페이스
+ * @description 웹사이트 상단 헤더를 구성하는 컴포넌트의 속성들
+ */
 export type HeaderProps = React.HTMLAttributes<HTMLElement> & {
-  /** 메인 카테고리 */
+  /** 메인 네비게이션 카테고리 아이템 배열 */
   navItems: CategoryItem[];
-  /** 유틸리티 링크(언어/로그인 등). 표시 여부는 showLanguage/showAuth로 제어 가능 */
+
+  /** 언어 선택 링크 배열 (다국어 지원) */
   languageItems?: UtilityLinkItem[];
+
+  /** 인증 관련 링크 배열 (로그인/회원가입 등) */
   authItems?: UtilityLinkItem[];
 
-  /** 표시 토글 */
+  /** 언어 선택 영역 표시 여부 */
   showLanguage?: boolean;
+
+  /** 인증 영역 표시 여부 */
   showAuth?: boolean;
-  showPlus?: boolean; // The JoongAng Plus 버튼
+
+  /** JoongAng Plus 버튼 표시 여부 */
+  showPlus?: boolean;
+
+  /** 검색 기능 표시 여부 */
   showSearch?: boolean;
 
-  /** 시각 변형 */
-  sticky?: boolean; // 상단 고정 + 그림자
-  compact?: boolean; // 높이/간격 축약
+  /** 스크롤 시 상단에 고정할지 여부 */
+  sticky?: boolean;
 
-  /** 상호작용 콜백 */
+  /** 압축된 레이아웃 사용 여부 (높이/간격 축소) */
+  compact?: boolean;
+
+  /** 모바일 메뉴 열기 콜백 함수 */
   onOpenMenu?: () => void;
+
+  /** 검색 모달 열기 콜백 함수 */
   onOpenSearch?: () => void;
 
-  /** 브랜드 클릭 링크 */
+  /** 브랜드 로고 클릭 시 이동할 홈 URL */
   homeHref?: string;
 };
 
@@ -50,38 +65,31 @@ const Header: React.FC<HeaderProps> = memo(function Header({
   className,
   ...rest
 }) {
-  // Animated search icon state
-  const [currentSearchIcon, setCurrentSearchIcon] = useState<'search_gra' | 'search_ai'>('search_gra');
-  // const [iconOpacity, setIconOpacity] = useState(1);
-
-  // Cycle through search icons every 0.5 seconds with fade effect
-  useEffect(() => {
-    const searchIcons: ('search_gra' | 'search_ai')[] = ['search_gra', 'search_ai'];
-    let currentIndex = 0;
-
-    const changeIcon = () => {
-      setTimeout(() => {
-        currentIndex = (currentIndex + 1) % searchIcons.length;
-        setCurrentSearchIcon(searchIcons[currentIndex]);
-      }, 1000);
-    };
-
-    const interval = setInterval(changeIcon, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <header {...rest} className={cx('root', { sticky, compact }, className)}>
-      <div className={cx('row')}>
-        <div className={cx('left')}>
+    <header
+      {...rest}
+      className={classNames(
+        'header',
+        {
+          'header--sticky': sticky,
+          'header--compact': compact,
+        },
+        className
+      )}
+    >
+      <div className="header__row">
+        <div className="header__left">
           <BrandBlock wordWidth={127} markWidth={56} href={homeHref} compact={compact} />
         </div>
-        <div className={cx('right')}>
-          <div className={cx('rightTop')}>
-            <Icon className={cx('searchIcon')} name={currentSearchIcon} size="md" />
+        <div className="header__right">
+          <CategoryNav items={navItems} />
+          <div className="header__right-top">
+            <div className="header__search-button">
+              <Icon className="header__search-icon" name="search-ai" size="md" />
+            </div>
             <Icon name="navbar" size="md" />
-            <div className={cx('shortcutPlus')}>
-              <Icon name="shortcut_plus" size="xl" />
+            <div className="header__shortcut-plus">
+              <Icon name="shortcut-plus" size="xl" />
             </div>
           </div>
           <UtilityLinks items={authItems} condensed={compact} />

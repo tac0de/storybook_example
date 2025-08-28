@@ -14,12 +14,12 @@ const meta: Meta<IconProps> = {
       options: [
         'navbar',
         'search',
-        'search_gra',
-        'search_ai',
-        'shortcut_plus',
-        'chevron_right',
-        'logo_plus',
-        'newspaper_black',
+        'search-gra',
+        'search-ai',
+        'shortcut-plus',
+        'chevron-right',
+        'logo-plus',
+        'newspaper-black',
       ] satisfies IconName[],
     },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
@@ -39,12 +39,12 @@ export const Gallery: Story = {
         [
           'navbar',
           'search',
-          'search_gra',
-          'search_ai',
-          'shortcut_plus',
-          'chevron_right',
-          'logo_plus',
-          'newspaper_black',
+          'search-gra',
+          'search-ai',
+          'shortcut-plus',
+          'chevron-right',
+          'logo-plus',
+          'newspaper-black',
         ] as IconName[]
       ).map(n => (
         <Icon key={n} {...args} name={n} ariaLabel={n} />

@@ -1,83 +1,73 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Header, { type HeaderProps } from './Header';
+import type { CategoryItem } from '../../Molecules/CategoryNav/CategoryNav';
+import type { UtilityLinkItem } from '../../Molecules/UtilityLinks/UtilityLinks';
 
-const navItems = [
-  { label: '오피니언', href: '/opinion' },
-  { label: '정치', href: '/politics' },
-  { label: '경제', href: '/economy', active: true },
-  { label: '사회', href: '/society' },
-  { label: '국제', href: '/world' },
-  { label: '문화', href: '/culture' },
+const navItems: CategoryItem[] = [
+  { label: '오피니언', href: '/opinion', emphasized: true },
+  { label: '정치', href: '/politics', emphasized: true },
+  { label: '경제', href: '/economy', emphasized: true },
+  { label: '사회', href: '/society', emphasized: true },
+  { label: '국제', href: '/world', emphasized: true },
+  { label: '문화', href: '/culture', emphasized: true },
   { label: '스포츠', href: '/sports', emphasized: true },
-  { label: 'IT', href: '/it' },
-  { label: '연예', href: '/entertain' },
+  { label: '라이프', href: '/it', emphasized: true },
+  { label: '피플', href: '/entertain', emphasized: true },
 ];
 
-const languageItems = [
+const authMobile: UtilityLinkItem[] = [
+  { label: '지면보기', href: '/login' },
+  { label: '마이페이지', href: '/me' },
+];
+
+const authTablet: UtilityLinkItem[] = [
+  { label: '지면보기', href: '/login' },
   { label: '日文', href: '/jp' },
   { label: '中文', href: '/cn' },
   { label: 'ENG', href: '/en' },
+  { label: '로그인', href: '/login' },
+  { label: '마이페이지', href: '/subscribe' },
 ];
 
-const authLoggedOut = [
-  { label: '로그인', href: '/login', muted: true },
-  { label: '지면보기', href: '/signup', muted: true },
-];
-
-const authLoggedIn = [
-  { label: '로그아웃', href: '/logout' },
-  { label: '마이페이지', href: '/mypage', active: true },
-  { label: '지면보기', href: '/paper', external: true },
+const authDesktop: UtilityLinkItem[] = [
+  { label: '로그인', href: '/login' },
+  { label: '구독', href: '/subscribe' },
+  { label: '마이페이지', href: '/me' },
 ];
 
 const meta: Meta<HeaderProps> = {
-  title: 'Organisms/Header',
+  title: 'Layouts/Header',
   component: Header,
   parameters: {
-    layout: 'fullscreen',
-    viewport: { defaultViewport: 'responsive' },
+    layout: 'fullscreen', // Fullscreen layout
+    viewport: { defaultViewport: 'responsive' }, // 기본은 반응형
   },
   args: {
     navItems,
-    languageItems,
-    authItems: authLoggedOut,
-    showLanguage: true,
+    showLanguage: false,
     showAuth: true,
     showPlus: true,
     showSearch: true,
-    sticky: true,
+    sticky: false,
     compact: false,
-  },
-  argTypes: {
-    showLanguage: { control: 'boolean' },
-    showAuth: { control: 'boolean' },
-    showPlus: { control: 'boolean' },
-    showSearch: { control: 'boolean' },
-    sticky: { control: 'boolean' },
-    compact: { control: 'boolean' },
+    homeHref: '/',
   },
 };
-
 export default meta;
+
 type Story = StoryObj<HeaderProps>;
 
-export const Default: Story = {};
-
-export const LoggedIn: Story = {
-  args: { authItems: authLoggedIn },
-};
-
-export const Compact: Story = {
-  args: { compact: true },
-};
-
-export const NoPlusNoSearch: Story = {
-  args: { showPlus: false, showSearch: false },
-};
-
-// 모바일 미리보기
 export const Mobile: Story = {
-  args: {
-    authItems: authLoggedOut,
-  },
+  args: { authItems: authMobile },
+  parameters: { viewport: { defaultViewport: 'iphone14' } },
+};
+
+export const Tablet: Story = {
+  args: { authItems: authTablet },
+  parameters: { viewport: { defaultViewport: 'ipad' } },
+};
+
+export const Desktop: Story = {
+  args: { authItems: authDesktop },
+  // 데스크탑은 기본 responsive(>=1024)면 충분
 };
