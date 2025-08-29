@@ -43,6 +43,7 @@ const meta: Meta<HeaderProps> = {
     viewport: { defaultViewport: 'responsive' }, // 기본은 반응형
   },
   args: {
+    variants: 'mobile',
     navItems,
     showLanguage: false,
     showAuth: true,
@@ -52,6 +53,9 @@ const meta: Meta<HeaderProps> = {
     compact: false,
     homeHref: '/',
   },
+  argTypes: {
+    variants: { control: 'radio', options: ['mobile', 'tablet', 'desktop'], description: '데모용' },
+  },
 };
 export default meta;
 
@@ -59,12 +63,12 @@ type Story = StoryObj<HeaderProps>;
 
 export const Mobile: Story = {
   args: { authItems: authMobile },
-  parameters: { viewport: { defaultViewport: 'iphone14' } },
+  parameters: { viewport: { defaultViewport: 'iphone14' }, variants: 'mobile' },
 };
 
 export const Tablet: Story = {
   args: { authItems: authTablet },
-  parameters: { viewport: { defaultViewport: 'ipad' } },
+  parameters: { viewport: { defaultViewport: 'ipad' }, variants: 'tablet' },
 };
 
 export const Desktop: Story = {

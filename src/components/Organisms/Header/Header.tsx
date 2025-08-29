@@ -7,6 +7,7 @@ import CategoryNav, { type CategoryItem } from '../../Molecules/CategoryNav/Cate
 import UtilityLinks, { type UtilityLinkItem } from '../../Molecules/UtilityLinks/UtilityLinks';
 import Icon from '../../Atoms/Icon/Icon';
 
+type Variant = 'mobile' | 'tablet' | 'desktop';
 /**
  * Header 컴포넌트의 Props 인터페이스
  * @description 웹사이트 상단 헤더를 구성하는 컴포넌트의 속성들
@@ -47,6 +48,8 @@ export type HeaderProps = React.HTMLAttributes<HTMLElement> & {
 
   /** 브랜드 로고 클릭 시 이동할 홈 URL */
   homeHref?: string;
+
+  variants?: Variant;
 };
 
 const Header: React.FC<HeaderProps> = memo(function Header({
@@ -63,6 +66,7 @@ const Header: React.FC<HeaderProps> = memo(function Header({
   onOpenSearch,
   homeHref = '/',
   className,
+  variants = 'mobile',
   ...rest
 }) {
   return (
@@ -70,6 +74,7 @@ const Header: React.FC<HeaderProps> = memo(function Header({
       {...rest}
       className={classNames(
         'header',
+        variants ?? `header--${variants}`,
         {
           'header--sticky': sticky,
           'header--compact': compact,

@@ -129,11 +129,9 @@
     opacity: 0; /* 다시 완전 투명 */
   }
 }
-
-/* 데스크톱 반응형 스타일 (1024px 이상) */
 @media (min-width: 985px) {
   .header__plus-btn {
-    display: inline-flex; /* 데스크톱에서 플러스 버튼 표시 */
+    display: inline-flex;
   }
 
   .header__right {
