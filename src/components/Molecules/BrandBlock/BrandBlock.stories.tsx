@@ -5,6 +5,7 @@ const meta: Meta<BrandBlockProps> = {
   title: 'Molecules/BrandBlock',
   component: BrandBlock,
   parameters: { layout: 'centered' },
+  tags: ['autodocs'],
   args: {
     mode: 'separate',
     wordWidth: 180,
