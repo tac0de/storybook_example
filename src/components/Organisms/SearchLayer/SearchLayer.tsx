@@ -1,6 +1,5 @@
 // components/Organisms/SearchLayer/SearchLayer.tsx
 import classNames from 'classnames';
-// import './SearchLayer.scss';
 
 export type SearchLayerProps = {
   open: boolean;
