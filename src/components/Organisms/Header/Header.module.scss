@@ -1,0 +1,163 @@
+// .root {
+//   position: relative;
+//   background: var(--header-bg, #fff);
+//   color: var(--header-fg, #111);
+//   height: 104px;
+//   max-width: 985px;
+//   margin: 0 auto;
+//   border-bottom: 1px solid #f6330a;
+//   padding-top: 6px;
+// }
+
+// .root::before {
+//   background: #ededed;
+//   content: '';
+//   display: block;
+//   height: 6px;
+//   left: 50%;
+//   position: absolute;
+//   top: 0;
+//   transform: translateX(-50%);
+//   width: 100vw;
+// }
+
+// .sticky {
+//   position: sticky;
+//   top: 0;
+//   z-index: 50;
+// }
+
+// .compact {
+//   --top-h: 56px;
+//   --bottom-h: 44px;
+//   --gap-x: 12px;
+// }
+
+// :root .root {
+//   --top-h: 64px;
+//   --bottom-h: 52px;
+//   --gap-x: 16px;
+// }
+
+// .row {
+//   display: grid;
+//   grid-template-columns: 1fr auto; /* left | right */
+//   align-items: center;
+//   padding: 0 var(--gap-x);
+// }
+
+// .top {
+//   height: var(--top-h);
+// }
+
+// .bottom {
+//   height: var(--bottom-h);
+// }
+
+// /* left/right 영역 */
+// .left {
+//   display: flex;
+//   align-items: center;
+//   min-width: 0;
+//   margin-top: 36px;
+//   margin-bottom: 20px;
+// }
+// .right {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: flex-end;
+//   gap: 12px;
+// }
+
+// /* 우측 상단 묶음(언어/유틸/아이콘/플러스) */
+// .rightTop {
+//   gap: 10px;
+//   display: flex;
+// }
+
+// .rightTop .icon {
+//   transition: opacity 0.3s ease-in-out;
+// }
+
+// .iconGroup {
+//   display: flex;
+//   align-items: center;
+//   /* Button에서 grouped 사용 → 인접 간격 제어 */
+//   --btn-gap: 8px;
+//   --btn-gap-icon: 6px;
+// }
+
+// .plusBtn {
+//   display: none;
+// }
+
+// .root i.searchIcon {
+//   animation: artwork_ai 1.5s infinite linear;
+// }
+
+// @keyframes artwork_ai {
+//   0% {
+//     opacity: 0;
+//   }
+
+//   30% {
+//     opacity: 0.3;
+//   }
+//   50% {
+//     opacity: 1;
+//   }
+//   70% {
+//     opacity: 0.8;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// }
+
+// .root .shortcutPlus {
+//   background: #ededed;
+//   border-radius: 0 0 100% 100%;
+//   margin-right: 0;
+//   margin-top: -18px;
+//   padding: 6px;
+//   position: relative;
+// }
+
+// .root .shortcutPlus::before {
+//   border-top-right-radius: 8px;
+//   right: 100%;
+//   box-shadow: 0 -6px 0 0 #ededed;
+//   content: '';
+//   height: 16px;
+//   position: absolute;
+//   top: 1px;
+//   width: 8px;
+// }
+
+// .bottom {
+//   overflow: hidden;
+// }
+
+// .icon-group {
+//   display: flex;
+//   gap: 10px;
+// }
+
+// /* 반응형 */
+// @media (min-width: 1024px) {
+//   .plusBtn {
+//     display: inline-flex;
+//   }
+// }
+
+// /* 모바일 전용 조정 */
+// @media (max-width: 1023.98px) {
+//   .row {
+//     grid-template-columns: 1fr auto;
+//   }
+//   .bottom {
+//     /* 모바일에서 스크롤 가능한 네비 */
+//     padding: 0;
+//   }
+// }

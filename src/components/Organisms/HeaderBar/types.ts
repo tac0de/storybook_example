@@ -10,7 +10,6 @@ export type HeaderBarProps = {
   user: UserState;
   onOpenMegaMenu: () => void;
   onOpenSearch: () => void;
-  onClickLogin: () => void;
   onClickJoin: () => void;
   onClickReplica: () => void; // 지면보기
 };

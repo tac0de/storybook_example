@@ -13,9 +13,8 @@
  * 6. 너비 조절 (기본, 전체, 사용자 지정)
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import classNames from 'classnames';
-import './Button.scss';
 
 // 버튼의 스타일 종류
 export type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
@@ -54,6 +53,8 @@ type CommonProps = {
   className?: string;
   /** 버튼 내용 */
   children?: React.ReactNode;
+
+  withStyle?: boolean;
 };
 
 // HTML 버튼과 앵커 태그의 기본 속성 타입
@@ -98,8 +99,18 @@ const Button: React.FC<ButtonProps> = memo(function Button({
   iconOnly = false,
   icons,
   iconsGap,
+  withStyle = true,
   ...rest
 }) {
+  const [ready, setReady] = useState(!withStyle);
+
+  useEffect(() => {
+    if (!withStyle) {
+      return;
+    }
+    import('./Button.scss').then(() => setReady(true)); // 필요할 때만
+  }, [withStyle]);
+
   // BEM 컨벤션을 따르는 클래스 이름 생성
   const buttonClassNames = classNames(
     'button',
@@ -115,6 +126,7 @@ const Button: React.FC<ButtonProps> = memo(function Button({
     },
     className
   );
+  const cls = withStyle && ready ? buttonClassNames : className || undefined;
 
   // 사용자 지정 너비를 위한 스타일 객체
   const style = customWidth
@@ -167,7 +179,7 @@ const Button: React.FC<ButtonProps> = memo(function Button({
         href={href}
         aria-busy={loading || undefined}
         aria-disabled={disabled || loading || undefined}
-        className={buttonClassNames}
+        className={cls}
         style={style}
         onClick={e => {
           if (disabled || loading) e.preventDefault();
@@ -186,7 +198,7 @@ const Button: React.FC<ButtonProps> = memo(function Button({
       type={(rest as ButtonNativeProps).type ?? 'button'}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={buttonClassNames}
+      className={cls}
       style={style}
     >
       {Content}

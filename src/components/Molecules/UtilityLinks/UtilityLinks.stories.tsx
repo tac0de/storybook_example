@@ -20,6 +20,7 @@ const authIn = [
 
 const meta: Meta<UtilityLinksProps> = {
   title: 'Molecules/UtilityLinks',
+  tags: ['autodocs'],
   component: UtilityLinks,
   parameters: { layout: 'centered' },
   args: {
