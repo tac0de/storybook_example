@@ -1,14 +1,14 @@
-// layouts/Header/GlobalHeader.stories.tsx
+// layouts/Header/SubHeader.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import GlobalHeader from './GlobalHeader';
+import SubHeader from './SubHeader';
 import { withCssLinks } from '../../decorators/withCssLinks';
 
-const meta: Meta<typeof GlobalHeader> = {
-  title: 'Layouts/GlobalHeader',
-  component: GlobalHeader,
+const meta: Meta<typeof SubHeader> = {
+  title: 'Layouts/SubHeader',
+  component: SubHeader,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
-  decorators: [withCssLinks(['/joongang-css/index.min.css?v=202508281501'])],
+  decorators: [withCssLinks(['/joongang-css/layout.min.css', '/joongang-css/common.min.css'])],
   args: {
     sticky: false,
   },
@@ -16,12 +16,13 @@ const meta: Meta<typeof GlobalHeader> = {
     sticky: { control: 'boolean' },
   },
 };
+
 export default meta;
-export const Playground: StoryObj<typeof GlobalHeader> = {};
-export const Sticky: StoryObj<typeof GlobalHeader> = {
+export const Playground: StoryObj<typeof SubHeader> = {};
+export const Sticky: StoryObj<typeof SubHeader> = {
   render: args => (
     <div style={{ height: '200vh', background: '#f0f0f0' }}>
-      <GlobalHeader {...args} />
+      <SubHeader {...args} />
       <p style={{ marginTop: '100px' }}>스크롤해보세요 👇</p>
     </div>
   ),

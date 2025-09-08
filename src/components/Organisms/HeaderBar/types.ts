@@ -12,4 +12,6 @@ export type HeaderBarProps = {
   onOpenSearch: () => void;
   onClickJoin: () => void;
   onClickReplica: () => void; // 지면보기
+  withStyle?: boolean; // 스타일시트 적용 여부 (기본값: true)
+  className?: string; // 추가 CSS 클래스
 };

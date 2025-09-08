@@ -8,18 +8,6 @@ const config: StorybookConfig = {
     options: {},
   },
   viteFinal(config) {
-    if (config.css?.preprocessorOptions?.scss) {
-      config.css.preprocessorOptions.scss.additionalData = `@use "@/styles/index" as *;`;
-    } else {
-      config.css = {
-        ...config.css,
-        preprocessorOptions: {
-          scss: {
-            additionalData: `@use "@/styles/index" as *;`,
-          },
-        },
-      };
-    }
     config.server ??= {};
     config.server.proxy = {
       '/joongang-css': {

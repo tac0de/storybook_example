@@ -16,11 +16,6 @@ export default defineConfig({
     },
   },
   css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/styles/index" as *;`,
-      },
-    },
     modules: {
       localsConvention: 'camelCase',
     },

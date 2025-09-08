@@ -1,7 +1,7 @@
 // components/Organisms/HeaderBar/HeaderBar.tsx
 import classNames from 'classnames';
 import type { HeaderBarProps } from './types';
-import './HeaderBar.scss';
+import { useDynamicStyle } from '../../../hooks/useDynamicStyle';
 
 export function HeaderBar({
   emblem60Url,
@@ -13,9 +13,14 @@ export function HeaderBar({
   onOpenSearch,
   onClickJoin,
   onClickReplica,
+  withStyle = true,
+  className,
 }: HeaderBarProps) {
+  const ready = useDynamicStyle(() => import('./HeaderBar.scss'), withStyle);
+
+  const cls = withStyle && ready ? classNames('header_wrap', className) : className || undefined;
   return (
-    <div className="header_wrap">
+    <div className={cls}>
       <h1 className="logo">
         {/* 60주년 엠블럼 링크 */}
         {emblem60Url && (

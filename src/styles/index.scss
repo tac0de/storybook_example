@@ -1,9 +1,0 @@
-// Main SCSS entry point
-// This file makes all abstracts available globally
-
-@use 'abstracts/variables' as *;
-@use 'abstracts/mixins' as *;
-
-// Forward everything for external use
-@forward 'abstracts/variables';
-@forward 'abstracts/mixins';

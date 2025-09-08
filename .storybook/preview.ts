@@ -1,6 +1,13 @@
 // import '../src/legacy.css';
 import type { Preview } from '@storybook/react-vite';
 
+window.addEventListener('unhandledrejection', e => {
+  const name = (e as any)?.reason?.name || (e as any)?.reason;
+  if (name === 'AbortError') {
+    e.preventDefault(); // 콘솔 무시
+  }
+});
+
 const customViewports = {
   Mobile: {
     name: 'Mobile',
