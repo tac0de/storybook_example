@@ -34,7 +34,7 @@ export default function SubHeader({
     <header
       id="header"
       className={classNames('header', 'nav_re', 'emblem60')}
-      style={sticky ? { position: 'sticky' } : { position: 'relative' }}
+      style={sticky ? { position: 'fixed' } : { position: 'relative' }}
     >
       <div className="uh">
         {/* 60주년 엠블럼 로고 */}
