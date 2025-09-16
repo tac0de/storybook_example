@@ -1,7 +1,5 @@
-// .storybook/cssControl.tsx
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-
 /** Vite dev css 제거 (항상) */
 function stripViteDevCss(root: Document | ShadowRoot) {
   for (const el of root.querySelectorAll('style[data-vite-dev-id]')) {
@@ -13,7 +11,12 @@ function stripViteDevCss(root: Document | ShadowRoot) {
 }
 
 /** 외부 CSS 링크 주입 */
-function injectLinks(root: Document | ShadowRoot, hrefs: string[], prefix = 'sb-css') {
+function injectLinks(
+  root: Document | ShadowRoot,
+  hrefs: string[],
+  prefix = 'sb-css',
+  bodyClass?: string // 👈 추가
+) {
   const container = root instanceof Document ? root.head : root;
   const ids: string[] = [];
 
@@ -29,9 +32,17 @@ function injectLinks(root: Document | ShadowRoot, hrefs: string[], prefix = 'sb-
     container.appendChild(link);
   }
 
+  // 👇 Document일 때만 bodyClass 적용
+  if (root instanceof Document && bodyClass) {
+    root.body.classList.add(...bodyClass.split(/\s+/).filter(Boolean));
+  }
+
   return () => {
     for (const id of ids) {
       container.querySelector(`#${CSS.escape(id)}`)?.remove();
+    }
+    if (root instanceof Document && bodyClass) {
+      root.body.classList.remove(...bodyClass.split(/\s+/).filter(Boolean));
     }
   };
 }
@@ -65,7 +76,10 @@ function ShadowMount({
     root.render(<>{children}</>);
 
     return () => {
-      root.unmount();
+      // Defer unmount to avoid race condition during render
+      setTimeout(() => {
+        root.unmount();
+      }, 0);
       clean();
       shadow.contains(body) && shadow.removeChild(body);
     };
@@ -87,6 +101,7 @@ export function withCss({
   hrefs: string[];
   bodyClass?: string;
   mode?: 'auto-docs-shadow' | 'dom';
+  keep?: (string | RegExp)[]; // 👈 허용할 vite dev css
 }) {
   return function Decorator(Story: any, ctx: any) {
     const isDocs = ctx?.viewMode === 'docs';
@@ -96,7 +111,7 @@ export function withCss({
       if (!useShadow) {
         // DOM 경로: 항상 vite dev css 제거 후 외부 css 주입
         stripViteDevCss(document);
-        const clean = injectLinks(document, hrefs, 'sb-css');
+        const clean = injectLinks(document, hrefs, 'sb-css', bodyClass);
         return () => clean();
       }
       return undefined;

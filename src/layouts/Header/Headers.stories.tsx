@@ -17,7 +17,7 @@ export const GlobalHeaderDesktop: Story = {
   name: 'GlobalHeader (Desktop)',
   decorators: [
     withCss({
-      mode: 'auto-docs-shadow',
+      // mode: 'auto-docs-shadow',
       hrefs: ['/legacy.css'],
       bodyClass: 'index re',
     }),
