@@ -1,0 +1,199 @@
+/**
+ * NavList 컴포넌트 스타일
+ * BEM 컨벤션을 사용하여 구조화된 CSS 클래스명을 제공합니다.
+ * 
+ * BEM 구조:
+ * - Block: .nav-list (메인 컴포넌트)
+ * - Element: .nav-list__element (컴포넌트 내부 요소)
+ * - Modifier: .nav-list--modifier (컴포넌트 변형)
+ */
+
+/* 메인 네비게이션 리스트 블록 */
+.nav-list {
+  /* 기본 스타일 */
+  display: block;
+  
+  /* 리스트 요소 */
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  /* 리스트 아이템 */
+  &__item {
+    position: relative;
+    
+    &--active {
+      .nav-list__link {
+        color: #0066cc;
+        font-weight: 600;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background-color: #0066cc;
+        }
+      }
+    }
+  }
+  
+  /* 링크 요소 */
+  &__link {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    transition: color 0.2s ease-in-out;
+    position: relative;
+    
+    &:hover {
+      color: #0066cc;
+    }
+    
+    &:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+  }
+
+  /* 방향 변형들 */
+  &--horizontal {
+    .nav-list__list {
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .nav-list__item {
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+  
+  &--vertical {
+    .nav-list__list {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .nav-list__item {
+      width: 100%;
+      
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  /* 스타일 변형들 */
+  &--default {
+    .nav-list__link {
+      padding: 0.5rem 0;
+    }
+  }
+  
+  &--pills {
+    .nav-list__link {
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      
+      &:hover {
+        background-color: rgba(0, 102, 204, 0.1);
+      }
+    }
+    
+    .nav-list__item--active .nav-list__link {
+      background-color: #0066cc;
+      color: white;
+      
+      &::after {
+        display: none;
+      }
+    }
+  }
+  
+  &--tabs {
+    .nav-list__list {
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .nav-list__link {
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      
+      &:hover {
+        border-bottom-color: #ccc;
+      }
+    }
+    
+    .nav-list__item--active .nav-list__link {
+      border-bottom-color: #0066cc;
+      
+      &::after {
+        display: none;
+      }
+    }
+  }
+  
+  &--breadcrumb {
+    .nav-list__item {
+      &:not(:last-child)::after {
+        content: '/';
+        margin: 0 0.5rem;
+        color: #666;
+      }
+    }
+    
+    .nav-list__link {
+      padding: 0.25rem 0;
+      font-size: 0.875rem;
+    }
+  }
+
+  /* 크기 변형들 */
+  &--sm {
+    .nav-list__link {
+      font-size: 0.875rem;
+      padding: 0.25rem 0.5rem;
+    }
+  }
+  
+  &--md {
+    .nav-list__link {
+      font-size: 1rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+  
+  &--lg {
+    .nav-list__link {
+      font-size: 1.125rem;
+      padding: 0.75rem 1rem;
+    }
+  }
+}
+
+/* 반응형 숨김 클래스들 */
+@media (max-width: 576px) {
+  .sm_hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .md_hidden {
+    display: none !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .lg_hidden {
+    display: none !important;
+  }
+}

@@ -1,0 +1,131 @@
+/**
+ * IconButton 컴포넌트 스타일
+ * BEM 컨벤션을 사용하여 구조화된 CSS 클래스명을 제공합니다.
+ * 
+ * BEM 구조:
+ * - Block: .icon-button (메인 컴포넌트)
+ * - Element: .icon-button__element (컴포넌트 내부 요소)
+ * - Modifier: .icon-button--modifier (컴포넌트 변형)
+ */
+
+/* 메인 아이콘버튼 블록 */
+.icon-button {
+  /* 기본 스타일 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  /* 포커스 스타일 */
+  &:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+
+  /* 비활성화 상태 */
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* 활성 상태 */
+  &--active {
+    background-color: rgba(0, 102, 204, 0.1);
+    color: #0066cc;
+  }
+
+  /* 변형 스타일들 */
+  &--default {
+    color: #333;
+
+    &:hover:not(.icon-button--disabled) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &--ghost {
+    color: #666;
+
+    &:hover:not(.icon-button--disabled) {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #333;
+    }
+  }
+
+  &--outline {
+    color: #0066cc;
+    border: 1px solid #ddd;
+
+    &:hover:not(.icon-button--disabled) {
+      border-color: #0066cc;
+      background-color: rgba(0, 102, 204, 0.05);
+    }
+  }
+
+  /* 크기 변형들 */
+  &--sm {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.25rem;
+
+    .icon-button__icon {
+      font-size: 1rem;
+    }
+  }
+
+  &--md {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+
+    .icon-button__icon {
+      font-size: 1.25rem;
+    }
+  }
+
+  &--lg {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.75rem;
+
+    .icon-button__icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* 아이콘 요소 */
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    /* 아이콘 내부 요소들 */
+    i,
+    svg {
+      display: block;
+      width: 1em;
+      height: 1em;
+    }
+  }
+}
+
+/* 접근성을 위한 숨김 텍스트 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

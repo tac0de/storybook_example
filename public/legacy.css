@@ -17708,7 +17708,7 @@ section.col_lg3 .card_group.list .card_right .card_image a {
     width: 15px;
   }
 
-  .index .nav_re:not(.sticky_top) .header_wrap {
+  body.index .nav_re:not(.sticky_top) .header_wrap {
     position: relative;
   }
 

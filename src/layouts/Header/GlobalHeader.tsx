@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import HeaderBar from '../../components/Organisms/HeaderBar/HeaderBar';
 import MegaMenu from '../../components/Organisms/MegaMenu/MegaMenu';
 import SearchLayer from '../../components/Organisms/SearchLayer/SearchLayer';
-import Button from '../../components/Atoms/Button/Button';
 
 export type GlobalHeaderProps = {
   sticky?: boolean;
@@ -25,7 +24,6 @@ export default function GlobalHeader({ sticky = false }: GlobalHeaderProps) {
     <header id="header" className={classNames('header', 'nav_re', 'emblem60', sticky && 'sticky_top')}>
       <HeaderBar
         className="header_wrap"
-        withStyle={false}
         emblem60Url="https://www.joongang.co.kr/60th"
         logoUrl="https://img.joongang.co.kr/pubimg/index/logo_thejoongang.png"
         homeHref="https://www.joongang.co.kr"
@@ -50,9 +48,6 @@ export default function GlobalHeader({ sticky = false }: GlobalHeaderProps) {
           window.location.href = '/replica/guides';
         }}
       />
-
-      <Button children="안녕하세요" className="hello possible hi" />
-
       <MegaMenu open={openMega} onClose={() => setOpenMega(false)} />
       <SearchLayer open={openSearch} onClose={() => setOpenSearch(false)} onSubmit={onSubmitSearch} />
     </header>

@@ -21,7 +21,7 @@ export default meta;
 export const Playground: StoryObj<typeof SubHeader> = {};
 export const Sticky: StoryObj<typeof SubHeader> = {
   render: args => (
-    <div style={{ height: '200vh', background: '#f0f0f0', position: 'relative' }}>
+    <div style={{ height: '200vh', background: '#f0f0f0' }}>
       <SubHeader {...args} />
       <p style={{ marginTop: '100px' }}>스크롤해보세요 👇</p>
     </div>

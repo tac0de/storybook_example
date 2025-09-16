@@ -1,4 +1,3 @@
-// .storybook/withCssLinks.tsx
 import * as React from 'react';
 
 export const withCssLinks = (hrefs: string[]) => (Story: any) => {
@@ -10,6 +9,11 @@ export const withCssLinks = (hrefs: string[]) => (Story: any) => {
     let mounted = true;
 
     const ensureLink = (href: string) => {
+      const viteCSS = Array.from(document.querySelectorAll<HTMLStyleElement>('style[data-vite-dev-id]'));
+      for (const style of viteCSS) {
+        style.remove();
+      }
+
       const id = `sb-css-${btoa(href)}`;
       ids.push(id);
 

@@ -1,0 +1,239 @@
+/**
+ * ActionGroup 컴포넌트 스타일
+ *
+ * BEM 방법론을 사용하여 구조화된 스타일을 제공합니다.
+ * 다양한 액션 버튼들을 그룹화하여 일관된 레이아웃을 제공합니다.
+ */
+
+/* Block: action-group */
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  /* Direction modifiers */
+  &--horizontal {
+    flex-direction: row;
+  }
+
+  &--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Spacing modifiers */
+  &--spacing-tight {
+    gap: var(--spacing-xs);
+  }
+
+  &--spacing-normal {
+    gap: var(--spacing-sm);
+  }
+
+  &--spacing-loose {
+    gap: var(--spacing-md);
+  }
+
+  /* Alignment modifiers */
+  &--align-start {
+    justify-content: flex-start;
+  }
+
+  &--align-center {
+    justify-content: center;
+  }
+
+  &--align-end {
+    justify-content: flex-end;
+  }
+
+  &--align-stretch {
+    justify-content: stretch;
+
+    .action-group__item {
+      flex: 1;
+    }
+  }
+
+  /* Wrap modifier */
+  &--wrap {
+    flex-wrap: wrap;
+  }
+}
+
+/* Element: action-group__item */
+.action-group__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  /* Item states */
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &--active {
+    .action-group__button,
+    .action-group__link {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+/* Element: action-group__button */
+.action-group__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-background-hover);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-hover);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--color-background-active);
+    border-color: var(--color-border-active);
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Element: action-group__link */
+.action-group__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--color-background-hover);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-hover);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background-color: var(--color-background-active);
+    border-color: var(--color-border-active);
+    transform: translateY(1px);
+  }
+}
+
+/* Element: action-group__divider */
+.action-group__divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--color-border);
+  margin: 0 var(--spacing-xs);
+
+  .action-group--vertical & {
+    width: 100%;
+    height: 1px;
+    margin: var(--spacing-xs) 0;
+  }
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .action-group {
+    &--horizontal {
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+    }
+
+    .action-group__button,
+    .action-group__link {
+      padding: var(--spacing-xs);
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  .action-group__divider {
+    display: none;
+
+    .action-group--vertical & {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .action-group {
+    &--horizontal {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .action-group__item {
+      width: 100%;
+    }
+
+    .action-group__button,
+    .action-group__link {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .action-group__button,
+  .action-group__link {
+    border-width: 2px;
+  }
+
+  .action-group__divider {
+    background-color: var(--color-text);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .action-group__button,
+  .action-group__link {
+    transition: none;
+  }
+}
