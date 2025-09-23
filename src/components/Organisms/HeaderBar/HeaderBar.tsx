@@ -1,12 +1,36 @@
-// components/Organisms/HeaderBar/HeaderBar.tsx
 import classNames from 'classnames';
-import type { HeaderBarProps } from './types';
-import BrandLogo from './BrandLogo';
-import GnbNav from './GnbNav';
-import MastheadMenu from './MastheadMenu';
-import HeaderActions from './HeaderActions';
-
 import './HeaderBar.scss';
+
+// Molecules
+import { LogoGroup } from '../../Molecules/LogoGroup/LogoGroup';
+import { NavList, type NavItem } from '../../Molecules/NavList/NavList';
+import { MastheadMenu } from '../../Molecules/MastheadMenu/MastheadMenu';
+import { type LanguageItem } from '../../Molecules/LanguageLinks/LanguageLinks';
+import { PlusShortcut } from '../../Molecules/PlusShortcut/PlusShortcut';
+import { HeaderActions } from '../../Molecules/HeaderActions/HeaderActions';
+
+export type HeaderBarUser = { loggedIn: boolean };
+
+export type HeaderBarProps = {
+  emblem60Url?: string;
+  logoUrl: string;
+  homeHref: string;
+
+  nav: NavItem[];
+  user: HeaderBarUser;
+
+  // actions
+  onOpenMegaMenu: () => void;
+  onOpenSearch: () => void;
+  onClickJoin: () => void;
+  onClickReplica: () => void;
+
+  // optional
+  languageItems?: LanguageItem[];
+  languageResponsiveHelpers?: boolean;
+  withStyle?: boolean;
+  className?: string;
+};
 
 export function HeaderBar({
   emblem60Url,
@@ -18,6 +42,8 @@ export function HeaderBar({
   onOpenSearch,
   onClickJoin,
   onClickReplica,
+  languageItems,
+  languageResponsiveHelpers,
   withStyle = true,
   className,
 }: HeaderBarProps) {
@@ -25,12 +51,26 @@ export function HeaderBar({
 
   return (
     <div className={cls}>
-      <BrandLogo emblem60Url={emblem60Url} logoUrl={logoUrl} homeHref={homeHref} />
+      <LogoGroup emblem60Url={emblem60Url} homeHref={homeHref} logoUrl={logoUrl} />
 
       <div className="header_area flex_sm_column_reverse flex_md_column_reverse">
         <nav className="header_nav" aria-label="주요 메뉴">
-          <GnbNav items={nav} />
-          <MastheadMenu user={user} onClickReplica={onClickReplica} onClickJoin={onClickJoin} />
+          {/* 데스크톱 GNB */}
+          <NavList items={nav} />
+
+          {/* masthead: 지면보기 / 로그인/회원 / (모바일)지면보기 */}
+          <MastheadMenu
+            loggedIn={user.loggedIn}
+            onClickJoin={onClickJoin}
+            onClickReplica={onClickReplica}
+            languageItems={languageItems}
+            languageResponsiveHelpers={languageResponsiveHelpers}
+          />
+
+          {/* 더중앙플러스 바로가기 */}
+          <PlusShortcut />
+
+          {/* 햄버거 + 검색 */}
           <HeaderActions onOpenMegaMenu={onOpenMegaMenu} onOpenSearch={onOpenSearch} />
         </nav>
       </div>

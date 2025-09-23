@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
+
 import hooks from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
 import pluginCypress from 'eslint-plugin-cypress/flat';
@@ -89,4 +92,5 @@ export default [
   {
     ignores: ['node_modules', 'dist', '*.config.js', '*.config.mjs', 'eslint.rules.js'],
   },
+  ...storybook.configs['flat/recommended'],
 ];

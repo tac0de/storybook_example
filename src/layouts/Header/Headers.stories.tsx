@@ -1,38 +1,39 @@
 // src/layouts/Header/Headers.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import GlobalHeader from './GlobalHeader';
 import SubHeader from './SubHeader';
-
-import { withCss } from '../../decorators/withShadowCss';
-
+import { withCssLinks } from '../../decorators/withCssLinks';
 export default {
   title: 'Layouts/Headers',
   tags: ['autodocs'],
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    docs: { story: { inline: false, iframeHeight: 480 } },
+  },
 } satisfies Meta;
 
 type Story = StoryObj;
 
-export const GlobalHeaderDesktop: Story = {
-  name: 'GlobalHeader (Desktop)',
+export const HeaderGlobal: Story = {
+  name: 'GlobalHeader',
   decorators: [
-    withCss({
-      // mode: 'auto-docs-shadow',
-      hrefs: ['/legacy.css'],
-      bodyClass: 'index re',
+    withCssLinks({
+      hrefs: ['/joongang-css/index.min.css'],
+      bodyClass: ['index'],
     }),
   ],
   render: args => <GlobalHeader {...args} />,
 };
 
-export const SubHeaderDesktop: Story = {
-  name: 'SubHeader (Desktop)',
+export const HeaderSub: Story = {
+  name: 'SubHeader',
   decorators: [
-    withCss({
-      mode: 'auto-docs-shadow',
-      hrefs: ['/joongang-css/layout.min.css?v=202508281501'],
-      bodyClass: 'index',
+    withCssLinks({
+      hrefs: ['/joongang-css/layout.min.css'],
+      bodyClass: ['index'],
     }),
   ],
+  args: {
+    sticky: true,
+  },
   render: args => <SubHeader {...args} />,
 };

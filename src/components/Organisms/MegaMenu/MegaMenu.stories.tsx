@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenu, { type MegaMenuProps } from './MegaMenu';
 import HeaderShell from '../../../layouts/Header/HeaderShell';
 

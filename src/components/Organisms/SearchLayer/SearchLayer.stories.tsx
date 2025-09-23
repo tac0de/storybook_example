@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import SearchLayer, { type SearchLayerProps } from './SearchLayer';
 import HeaderShell from '../../../layouts/Header/HeaderShell';
 
