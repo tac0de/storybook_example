@@ -24,12 +24,7 @@ const meta: Meta<typeof NavList> = {
   parameters: {
     layout: 'padded',
   },
-  decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
-  ],
+  // decorators: [],
 };
 export default meta;
 
