@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import HeaderBar from './HeaderBar';
-import { withCssLinks } from '../../../decorators/withCssLinks';
-import { withDivShell } from '../../../decorators/divShell';
+import { withCssAndShell } from '../../../decorators/withCssAndShell';
 
 const meta: Meta<typeof HeaderBar> = {
   title: 'Organisms/HeaderBar',
@@ -30,13 +29,24 @@ const meta: Meta<typeof HeaderBar> = {
     withStyle: true,
   },
   decorators: [
-    withCssLinks({
+    withCssAndShell({
       hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
+      bodyClass: ['index', 'hash'],
+      inlineCss: `
+        #header { outline: 2px dashed #4f46e5; }
+        .header_wrap { background: rgba(79,70,229,.06); }
+      `,
+      structure: 'div.header.emblem60.nav_re > section#header',
+      allow: 'HeaderBar',
     }),
-    withDivShell({
-      wrappers: ['header emblem60 nav_re'],
-    }),
+    // withCssLinks({
+    //   hrefs: ['/joongang-css/index.min.css'],
+    //   bodyClass: ['index'],
+    // }),
+    // withDivShell({
+    //   wrappers: ['header emblem60 nav_re'],
+
+    // }),
   ],
 };
 export default meta;

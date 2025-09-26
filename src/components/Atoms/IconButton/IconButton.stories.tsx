@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IconButton } from './IconButton';
 import { withCssLinks } from '../../../decorators/withCssLinks';
+import { withCssAndShell } from '../../../decorators/withCssAndShell';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Atoms/IconButton',
@@ -18,9 +19,11 @@ const meta: Meta<typeof IconButton> = {
     onClick: { action: 'clicked' },
   },
   decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
+    withCssAndShell({
+      links: {
+        hrefs: ['/joongang-css/index.min.css'],
+        bodyClass: ['index'],
+      },
     }),
   ],
 };

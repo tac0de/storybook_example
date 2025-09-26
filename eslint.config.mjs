@@ -55,6 +55,7 @@ export default [
     rules: {
       ...jRules.rules,
       ...eslintPluginPrettierRecommended.rules,
+      'react/display-name': ['error', { ignoreTranspilerName: false }],
       'react/no-unescaped-entities': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/no-unknown-property': 'off',

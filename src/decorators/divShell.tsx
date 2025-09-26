@@ -1,95 +1,137 @@
 import * as React from 'react';
-import type { Decorator, StoryContext } from '@storybook/react';
+import type { Decorator } from '@storybook/react';
 
-export type DivShellSpec =
-  | string[]
-  | Array<{ className?: string; id?: string; style?: React.CSSProperties; 'data-testid'?: string }>;
+type Tag = keyof React.JSX.IntrinsicElements;
+
+export type WrapperInput =
+  | string
+  | {
+      tag?: Tag; // ← 직관적 태그 지정
+      as?: Tag; // ← tag 대체 표기 허용
+      className?: string;
+      id?: string;
+      style?: React.CSSProperties;
+      ['data-testid']?: string;
+    };
 
 export type DivShellParams = {
-  /** 바깥→안쪽 순서의 래퍼 클래스 목록 (ex: ['page', 'layout', 'header_wrap', 'header_nav']) */
-  wrappers?: DivShellSpec;
-  /** 문서 body에 임시로 부여할 클래스(전역 CSS가 body selector를 요구할 때) */
-  bodyClass?: string | string[];
-  /** 스토리 캔버스 폭 제한 등 임시 스타일이 필요하면 true → 기본 컨테이너 적용 */
-  container?: boolean | React.CSSProperties;
+  /** 바깥→안쪽 래퍼들 */
+  wrappers?: WrapperInput[];
+  /** wrappers에서 tag 미지정 시 기본 태그 */
+  defaultTag?: Tag;
+  /** 본(innermost) 래퍼 옵션 */
+  root?: {
+    enabled?: boolean;
+    tag?: Tag;
+    id?: string;
+    className?: string;
+    style?: React.CSSProperties;
+    ['data-testid']?: string;
+  };
 };
 
-/** 내부적으로 배열 정규화 */
-function normalize(
-  spec?: DivShellSpec
-): Array<{ className?: string; id?: string; style?: React.CSSProperties; 'data-testid'?: string }> {
-  if (!spec) return [];
-  if (Array.isArray(spec) && typeof spec[0] === 'string') {
-    return (spec as string[]).map(cls => ({ className: cls }));
+type Norm = {
+  tag: Tag | 'body';
+  className?: string;
+  id?: string;
+  style?: React.CSSProperties;
+  ['data-testid']?: string;
+};
+
+/** nested ternary 없이 정규화 */
+function normalize(wrappers?: WrapperInput[], defaultTag: Tag = 'div'): Norm[] {
+  if (!wrappers || wrappers.length === 0) return [];
+  const out: Norm[] = [];
+  for (const w of wrappers) {
+    if (typeof w === 'string') {
+      out.push({ tag: defaultTag, className: w });
+    } else {
+      const tag = (w.as ?? w.tag ?? defaultTag) as Tag | 'body';
+      out.push({
+        tag,
+        className: w.className,
+        id: w.id,
+        style: w.style,
+        'data-testid': w['data-testid'],
+      });
+    }
   }
-  return spec as Array<{ className?: string; id?: string; style?: React.CSSProperties; 'data-testid'?: string }>;
+  return out;
 }
 
-/** body class 토글 훅 */
-function useBodyClass(bodyClass?: string | string[]) {
+/** body 클래스 토글 훅 (ESLint-safe deps) */
+function useBodyClassToggle(entries: Array<{ enabled: boolean; className?: string }>) {
+  // entries가 바뀔 때만 실행되도록 안정 키 생성
+  const depsKey = React.useMemo(
+    () => entries.map(e => `${e.enabled ? 1 : 0}:${e.className ?? ''}`).join('|'),
+    [entries]
+  );
+
   React.useEffect(() => {
-    if (!bodyClass) return;
-    const list = Array.isArray(bodyClass) ? bodyClass : [bodyClass];
-    list.forEach(c => c && document.body.classList.add(c));
-    return () => list.forEach(c => c && document.body.classList.remove(c));
-  }, [Array.isArray(bodyClass) ? bodyClass.join(' ') : bodyClass]);
+    const added: string[] = [];
+    for (const e of entries) {
+      if (e.enabled && e.className) {
+        document.body.classList.add(e.className);
+        added.push(e.className);
+      }
+    }
+    return () => {
+      for (const cls of added) document.body.classList.remove(cls);
+    };
+  }, [depsKey, entries]);
 }
 
-export function DivShell({
+/** 바깥→안쪽 래퍼 + 본(innermost) 래퍼까지 지원 */
+export const DivShell: React.FC<React.PropsWithChildren<DivShellParams>> = ({
   wrappers,
+  defaultTag = 'div',
+  root,
   children,
-  container,
-}: {
-  wrappers?: DivShellSpec;
-  children: React.ReactNode;
-  container?: boolean | React.CSSProperties;
-}) {
-  const specs = normalize(wrappers);
+}) => {
+  const specs = React.useMemo(() => normalize(wrappers, defaultTag), [wrappers, defaultTag]);
 
-  // 선택: 기본 캔버스 컨테이너 (폭 제한 등)
-  const containerProps: React.HTMLAttributes<HTMLDivElement> = container
-    ? typeof container === 'object'
-      ? { style: container }
-      : { style: { maxWidth: 1280, margin: '0 auto', padding: 16 } }
-    : {};
+  // body 태그만 모아서 토글
+  const bodyEntries = React.useMemo(
+    () => specs.map(s => ({ enabled: s.tag === 'body', className: s.className })),
+    [specs]
+  );
+  useBodyClassToggle(bodyEntries);
 
-  const nested = specs.reduceRight<React.ReactNode>((acc, spec, i) => {
-    const key = spec.id || spec.className || `shell-${i}`;
+  // 본(innermost) 래퍼 구성
+  const inner = React.useMemo(() => {
+    if (!root?.enabled) return children;
+    const Tag = (root.tag ?? 'div') as Tag;
     return (
-      <div key={key} id={spec.id} data-testid={spec['data-testid']} className={spec.className} style={spec.style}>
-        {acc}
-      </div>
+      <Tag id={root.id} className={root.className} style={root.style} data-testid={root['data-testid'] as any}>
+        {children}
+      </Tag>
     );
-  }, children);
+  }, [root, children]);
 
-  return container ? <div {...containerProps}>{nested}</div> : <>{nested}</>;
-}
+  // 바깥→안쪽으로 감싸되, tag==='body'는 스킵(클래스만 위 훅에서 처리됨)
+  const nested = React.useMemo(() => {
+    return specs.reduceRight<React.ReactNode>((acc, s, i) => {
+      if (s.tag === 'body') return acc;
+      const Tag = s.tag as Tag;
+      const key = s.id || s.className || `shell-${i}`;
+      return (
+        <Tag key={key} id={s.id} className={s.className} style={s.style} data-testid={s['data-testid'] as any}>
+          {acc}
+        </Tag>
+      );
+    }, inner);
+  }, [specs, inner]);
 
-/**
- * 데코레이터 팩토리
- * - 래퍼 클래스 체인과 bodyClass를 고정으로 주는 버전
- */
-export function withDivShell(params: DivShellParams): Decorator {
-  return (Story, _ctx) => {
-    useBodyClass(params.bodyClass);
-    return (
-      <DivShell wrappers={params.wrappers} container={params.container}>
-        <Story />
-      </DivShell>
-    );
-  };
-}
+  return <>{nested}</>;
+};
+DivShell.displayName = 'DivShell';
 
-/**
- * 스토리/메타의 parameters.divShell 값을 읽어서 적용하는 글로벌 데코레이터
- * - preview.ts의 decorators 배열에 추가해두면, 각 스토리별 parameters로 제어 가능
- */
-export const withDivShellFromParams: Decorator = (Story, ctx: StoryContext) => {
-  const params = (ctx.parameters?.divShell || {}) as DivShellParams;
-  useBodyClass(params.bodyClass);
-  return (
-    <DivShell wrappers={params.wrappers} container={params.container}>
+export function withDivShell(params: DivShellParams = {}): Decorator {
+  const WithDivShellDecorator: Decorator = Story => (
+    <DivShell wrappers={params.wrappers} defaultTag={params.defaultTag} root={params.root}>
       <Story />
     </DivShell>
   );
-};
+  (WithDivShellDecorator as any).displayName = 'withDivShell';
+  return WithDivShellDecorator;
+}

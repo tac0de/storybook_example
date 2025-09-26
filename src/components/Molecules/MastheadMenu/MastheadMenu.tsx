@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { LanguageLinks, type LanguageItem } from '../LanguageLinks/LanguageLinks';
+import './MastheadMenu.scss';
 
 export type MastheadMenuProps = {
   loggedIn: boolean;
