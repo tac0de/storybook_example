@@ -7,7 +7,7 @@ import type { Decorator } from '@storybook/react';
  * ================================ */
 
 type BodyClass = string | string[];
-type AllowPolicy = 'none' | 'all' | 'module' | (string & {});
+type AllowPolicy = 'none' | 'all' | (string & {});
 export type WithCssAndShellOpts = {
   hrefs?: string[];
   bodyClass?: BodyClass;
@@ -48,18 +48,6 @@ function setEnabled(el: HTMLStyleElement | HTMLLinkElement, on: boolean): void {
   }
 }
 
-/** pathname 의 상위 폴더 토큰 추출: /a/b/file.js → 'b' */
-function folderTokenFromUrl(urlLike: string): string | undefined {
-  try {
-    const u = new URL(urlLike, window.location.href);
-    const seg = u.pathname.replace(/\/+$/, '').split('/');
-    if (seg.length >= 2) return seg[seg.length - 2] || undefined;
-    return undefined;
-  } catch {
-    return undefined;
-  }
-}
-
 function collectDocs(): Document[] {
   const docs: Document[] = [document];
   const frames = document.querySelectorAll('iframe');
@@ -90,17 +78,6 @@ function buildAllowFn(allow: AllowPolicy | undefined): (el: Element) => boolean 
   if (!allow || allow === 'none') return () => false;
   if (allow === 'all') return () => true;
 
-  if (allow === 'module') {
-    const token = folderTokenFromUrl(import.meta.url);
-    if (!token) return () => false;
-    return (el: Element) => {
-      const id = el.getAttribute('data-vite-dev-id') || '';
-      const href = el instanceof HTMLLinkElement ? el.href || '' : '';
-      return id.includes(token) || href.includes(token);
-    };
-  }
-
-  // 문자열 → 파일명 토큰으로 간주
   if (typeof allow === 'string') {
     const clean = allow.trim().replace(/[?#].*$/, '');
     const seg = clean.split('/').filter(Boolean);
