@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { HeaderActions } from './HeaderActions';
-import { withCssLinks } from '../../../decorators/withCssLinks';
 
 const meta: Meta<typeof HeaderActions> = {
   title: 'Molecules/HeaderActions',
@@ -22,10 +21,10 @@ const meta: Meta<typeof HeaderActions> = {
   },
   parameters: { layout: 'padded' },
   decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
+    // withCssLinks({
+    //   hrefs: ['/joongang-css/index.min.css'],
+    //   bodyClass: ['index'],
+    // }),
   ],
 };
 export default meta;

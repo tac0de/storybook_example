@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { NavList, type NavItem } from './NavList';
-import { withCssLinks } from '../../../decorators/withCssLinks';
 
 const meta: Meta<typeof NavList> = {
   title: 'Molecules/NavList',

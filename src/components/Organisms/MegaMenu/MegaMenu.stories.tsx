@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenu, { type MegaMenuProps } from './MegaMenu';
-import HeaderShell from '../../../layouts/Header/HeaderShell';
+import { withCssAndShell } from '../../../decorators/withCssAndShell';
 
 const meta: Meta<MegaMenuProps> = {
   title: 'Organisms/MegaMenu',
@@ -35,11 +35,11 @@ const meta: Meta<MegaMenuProps> = {
   },
 
   decorators: [
-    Story => (
-      <HeaderShell>
-        <Story />
-      </HeaderShell>
-    ),
+    withCssAndShell({
+      hrefs: ['/joongang-css/index.min.css'],
+      structure: 'header#header.header.nav_re.emblem60.sticky_top',
+      bodyClass: ['index'],
+    }),
   ],
 };
 

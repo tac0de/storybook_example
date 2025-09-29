@@ -5,11 +5,11 @@ import HeaderBar from '../../components/Organisms/HeaderBar/HeaderBar';
 import MegaMenu from '../../components/Organisms/MegaMenu/MegaMenu';
 import SearchLayer from '../../components/Organisms/SearchLayer/SearchLayer';
 
-export type GlobalHeaderProps = {
+export type HomeHeaderProps = {
   sticky?: boolean;
 };
 
-export default function GlobalHeader({ sticky = false }: GlobalHeaderProps) {
+export default function HomeHeader({ sticky = false }: HomeHeaderProps) {
   const [openMega, setOpenMega] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 

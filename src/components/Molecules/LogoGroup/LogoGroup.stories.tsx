@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LogoGroup } from './LogoGroup';
-import { withCssLinks } from '../../../decorators/withCssLinks';
-import { withDivShell } from '../../../decorators/divShell';
 // import { withCssAndShell } from '../../../decorators/withCssAndShell';
 
 const meta: Meta<typeof LogoGroup> = {
@@ -31,13 +29,9 @@ const meta: Meta<typeof LogoGroup> = {
     height: { control: 'number' },
   },
   decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
-    withDivShell({
-      wrappers: ['header emblem60 nav_re', 'header_wrap'],
-    }),
+    // withDivShell({
+    //   wrappers: ['header emblem60 nav_re', 'header_wrap'],
+    // }),
   ],
 };
 export default meta;

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MastheadMenu } from './MastheadMenu';
-import { withCssLinks } from '../../../decorators/withCssLinks';
 
 const meta: Meta<typeof MastheadMenu> = {
   title: 'Molecules/MastheadMenu',
@@ -19,10 +18,10 @@ const meta: Meta<typeof MastheadMenu> = {
     layout: 'padded',
   },
   decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
+    // withCssLinks({
+    //   hrefs: ['/joongang-css/index.min.css'],
+    //   bodyClass: ['index'],
+    // }),
   ],
 };
 export default meta;

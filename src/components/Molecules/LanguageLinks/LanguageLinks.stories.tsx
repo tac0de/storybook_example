@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LanguageLinks, type LanguageItem } from './LanguageLinks';
-import { withCssLinks } from '../../../decorators/withCssLinks';
 
 const meta: Meta<typeof LanguageLinks> = {
   title: 'Molecules/LanguageLinks',
@@ -21,10 +20,10 @@ const meta: Meta<typeof LanguageLinks> = {
     layout: 'padded',
   },
   decorators: [
-    withCssLinks({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
+    // withCssLinks({
+    //   hrefs: ['/joongang-css/index.min.css'],
+    //   bodyClass: ['index'],
+    // }),
   ],
 };
 export default meta;
