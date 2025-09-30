@@ -25,7 +25,12 @@ export default function SearchLayer({ open, onClose, onSubmit }: SearchLayerProp
   };
 
   return (
-    <div className={cx('full_popup', 'bg_white', 'search_popup', open && 'show')} id="layer_search" tabIndex={0}>
+    <div
+      style={{ zIndex: 1000 }}
+      className={cx('full_popup', 'bg_white', 'search_popup', open ? 'show' : 'hide')}
+      id="layer_search"
+      tabIndex={0}
+    >
       <div className="layer_popup layer_search layer_search_plus search_ai">
         <div className="layer_header">
           <button

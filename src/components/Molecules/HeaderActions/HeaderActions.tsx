@@ -9,6 +9,7 @@ export type HeaderActionsProps = {
   /** aria-expanded 제어 (필요 시 외부 상태로 관리) */
   menuExpanded?: boolean;
   searchExpanded?: boolean;
+  variant?: 'default' | 'plus' | 'sub' | 'plus-sub';
 };
 
 /**
@@ -24,6 +25,7 @@ export function HeaderActions({
   searchAriaLabel = '검색',
   menuExpanded = false,
   searchExpanded = false,
+  variant = 'default',
 }: HeaderActionsProps) {
   return (
     <>
@@ -35,7 +37,7 @@ export function HeaderActions({
         aria-haspopup="dialog"
         aria-expanded={menuExpanded}
       >
-        <i className="ico_navbar" aria-hidden="true" />
+        <i className={variant === 'default' ? 'ico_navbar' : 'ico_ham'} aria-hidden="true" />
       </button>
 
       <button

@@ -38,6 +38,7 @@ export const HeaderSub: Story = {
   args: {
     sticky: true,
   },
+
   render: args => <SubHeader {...args} />,
 };
 
