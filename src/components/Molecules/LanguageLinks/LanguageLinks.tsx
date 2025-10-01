@@ -27,12 +27,6 @@ const DEFAULT_ITEMS: LanguageItem[] = [
   { label: '中文', href: 'https://chinese.joins.com/' },
   { label: 'ENG', href: 'https://koreajoongangdaily.joins.com/' },
 ];
-
-/**
- * LanguageLinks
- * - 전역 CSS: `.language_site` (+ 선택적으로 `sm_hidden md_hidden`)
- * - 탭/Docs에서 이동 방지하려면 onItemClick으로 e.preventDefault() 내부에서 호출됨
- */
 export function LanguageLinks({
   items = DEFAULT_ITEMS,
   className,

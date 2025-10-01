@@ -42,7 +42,6 @@ export function HeaderBar({
 }: HeaderBarProps) {
   // --- Default (Home) & PlusHome Variants ---
   if (variant === 'default' || variant === 'plus') {
-    // ... 이전과 동일 ...
     return (
       <div className={classNames('header_wrap', className)}>
         <LogoGroup {...logo} />
