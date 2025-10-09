@@ -7,36 +7,37 @@ const meta: Meta<typeof IconButton> = {
   component: IconButton,
   tags: ['autodocs'],
   args: {
-    kind: 'search',
-    ariaLabel: '검색',
+    variant: 'navbar',
+    ariaLabel: '메뉴',
+    expanded: false,
   },
   argTypes: {
-    kind: {
-      control: 'select',
-      options: ['navbar', 'search', 'newspaper'],
-    },
+    variant: { control: 'inline-radio', options: ['navbar', 'ham', 'search'] },
     onClick: { action: 'clicked' },
+    expanded: { control: 'boolean' },
   },
   decorators: [
     withCssAndShell({
       hrefs: ['/joongang-css/index.min.css'],
     }),
   ],
+  parameters: { layout: 'padded' },
 };
 export default meta;
 
 type Story = StoryObj<typeof IconButton>;
 
-export const Playground: Story = {};
+export const Navbar: Story = {};
 
-export const Navbar: Story = {
-  args: { kind: 'navbar', ariaLabel: '메뉴 열기' },
+export const Ham: Story = {
+  args: { variant: 'ham', ariaLabel: '메뉴 열기 (햄버거)' },
+  decorators: [
+    withCssAndShell({
+      hrefs: ['/joongang-css/layout.min.css'],
+    }),
+  ],
 };
 
 export const Search: Story = {
-  args: { kind: 'search', ariaLabel: '검색 열기' },
-};
-
-export const Newspaper: Story = {
-  args: { kind: 'newspaper', ariaLabel: '지면보기' },
+  args: { variant: 'search', ariaLabel: '검색 열기', expanded: true, 'aria-haspopup': 'dialog' },
 };

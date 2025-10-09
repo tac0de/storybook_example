@@ -1,28 +1,28 @@
-// src/components/Organisms/HeaderBar/HeaderBar.tsx
-import classNames from 'classnames';
-import './HeaderBar.scss';
+import {
+  HeaderBar as HeaderBarCompound,
+  type HeaderBarMastheadMenuProps,
+  type HeaderBarVariant,
+  type HeaderBarUser as CompoundHeaderBarUser,
+} from './HeaderBar.compound';
+import type { LogoGroupProps } from '../../Molecules/LogoGroup/LogoGroup';
+import type { NavItem } from '../../Molecules/NavList/NavList';
+import type { PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
+import type { HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
 
-// Molecules
-import { LogoGroup, type LogoGroupProps } from '../../Molecules/LogoGroup/LogoGroup';
-import { NavList, type NavItem } from '../../Molecules/NavList/NavList';
-import { PlusShortcut, type PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
-import { HeaderActions, type HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
-
-export type HeaderBarUser = { loggedIn: boolean };
+export type HeaderBarUser = CompoundHeaderBarUser;
 
 export type HeaderBarProps = {
-  variant?: 'default' | 'plus' | 'sub' | 'plus-sub';
+  variant?: HeaderBarVariant;
   className?: string;
-  logo: Omit<LogoGroupProps, 'className'>;
+  logo: Omit<LogoGroupProps, 'className' | 'renderAsH1'>;
   nav?: NavItem[];
   user: HeaderBarUser;
-  // Actions
   onOpenMegaMenu: () => void;
   onOpenSearch: () => void;
   onClickJoin: () => void;
   onClickReplica: () => void;
-  onLogout?: () => void; // onLogout 핸들러 추가
-  // Optional Molecules
+  onLogout?: () => void;
+  mastheadMenu?: HeaderBarMastheadMenuProps;
   shortcut?: Omit<PlusShortcutProps, 'className'>;
   actions?: Omit<HeaderActionsProps, 'onOpenMegaMenu' | 'onOpenSearch'>;
 };
@@ -36,90 +36,51 @@ export function HeaderBar({
   onOpenMegaMenu,
   onOpenSearch,
   onClickJoin,
+  onClickReplica,
   onLogout,
+  mastheadMenu,
   shortcut,
   actions,
 }: HeaderBarProps) {
-  // --- Default (Home) & PlusHome Variants ---
-  if (variant === 'default' || variant === 'plus') {
-    return (
-      <div className={classNames('header_wrap', className)}>
-        <LogoGroup {...logo} />
-        <div className="header_area flex_sm_column_reverse flex_md_column_reverse">
-          <nav className="header_nav">
-            {nav && <NavList items={nav} />}
-            <PlusShortcut {...shortcut} />
-            <HeaderActions onOpenMegaMenu={onOpenMegaMenu} onOpenSearch={onOpenSearch} {...actions} />
-          </nav>
-        </div>
-      </div>
-    );
-  }
+  const commonRootProps = {
+    variant,
+    user,
+    className,
+    onOpenMegaMenu,
+    onOpenSearch,
+    onClickJoin,
+    onClickReplica,
+    onLogout,
+  };
 
-  // --- Sub & PlusSub Variants ---
   if (variant === 'sub' || variant === 'plus-sub') {
     return (
-      <div className={classNames('uh', className)}>
-        <LogoGroup {...logo} renderAsH1={variant !== 'sub'} />
-        <div className="header_right_area">
-          {!user.loggedIn ? (
-            <>
-              <ul className="logout sm_hidden">
-                <li>
-                  <a
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      onClickJoin();
-                    }}
-                  >
-                    로그인
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      onClickJoin();
-                    }}
-                  >
-                    회원가입
-                  </a>
-                </li>
-              </ul>
-              {/* 로그인 유도 팝오버 (필요 시 상태 관리 추가) */}
-              <div className="layer_popup layer_login_popup pop_over hide">{/* ... 팝오버 내부 구조 ... */}</div>
-            </>
-          ) : (
-            <ul className="login user sm_hidden">
-              <li className="link_logout">
-                <a
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    onLogout?.();
-                  }}
-                >
-                  로그아웃
-                </a>
-              </li>
-              <li>
-                <a href="https://www.joongang.co.kr/mynews">마이페이지</a>
-              </li>
-            </ul>
-          )}
-
-          <div className="header_option_area">
-            <HeaderActions onOpenMegaMenu={onOpenMegaMenu} variant={variant} onOpenSearch={onOpenSearch} {...actions} />
-            <PlusShortcut {...shortcut} />
-          </div>
-        </div>
-      </div>
+      <HeaderBarCompound.Root {...commonRootProps}>
+        <HeaderBarCompound.Logo {...logo} />
+        <HeaderBarCompound.Right>
+          {mastheadMenu ? <HeaderBarCompound.MastheadMenu {...mastheadMenu} /> : null}
+          <HeaderBarCompound.Auth />
+          <HeaderBarCompound.OptionArea>
+            <HeaderBarCompound.Actions {...(actions ?? {})} />
+            {shortcut ? <HeaderBarCompound.Shortcut {...shortcut} /> : null}
+          </HeaderBarCompound.OptionArea>
+        </HeaderBarCompound.Right>
+      </HeaderBarCompound.Root>
     );
   }
 
-  return null;
+  return (
+    <HeaderBarCompound.Root {...commonRootProps}>
+      <HeaderBarCompound.Logo {...logo} />
+      <HeaderBarCompound.Right>
+        {mastheadMenu ? <HeaderBarCompound.MastheadMenu {...mastheadMenu} /> : null}
+        <HeaderBarCompound.Nav items={nav}>
+          {shortcut ? <HeaderBarCompound.Shortcut {...shortcut} /> : null}
+          <HeaderBarCompound.Actions {...(actions ?? {})} />
+        </HeaderBarCompound.Nav>
+      </HeaderBarCompound.Right>
+    </HeaderBarCompound.Root>
+  );
 }
 
 export default HeaderBar;

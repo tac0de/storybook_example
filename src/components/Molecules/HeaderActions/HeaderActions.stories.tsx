@@ -5,6 +5,16 @@ const meta: Meta<typeof HeaderActions> = {
   title: 'Molecules/HeaderActions',
   component: HeaderActions,
   tags: ['autodocs'],
+  args: {
+    menuAriaLabel: '메뉴',
+    searchAriaLabel: '검색',
+    menuExpanded: false,
+    searchExpanded: false,
+    variant: 'default',
+    containerClassName: undefined,
+    menuButtonClassName: undefined,
+    searchButtonClassName: undefined,
+  },
   argTypes: {
     onOpenMegaMenu: { action: 'open-mega' },
     onOpenSearch: { action: 'open-search' },
@@ -12,20 +22,12 @@ const meta: Meta<typeof HeaderActions> = {
     searchAriaLabel: { control: 'text' },
     menuExpanded: { control: 'boolean' },
     searchExpanded: { control: 'boolean' },
-  },
-  args: {
-    menuAriaLabel: '메뉴',
-    searchAriaLabel: '검색',
-    menuExpanded: false,
-    searchExpanded: false,
+    variant: { options: ['default', 'plus', 'sub', 'plus-sub'], control: 'inline-radio' },
+    containerClassName: { control: 'text' },
+    menuButtonClassName: { control: 'text' },
+    searchButtonClassName: { control: 'text' },
   },
   parameters: { layout: 'padded' },
-  decorators: [
-    // withCssLinks({
-    //   hrefs: ['/joongang-css/index.min.css'],
-    //   bodyClass: ['index'],
-    // }),
-  ],
 };
 export default meta;
 
@@ -35,4 +37,12 @@ export const Playground: Story = {};
 
 export const ExpandedStates: Story = {
   args: { menuExpanded: true, searchExpanded: true },
+};
+
+export const WithCustomWrapper: Story = {
+  args: {
+    containerClassName: 'actions-wrapper',
+    menuButtonClassName: 'actions-menu',
+    searchButtonClassName: 'actions-search',
+  },
 };

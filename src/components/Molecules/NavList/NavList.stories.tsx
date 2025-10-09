@@ -14,16 +14,21 @@ const meta: Meta<typeof NavList> = {
       { label: '국제', href: '/world' },
     ] as NavItem[],
     ariaLabel: '주요 메뉴',
+    listClassName: 'nav sm_hidden md_hidden',
+    itemClassName: 'nav_item',
+    activeClassName: 'is-active',
+    linkClassName: undefined,
   },
   argTypes: {
     onItemClick: { action: 'item-click' },
     className: { control: 'text' },
+    listClassName: { control: 'text' },
+    itemClassName: { control: 'text' },
+    activeClassName: { control: 'text' },
+    linkClassName: { control: 'text' },
     ariaLabel: { control: 'text' },
   },
-  parameters: {
-    layout: 'padded',
-  },
-  // decorators: [],
+  parameters: { layout: 'padded' },
 };
 export default meta;
 
@@ -41,18 +46,11 @@ export const ManyItems: Story = {
   },
 };
 
-export const NoActive: Story = {
+export const CustomClasses: Story = {
   args: {
-    items: [
-      { label: '뉴스', href: '/news' },
-      { label: '정치', href: '/politics' },
-      { label: '경제', href: '/economy' },
-    ],
-  },
-};
-
-export const WithCustomClass: Story = {
-  args: {
-    className: 'debug-outline', // 필요 시 local SCSS에서 스타일 확인용
+    listClassName: 'nav custom-nav',
+    itemClassName: 'custom-item',
+    activeClassName: 'custom-active',
+    linkClassName: 'custom-link',
   },
 };

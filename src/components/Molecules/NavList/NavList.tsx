@@ -1,44 +1,56 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import { NavLink } from '../../Atoms/NavLink/NavLink';
 
-export type NavItem = { label: string; href: string; active?: boolean };
+export type NavItem = { label: string; href: string; active?: boolean; ariaLabel?: string };
+
+const LIST_CLASS = 'nav sm_hidden md_hidden';
 
 export type NavListProps = {
-  /** GNB 항목들 */
   items: NavItem[];
-  /** ul에 추가 클래스 */
   className?: string;
-  /** 내비 레이블(접근성) */
+  listClassName?: string;
+  itemClassName?: string;
+  activeClassName?: string;
+  linkClassName?: string;
   ariaLabel?: string;
-  /**
-   * 링크 클릭 핸들러 (Storybook에서 이동 방지하려면 e.preventDefault() 권장)
-   * 기본: 전달 안함(그대로 이동)
-   */
   onItemClick?: (item: NavItem, index: number, e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-/**
- * 데스크톱 GNB 리스트
- * - 전역 CSS(.nav, .nav_item, .is-active)를 사용합니다.
- * - 반응형 전역 헬퍼(sm_hidden, md_hidden)도 유지합니다.
- */
-export function NavList({ items, className, ariaLabel = '주요 메뉴', onItemClick }: NavListProps) {
+export function NavList({
+  items,
+  className,
+  listClassName = LIST_CLASS,
+  itemClassName = 'nav_item',
+  activeClassName = 'is-active',
+  linkClassName,
+  ariaLabel = '주요 메뉴',
+  onItemClick,
+}: NavListProps) {
+  const handleClick = React.useCallback(
+    (item: NavItem, index: number) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!onItemClick) return;
+      event.preventDefault();
+      onItemClick(item, index, event);
+    },
+    [onItemClick]
+  );
+
   return (
-    <ul className={classNames('nav sm_hidden md_hidden', className)} aria-label={ariaLabel}>
+    <ul className={classNames(listClassName, className)} aria-label={ariaLabel}>
       {items.map((item, idx) => (
-        <li key={item.href || `${item.label}-${idx}`} className={classNames('nav_item', item.active && 'is-active')}>
-          <a
-            href={item.href}
-            onClick={e => {
-              if (onItemClick) {
-                e.preventDefault();
-                onItemClick(item, idx, e);
-              }
-            }}
-          >
-            {item.label}
-          </a>
-        </li>
+        <NavLink
+          key={item.href || `${item.label}-${idx}`}
+          href={item.href}
+          active={item.active}
+          ariaLabel={item.ariaLabel}
+          baseClassName={itemClassName}
+          activeClassName={activeClassName}
+          linkClassName={linkClassName}
+          onClick={onItemClick ? handleClick(item, idx) : undefined}
+        >
+          {item.label}
+        </NavLink>
       ))}
     </ul>
   );

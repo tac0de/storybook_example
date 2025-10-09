@@ -1,8 +1,26 @@
-// src/components/Molecules/PlusShortcut/PlusShortcut.tsx
-import classNames from 'classnames';
+import type { ReactNode } from 'react';
+import { ShortcutLink } from '../../Atoms/ShortcutLink/ShortcutLink';
+
+export type PlusShortcutVariant = 'plus' | 'plusWithoutLogo' | 'default';
+
+const ICONS: Record<PlusShortcutVariant, ReactNode> = {
+  plus: (
+    <>
+      <i className="ico_shortcut_plus" aria-hidden="true" />
+      <i className="logo_plus" aria-hidden="true" />
+    </>
+  ),
+  plusWithoutLogo: <i className="ico_shortcut_plus" aria-hidden="true" />,
+  default: (
+    <>
+      <i className="ico_shortcut" aria-hidden="true" />
+      <i className="ico_emblem60" role="img" aria-label="60주년" />
+    </>
+  ),
+};
 
 export type PlusShortcutProps = {
-  variant?: 'plus' | 'plus_without_logo' | 'default';
+  variant?: PlusShortcutVariant;
   href?: string;
   ariaLabel?: string;
   className?: string;
@@ -16,37 +34,10 @@ export function PlusShortcut({
   className,
   targetBlank = false,
 }: PlusShortcutProps) {
-  const rel = targetBlank ? 'noopener noreferrer' : undefined;
-  const target = targetBlank ? '_blank' : undefined;
-
-  let icon;
-
-  if (variant === 'plus') {
-    icon = (
-      <>
-        <i className="ico_shortcut_plus" aria-hidden="true" />
-        <i className="logo_plus" aria-hidden="true" />
-      </>
-    );
-  } else if (variant === 'plus_without_logo') {
-    icon = (
-      <>
-        <i className="ico_shortcut_plus" aria-hidden="true" />
-      </>
-    );
-  } else {
-    icon = (
-      <>
-        <i className="ico_shortcut"></i>
-        <i className="ico_emblem60" role="img" aria-label="60주년"></i>
-      </>
-    );
-  }
-
   return (
-    <a href={href} className={classNames('btn_shortcut', className)} aria-label={ariaLabel} rel={rel} target={target}>
-      {icon}
-    </a>
+    <ShortcutLink href={href} ariaLabel={ariaLabel} targetBlank={targetBlank} className={className}>
+      {ICONS[variant]}
+    </ShortcutLink>
   );
 }
 

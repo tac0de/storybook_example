@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LogoGroup } from './LogoGroup';
-// import { withCssAndShell } from '../../../decorators/withCssAndShell';
 
 const meta: Meta<typeof LogoGroup> = {
   title: 'Molecules/LogoGroup',
   component: LogoGroup,
   tags: ['autodocs'],
   args: {
+    variant: 'default',
     emblem60Url: 'https://www.joongang.co.kr/60th',
     homeHref: 'https://www.joongang.co.kr',
     logoUrl: 'https://img.joongang.co.kr/pubimg/logo/logo_thejoongang.png',
@@ -15,10 +15,8 @@ const meta: Meta<typeof LogoGroup> = {
     width: 249,
     height: 86,
   },
-  parameters: {
-    layout: 'padded',
-  },
   argTypes: {
+    variant: { options: ['default', 'sub', 'plus', 'plus-sub'], control: 'inline-radio' },
     emblem60Url: { control: 'text' },
     homeHref: { control: 'text' },
     logoUrl: { control: 'text' },
@@ -27,12 +25,9 @@ const meta: Meta<typeof LogoGroup> = {
     className: { control: 'text' },
     width: { control: 'number' },
     height: { control: 'number' },
+    renderAsH1: { control: 'boolean' },
   },
-  decorators: [
-    // withDivShell({
-    //   wrappers: ['header emblem60 nav_re', 'header_wrap'],
-    // }),
-  ],
+  parameters: { layout: 'padded' },
 };
 export default meta;
 
@@ -44,6 +39,11 @@ export const WithoutEmblem: Story = {
   args: { emblem60Url: undefined },
 };
 
-export const CustomSize: Story = {
-  args: { width: 178, height: 26 },
+export const PlusVariant: Story = {
+  args: {
+    variant: 'plus',
+    emblem60Url: undefined,
+    logoUrl: undefined,
+    logoAlt: '더 중앙 플러스',
+  },
 };

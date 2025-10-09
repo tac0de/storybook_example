@@ -1,23 +1,27 @@
-export type HeaderActionsProps = {
-  /** 햄버거(메가메뉴) 열기 */
-  onOpenMegaMenu: () => void;
-  /** 검색 열기 */
-  onOpenSearch: () => void;
-  /** 접근성 라벨 */
-  menuAriaLabel?: string;
-  searchAriaLabel?: string;
-  /** aria-expanded 제어 (필요 시 외부 상태로 관리) */
-  menuExpanded?: boolean;
-  searchExpanded?: boolean;
-  variant?: 'default' | 'plus' | 'sub' | 'plus-sub';
+import { IconButton } from '../../Atoms/IconButton/IconButton';
+
+export type HeaderActionsVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
+
+const MENU_VARIANT_MAP: Record<HeaderActionsVariant, 'navbar' | 'ham'> = {
+  default: 'navbar',
+  plus: 'ham',
+  sub: 'ham',
+  'plus-sub': 'ham',
 };
 
-/**
- * HeaderActions
- * - 전역 CSS: `.btn_navbar`, `.ico_navbar`, `.btn_search`,
- *            `.ico_search.art_search`, `.ico_search_gra.art_search_gra`, `.ico_search_ai.art_ai`
- * - 레이아웃을 해치지 않도록 래퍼 없이 Fragment로 버튼 2개만 렌더링
- */
+export type HeaderActionsProps = {
+  onOpenMegaMenu: () => void;
+  onOpenSearch: () => void;
+  menuAriaLabel?: string;
+  searchAriaLabel?: string;
+  menuExpanded?: boolean;
+  searchExpanded?: boolean;
+  variant?: HeaderActionsVariant;
+  menuButtonClassName?: string;
+  searchButtonClassName?: string;
+  containerClassName?: string;
+};
+
 export function HeaderActions({
   onOpenMegaMenu,
   onOpenSearch,
@@ -26,34 +30,38 @@ export function HeaderActions({
   menuExpanded = false,
   searchExpanded = false,
   variant = 'default',
+  menuButtonClassName,
+  searchButtonClassName,
+  containerClassName,
 }: HeaderActionsProps) {
-  return (
-    <>
-      <button
-        type="button"
-        className="btn_navbar"
-        onClick={onOpenMegaMenu}
-        aria-label={menuAriaLabel}
-        aria-haspopup="dialog"
-        aria-expanded={menuExpanded}
-      >
-        <i className={variant === 'default' ? 'ico_navbar' : 'ico_ham'} aria-hidden="true" />
-      </button>
+  const menuVariant = MENU_VARIANT_MAP[variant] ?? 'navbar';
 
-      <button
-        type="button"
-        className="btn_search"
-        onClick={onOpenSearch}
-        aria-label={searchAriaLabel}
+  const buttons = (
+    <>
+      <IconButton
+        variant={menuVariant}
+        ariaLabel={menuAriaLabel}
+        expanded={menuExpanded}
+        className={menuButtonClassName}
+        onClick={onOpenMegaMenu}
         aria-haspopup="dialog"
-        aria-expanded={searchExpanded}
-      >
-        <i className="ico_search art_search" aria-hidden="true" />
-        <i className="ico_search_gra art_search_gra" aria-hidden="true" />
-        <i className="ico_search_ai art_ai" aria-hidden="true" />
-      </button>
+      />
+      <IconButton
+        variant="search"
+        ariaLabel={searchAriaLabel}
+        expanded={searchExpanded}
+        className={searchButtonClassName}
+        onClick={onOpenSearch}
+        aria-haspopup="dialog"
+      />
     </>
   );
+
+  if (!containerClassName) {
+    return buttons;
+  }
+
+  return <div className={containerClassName}>{buttons}</div>;
 }
 
 export default HeaderActions;

@@ -1,27 +1,60 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-export type IconButtonKind = 'navbar' | 'search' | 'newspaper';
+export type IconButtonVariant = 'navbar' | 'ham' | 'search';
 
-export type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  /** 아이콘 종류 (전역 CSS 클래스 사용) */
-  kind: IconButtonKind;
-  /** 접근성 라벨 */
-  ariaLabel: string;
-  /** 추가 클래스 */
-  className?: string;
+const BUTTON_CLASS_BY_VARIANT: Record<IconButtonVariant, string> = {
+  navbar: 'btn_navbar',
+  ham: 'btn_navbar',
+  search: 'btn_search',
 };
 
-/**
- * 전역 아이콘을 사용하는 버튼
- * - ico_navbar, ico_search, ico_newspaper 등 전역 CSS 기반
- */
-export function IconButton({ kind, ariaLabel, className, ...rest }: IconButtonProps) {
-  const iconCls = kind === 'navbar' ? 'ico_navbar' : kind === 'search' ? 'ico_search' : 'ico_newspaper';
+const ICON_BY_VARIANT: Record<IconButtonVariant, React.ReactNode> = {
+  navbar: <i className="ico_navbar" aria-hidden="true" />,
+  ham: <i className="ico_ham" aria-hidden="true" />,
+  search: (
+    <>
+      <i className="ico_search art_search" aria-hidden="true" />
+      <i className="ico_search_gra art_search_gra" aria-hidden="true" />
+      <i className="ico_search_ai art_ai" aria-hidden="true" />
+    </>
+  ),
+};
+
+export type IconButtonProps = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'type' | 'aria-label' | 'className'
+> & {
+  variant?: IconButtonVariant;
+  ariaLabel: string;
+  expanded?: boolean;
+  className?: string;
+  buttonClassName?: string;
+  icon?: React.ReactNode;
+};
+
+export function IconButton({
+  variant = 'navbar',
+  ariaLabel,
+  expanded,
+  className,
+  buttonClassName,
+  icon,
+  ...rest
+}: IconButtonProps) {
+  const baseClass = buttonClassName ?? BUTTON_CLASS_BY_VARIANT[variant];
+  const iconNode = icon ?? ICON_BY_VARIANT[variant];
+  const ariaExpanded = typeof expanded === 'boolean' ? expanded : undefined;
 
   return (
-    <button type="button" className={classNames('btn_icon', className)} aria-label={ariaLabel} {...rest}>
-      <i className={iconCls} aria-hidden="true" />
+    <button
+      type="button"
+      className={classNames(baseClass, className)}
+      aria-label={ariaLabel}
+      aria-expanded={ariaExpanded}
+      {...rest}
+    >
+      {iconNode}
     </button>
   );
 }

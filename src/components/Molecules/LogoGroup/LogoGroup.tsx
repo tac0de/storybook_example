@@ -1,8 +1,26 @@
 // src/components/Molecules/LogoGroup/LogoGroup.tsx
 import classNames from 'classnames';
+import { LogoAnchor } from '../../Atoms/LogoAnchor/LogoAnchor';
+import { EmblemBadge } from '../../Atoms/EmblemBadge/EmblemBadge';
+
+export type LogoGroupVariant = 'default' | 'sub' | 'plus' | 'plus-sub';
+
+const WRAPPER_CLASS: Record<LogoGroupVariant, string> = {
+  default: 'logo',
+  sub: 'logo',
+  plus: 'logo_plus',
+  'plus-sub': 'logo_plus',
+};
+
+const SHOULD_SHOW_EMBLEM: Record<LogoGroupVariant, boolean> = {
+  default: true,
+  sub: true,
+  plus: false,
+  'plus-sub': false,
+};
 
 export type LogoGroupProps = {
-  variant?: 'default' | 'plus';
+  variant?: LogoGroupVariant;
   emblem60Url?: string;
   homeHref: string;
   logoUrl?: string;
@@ -11,7 +29,7 @@ export type LogoGroupProps = {
   className?: string;
   width?: number;
   height?: number;
-  renderAsH1?: boolean; // h1 렌더링 여부 제어 prop 추가
+  renderAsH1?: boolean;
 };
 
 export function LogoGroup({
@@ -24,38 +42,43 @@ export function LogoGroup({
   className,
   width = 249,
   height = 86,
-  renderAsH1 = true, // 기본값은 true
+  renderAsH1 = true,
 }: LogoGroupProps) {
-  const content = (
+  const wrapperClass = classNames(WRAPPER_CLASS[variant], className);
+  const anchorBase = variant === 'default' || variant === 'plus' ? '' : 'logo';
+  const showEmblem = SHOULD_SHOW_EMBLEM[variant] && Boolean(emblem60Url);
+
+  const mainLogo = () => {
+    if (variant === 'plus' || variant === 'plus-sub') {
+      return <span className="visually_hidden">{logoAlt}</span>;
+    }
+    if (logoUrl) {
+      return <img width={width} height={height} src={logoUrl} alt={logoAlt} />;
+    }
+    return <span className="visually_hidden">{logoAlt}</span>;
+  };
+
+  const emblemNode =
+    showEmblem && emblem60Url ? (
+      <LogoAnchor href={emblem60Url} ariaLabel="중앙일보 60주년 선포페이지" baseClassName={anchorBase}>
+        <EmblemBadge ariaLabel={emblemAriaLabel} />
+      </LogoAnchor>
+    ) : null;
+
+  const body = (
     <>
-      {variant === 'plus' ? (
-        <a href={homeHref}>
-          <span className="visually_hidden">{logoAlt}</span>
-        </a>
-      ) : (
-        <>
-          {emblem60Url && (
-            <a href={emblem60Url} className="logo" aria-label="중앙일보 60주년 선포페이지">
-              <span className="emblem">
-                <i className="ico_emblem60" role="img" aria-label={emblemAriaLabel} />
-              </span>
-            </a>
-          )}
-          <a href={homeHref} className="logo" aria-label="중앙일보">
-            <img width={width} height={height} src={logoUrl} alt={logoAlt} />
-          </a>
-        </>
-      )}
+      {emblemNode}
+      <LogoAnchor href={homeHref} ariaLabel={logoAlt} baseClassName={anchorBase}>
+        {mainLogo()}
+      </LogoAnchor>
     </>
   );
 
   if (renderAsH1) {
-    const h1Class = variant === 'plus' ? 'logo_plus' : 'logo';
-    return <h1 className={classNames(h1Class, className)}>{content}</h1>;
+    return <h1 className={wrapperClass}>{body}</h1>;
   }
 
-  // h1 없이 렌더링 (SubHeader용)
-  return <>{content}</>;
+  return <>{body}</>;
 }
 
 export default LogoGroup;

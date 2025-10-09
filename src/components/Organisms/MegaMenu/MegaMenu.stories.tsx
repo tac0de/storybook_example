@@ -5,24 +5,9 @@ import { withCssAndShell } from '../../../decorators/withCssAndShell';
 const meta: Meta<MegaMenuProps> = {
   title: 'Organisms/MegaMenu',
   component: MegaMenu,
-  //   tags: ['autodocs'],
+  tags: ['autodocs'],
   parameters: {
-    // docs: {
-    //   story: { inline: false },
-    //   container: ({ children, context }) => (
-    //     <DocsContainer context={context}>
-    //       <style>
-    //         {`
-    //         .sb-main-padded { // Or a more specific selector for the canvas content area
-    //           height: 100vh;
-    //           overflow: auto; // Add overflow if content might exceed viewport
-    //         }
-    //       `}
-    //       </style>
-    //       {children}
-    //     </DocsContainer>
-    //   ),
-    // },
+    docs: { story: { inline: false, iframeHeight: 480 } },
     layout: 'fullscreen', // 메뉴는 풀화면으로 보이게
   },
   args: {

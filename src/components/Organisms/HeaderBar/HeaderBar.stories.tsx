@@ -1,4 +1,3 @@
-// src/components/Organisms/HeaderBar/HeaderBar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import HeaderBar from './HeaderBar';
 import { withCssAndShell } from '../../../decorators/withCssAndShell';
@@ -14,9 +13,9 @@ const meta: Meta<typeof HeaderBar> = {
     onOpenSearch: { action: 'open-search' },
     onClickJoin: { action: 'join' },
     onClickReplica: { action: 'replica' },
+    onLogout: { action: 'logout' },
   },
   args: {
-    // 공통 action props
     onOpenMegaMenu: () => alert('메가메뉴 열기'),
     onOpenSearch: () => alert('검색 열기'),
     onClickJoin: () => alert('회원가입'),
@@ -27,7 +26,6 @@ export default meta;
 
 type Story = StoryObj<typeof HeaderBar>;
 
-// 1. 기본 홈 헤더 (Default Variant)
 export const DefaultHome: Story = {
   args: {
     variant: 'default',
@@ -42,6 +40,16 @@ export const DefaultHome: Story = {
       { label: '정치', href: '/politics' },
       { label: '경제', href: '/economy' },
     ],
+    mastheadMenu: {
+      replicaHref: 'https://www.joongang.co.kr/replica',
+      loginHref: '/login',
+      joinHref: '/join',
+      myNewsHref: 'https://www.joongang.co.kr/mynews',
+      languageItems: [
+        { label: 'ENG', href: 'https://koreajoongangdaily.joins.com' },
+        { label: '中文', href: 'https://chinese.joins.com' },
+      ],
+    },
     shortcut: {
       variant: 'plus',
     },
@@ -55,7 +63,6 @@ export const DefaultHome: Story = {
   ],
 };
 
-// 2. 서브 페이지 헤더 (Sub Variant)
 export const SubPage: Story = {
   args: {
     variant: 'sub',
@@ -67,10 +74,9 @@ export const SubPage: Story = {
       width: 178,
       height: 26,
     },
-    // Sub variant는 nav가 없음
     nav: undefined,
     shortcut: {
-      variant: 'plus_without_logo',
+      variant: 'plusWithoutLogo',
       href: 'https://www.joongang.co.kr/plus',
     },
   },
@@ -132,7 +138,6 @@ export const PlusSub: Story = {
   decorators: [
     withCssAndShell({
       hrefs: [JOONGANGCSS.LAYOUT, JOONGANGCSS.PLUSCOMMON, JOONGANGCSS.PlUS],
-      bodyClass: ['index'],
       structure: 'header.header.black_type.nav_re.emblem60',
     }),
   ],

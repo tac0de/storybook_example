@@ -1,16 +1,31 @@
+import * as React from 'react';
 import classNames from 'classnames';
 import { LanguageLinks, type LanguageItem } from '../LanguageLinks/LanguageLinks';
+import { ShortcutLink } from '../../Atoms/ShortcutLink/ShortcutLink';
+import { TextLink } from '../../Atoms/TextLink/TextLink';
 import './MastheadMenu.scss';
+
+const DEFAULT_LINKS = {
+  replica: 'https://www.joongang.co.kr/replica',
+  login: '/login',
+  join: '/join',
+  logout: '/logout',
+  myNews: 'https://www.joongang.co.kr/mynews',
+};
 
 export type MastheadMenuProps = {
   loggedIn: boolean;
-  onClickReplica: () => void;
-  onClickJoin: () => void;
+  onClickReplica?: () => void;
+  onClickJoin?: () => void;
+  onClickLogin?: () => void;
+  onClickLogout?: () => void;
+  replicaHref?: string;
+  loginHref?: string;
+  joinHref?: string;
+  logoutHref?: string;
+  myNewsHref?: string;
   className?: string;
-
-  /** (옵션) masthead 내부에 다국어 링크를 함께 노출 */
   languageItems?: LanguageItem[];
-  /** sm/md 숨김 헬퍼를 적용할지 (전역 CSS 기준) */
   languageResponsiveHelpers?: boolean;
 };
 
@@ -18,89 +33,100 @@ export function MastheadMenu({
   loggedIn,
   onClickReplica,
   onClickJoin,
+  onClickLogin,
+  onClickLogout,
+  replicaHref = DEFAULT_LINKS.replica,
+  loginHref = DEFAULT_LINKS.login,
+  joinHref = DEFAULT_LINKS.join,
+  logoutHref = DEFAULT_LINKS.logout,
+  myNewsHref = DEFAULT_LINKS.myNews,
   className,
-  languageItems, // ← 추가
-  languageResponsiveHelpers = true, // ← 추가
+  languageItems,
+  languageResponsiveHelpers = true,
 }: MastheadMenuProps) {
+  const languages = languageItems && languageItems.length > 0 ? languageItems : undefined;
+
+  const handleClick = (handler?: () => void): ((event: React.MouseEvent<HTMLAnchorElement>) => void) | undefined => {
+    if (!handler) return undefined;
+    return event => {
+      event.preventDefault();
+      handler();
+    };
+  };
+
   return (
     <div className={classNames('masthead_menu', className)}>
-      {/* 데스크톱 지면보기 링크 */}
-      <a
-        className="newspaper font_gray sm_hidden md_hidden"
-        href="#"
-        onClick={e => {
-          e.preventDefault();
-          onClickReplica();
-        }}
-        aria-label="지면보기"
+      <ShortcutLink
+        baseClassName="newspaper font_gray sm_hidden md_hidden"
+        ariaLabel="지면보기"
+        href={replicaHref}
+        onClick={handleClick(onClickReplica)}
       >
         <i className="ico_newspaper black" aria-hidden="true" />
         지면보기
-      </a>
+      </ShortcutLink>
 
-      {/* 언어 링크 (원 마크업과 동일하게 masthead 내부에 배치) */}
-      {languageItems && languageItems.length > 0 && (
-        <LanguageLinks items={languageItems} responsiveHelpers={languageResponsiveHelpers} />
-      )}
+      {languages ? <LanguageLinks items={languages} responsiveHelpers={languageResponsiveHelpers} /> : null}
 
-      {/* 로그인/회원가입 / 모바일 지면보기 */}
       {!loggedIn ? (
         <ul className="logout">
           <li>
-            <a href="#" onClick={e => e.preventDefault()} aria-label="로그인">
+            <TextLink
+              href={loginHref}
+              ariaLabel="로그인"
+              preventDefault={Boolean(onClickLogin)}
+              onClick={handleClick(onClickLogin)}
+            >
               로그인
-            </a>
+            </TextLink>
           </li>
           <li>
-            {/* 데스크톱 회원가입 */}
-            <a
+            <TextLink
+              href={joinHref}
               className="sm_hidden md_hidden"
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                onClickJoin();
-              }}
-              aria-label="회원가입"
+              ariaLabel="회원가입"
+              preventDefault={Boolean(onClickJoin)}
+              onClick={handleClick(onClickJoin)}
             >
               회원가입
-            </a>
-            {/* 모바일 지면보기 */}
-            <a
+            </TextLink>
+            <TextLink
+              href={replicaHref}
               className="lg_hidden"
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                onClickReplica();
-              }}
-              aria-label="지면보기"
+              ariaLabel="지면보기"
+              preventDefault={Boolean(onClickReplica)}
+              onClick={handleClick(onClickReplica)}
             >
               지면보기
-            </a>
+            </TextLink>
           </li>
         </ul>
       ) : (
         <ul className="user login">
           <li className="link_logout">
-            <a href="/logout" aria-label="로그아웃">
+            <TextLink
+              href={logoutHref}
+              ariaLabel="로그아웃"
+              preventDefault={Boolean(onClickLogout)}
+              onClick={handleClick(onClickLogout)}
+            >
               로그아웃
-            </a>
+            </TextLink>
           </li>
           <li>
-            <a href="/mynews" aria-label="마이페이지">
+            <TextLink href={myNewsHref} ariaLabel="마이페이지" preventDefault={false}>
               마이페이지
-            </a>
+            </TextLink>
           </li>
           <li className="lg_hidden">
-            <a
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                onClickReplica();
-              }}
-              aria-label="지면보기"
+            <TextLink
+              href={replicaHref}
+              ariaLabel="지면보기"
+              preventDefault={Boolean(onClickReplica)}
+              onClick={handleClick(onClickReplica)}
             >
               지면보기
-            </a>
+            </TextLink>
           </li>
         </ul>
       )}

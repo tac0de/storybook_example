@@ -1,65 +1,74 @@
-// src/layouts/Header/Headers.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import HomeHeader from './HomeHeader';
+import HomeHeader, { type HomeHeaderProps } from './HomeHeader';
 import SubHeader from './SubHeader';
-import { withCssAndShell } from '../../decorators/withCssAndShell';
-import { JOONGANGCSS } from '../../decorators/globalCssNames';
 import PlusHomeHeader from './PlusHomeHeader';
 import PlusSubHeader from './PlusSubHeader';
-export default {
+import { withCssAndShell } from '../../decorators/withCssAndShell';
+import { JOONGANGCSS } from '../../decorators/globalCssNames';
+
+const meta: Meta = {
   title: 'Layouts/Headers',
   tags: ['autodocs'],
   parameters: {
+    layout: 'fullscreen',
     docs: { story: { inline: false, iframeHeight: 480 } },
   },
-} satisfies Meta;
+};
+export default meta;
 
-type Story = StoryObj;
+type HomeHeaderStory = StoryObj<HomeHeaderProps>;
+type SubHeaderStory = StoryObj<{ show60thEmblem?: boolean; isLoggedIn?: boolean; sticky?: boolean }>;
+type PlusStory = StoryObj;
 
-export const HeaderHome: Story = {
+export const HeaderHome: HomeHeaderStory = {
   name: 'HomeHeader',
+  args: { sticky: false },
   decorators: [
     withCssAndShell({
       hrefs: [JOONGANGCSS.INDEX],
       bodyClass: ['index'],
+      structure: 'header.header.nav_re.emblem60',
     }),
   ],
   render: args => <HomeHeader {...args} />,
 };
 
-export const HeaderSub: Story = {
+export const HeaderSub: SubHeaderStory = {
   name: 'SubHeader',
+  args: {
+    show60thEmblem: true,
+    isLoggedIn: true,
+    sticky: true,
+  },
   decorators: [
     withCssAndShell({
       hrefs: [JOONGANGCSS.LAYOUT, JOONGANGCSS.COMMON],
       bodyClass: ['index'],
+      structure: 'header.header.nav_re.emblem60',
     }),
   ],
-  args: {
-    sticky: true,
-  },
-
   render: args => <SubHeader {...args} />,
 };
 
-export const HeaderPlusHome: Story = {
+export const HeaderPlusHome: PlusStory = {
   name: 'PlusHomeHeader',
   decorators: [
     withCssAndShell({
       hrefs: [JOONGANGCSS.LAYOUT, JOONGANGCSS.PLUSCOMMON, JOONGANGCSS.PlUSHOME],
       bodyClass: ['index'],
+      structure: 'header.header.black_type.nav_re.emblem60',
     }),
   ],
-  render: args => <PlusHomeHeader {...args} />,
+  render: () => <PlusHomeHeader />,
 };
 
-export const HeaderPlusSub: Story = {
+export const HeaderPlusSub: PlusStory = {
   name: 'PlusSubHeader',
   decorators: [
     withCssAndShell({
       hrefs: [JOONGANGCSS.LAYOUT, JOONGANGCSS.PLUSCOMMON, JOONGANGCSS.PlUS],
-      bodyClass: ['index'],
+      structure: 'header.header.black_type.nav_re.emblem60',
     }),
   ],
-  render: args => <PlusSubHeader {...args} />,
+  render: () => <PlusSubHeader />,
 };
