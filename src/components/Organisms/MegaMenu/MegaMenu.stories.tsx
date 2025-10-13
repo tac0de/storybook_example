@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenu, { type MegaMenuProps } from './MegaMenu';
-import { withCssAndShell } from '../../../decorators/withCssAndShell';
+import { megaMenuBaseDecorator } from '../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<MegaMenuProps> = {
   title: 'Organisms/MegaMenu',
@@ -19,13 +19,7 @@ const meta: Meta<MegaMenuProps> = {
     onLogin: { action: 'login clicked' },
   },
 
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      structure: 'header#header.header.nav_re.emblem60.sticky_top',
-      bodyClass: ['index'],
-    }),
-  ],
+  decorators: [megaMenuBaseDecorator],
 };
 
 export default meta;

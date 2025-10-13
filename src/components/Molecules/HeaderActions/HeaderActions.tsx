@@ -1,4 +1,5 @@
 import { IconButton } from '../../Atoms/IconButton/IconButton';
+import Stack from '../../common/Stack';
 
 export type HeaderActionsVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
 
@@ -61,7 +62,18 @@ export function HeaderActions({
     return buttons;
   }
 
-  return <div className={containerClassName}>{buttons}</div>;
+  return (
+    <Stack
+      direction="row"
+      align="center"
+      gap="0.75rem"
+      inline
+      className={containerClassName}
+      aria-label="header actions"
+    >
+      {buttons}
+    </Stack>
+  );
 }
 
 export default HeaderActions;

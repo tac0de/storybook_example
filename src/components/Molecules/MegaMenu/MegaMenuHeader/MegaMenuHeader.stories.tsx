@@ -1,19 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenuHeader from './MegaMenuHeader';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { megaMenuLayerDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<typeof MegaMenuHeader> = {
   title: 'Molecules/MegaMenu/MegaMenuHeader',
   component: MegaMenuHeader,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      structure: 'header.header.nav_re',
-      bodyClass: ['index'],
-    }),
-  ],
+  decorators: [megaMenuLayerDecorator],
 };
 
 export default meta;

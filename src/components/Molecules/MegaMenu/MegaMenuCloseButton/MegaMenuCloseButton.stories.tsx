@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenuCloseButton, { type MegaMenuCloseButtonProps } from './MegaMenuCloseButton';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { megaMenuLayerDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<MegaMenuCloseButtonProps> = {
   title: 'Molecules/MegaMenu/MegaMenuCloseButton',
@@ -9,14 +9,8 @@ const meta: Meta<MegaMenuCloseButtonProps> = {
   argTypes: {
     onClose: { action: 'close' },
   },
-  parameters: { layout: 'fullscreen' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      structure: 'div.full_popup.menu_popup.show',
-      bodyClass: ['index'],
-    }),
-  ],
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, iframeHeight: 480 } } },
+  decorators: [megaMenuLayerDecorator],
 };
 
 export default meta;

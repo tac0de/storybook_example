@@ -1,21 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import SearchLayerInfoBox from './SearchLayerInfoBox';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { searchLayerBaseDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<typeof SearchLayerInfoBox> = {
   title: 'Molecules/SearchLayer/SearchLayerInfoBox',
   component: SearchLayerInfoBox,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
-  ],
+  decorators: [searchLayerBaseDecorator],
 };
 
 export default meta;
 type Story = StoryObj<typeof SearchLayerInfoBox>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    inputBoxIsShow: false,
+  },
+};

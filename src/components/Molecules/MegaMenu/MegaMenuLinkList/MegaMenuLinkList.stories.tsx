@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenuLinkList, { type MegaMenuLinkItem } from './MegaMenuLinkList';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { megaMenuBaseDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const sampleLinks: MegaMenuLinkItem[] = [
   { href: 'https://www.joongang.co.kr/politics', label: '정치' },
@@ -17,12 +17,7 @@ const meta: Meta<typeof MegaMenuLinkList> = {
     wrapWithStrong: { control: 'boolean' },
   },
   parameters: { layout: 'padded' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
-  ],
+  decorators: [megaMenuBaseDecorator],
 };
 
 export default meta;

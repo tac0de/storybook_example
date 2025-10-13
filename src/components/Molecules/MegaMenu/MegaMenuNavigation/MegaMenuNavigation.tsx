@@ -1,54 +1,45 @@
-import MegaMenuLinkList, { type MegaMenuLinkItem } from '../MegaMenuLinkList/MegaMenuLinkList';
+import MegaMenuLinkList from '../MegaMenuLinkList/MegaMenuLinkList';
+import DefinitionListSection from '../../../common/DefinitionListSection';
+import type { MegaMenuConfig, MegaMenuLink, MegaMenuSection } from '../../../Organisms/MegaMenu/megaMenuConfig';
 
 export type MegaMenuNavigationProps = {
-  opinionLinks: MegaMenuLinkItem[];
-  newsLinks: MegaMenuLinkItem[];
-  specialLinks: MegaMenuLinkItem[];
-  packageLinks: MegaMenuLinkItem[];
-  multimediaLinks: MegaMenuLinkItem[];
-  intlLinks: MegaMenuLinkItem[];
-  plusExploreLinks: MegaMenuLinkItem[];
-  footerQuickLinks: MegaMenuLinkItem[];
+  config: MegaMenuConfig;
 };
 
-const plusUtilityLinks: MegaMenuLinkItem[] = [
-  { href: 'https://www.joongang.co.kr/purchase/main', label: '이용권 구매' },
-  { href: 'https://www.joongang.co.kr/plus/guides', label: '서비스 활용 가이드' },
-  {
-    href: 'https://www.joongang.co.kr/2025brand-campaign_plus-story?thejoongang_open_browser=y',
-    label: '브랜드 소개',
-    withNew: true,
-  },
-  { href: 'https://www.joongang.co.kr/atoz/47', label: '이용안내' },
-];
+export default function MegaMenuNavigation({ config }: MegaMenuNavigationProps) {
+  const primarySections: Array<{ className: string; section: MegaMenuSection }> = [
+    { className: 'opinion', section: config.opinion },
+    { className: 'news', section: config.news },
+    { className: 'special', section: config.special },
+  ];
 
-export default function MegaMenuNavigation({
-  opinionLinks,
-  newsLinks,
-  specialLinks,
-  packageLinks,
-  multimediaLinks,
-  intlLinks,
-  plusExploreLinks,
-  footerQuickLinks,
-}: MegaMenuNavigationProps) {
   return (
     <nav className="nav layer_body" aria-label="메가메뉴">
       <MegaMenuNavHome />
-      <MegaMenuNavSection
-        className="opinion"
-        title="오피니언"
-        titleHref="https://www.joongang.co.kr/opinion"
-        showFoldIcon
-        links={opinionLinks}
+      {primarySections.map(section => (
+        <DefinitionListSection
+          key={section.className}
+          className={section.className}
+          title={section.section.title}
+          titleHref={section.section.href}
+          showFoldIcon={section.section.showFoldIcon}
+        >
+          <MegaMenuLinkList links={section.section.links} />
+        </DefinitionListSection>
+      ))}
+      <MegaMenuPackageSection
+        packageLinks={config.packages}
+        multimediaLinks={config.multimedia}
+        newsletterLinks={config.newsletterLinks}
       />
-      <MegaMenuNavSection className="news" title="뉴스" links={newsLinks} />
-      <MegaMenuNavSection className="special" title="스페셜" links={specialLinks} />
-      <MegaMenuPackageSection packageLinks={packageLinks} multimediaLinks={multimediaLinks} />
-      <MegaMenuInternationalSection links={intlLinks} />
-      <MegaMenuPlusSection plusExploreLinks={plusExploreLinks} />
+      <MegaMenuInternationalSection links={config.intl} />
+      <MegaMenuPlusSection
+        exploreSection={config.plusExplore}
+        secondaryLinks={config.plusSecondary}
+        utilityLinks={config.plusUtilities}
+      />
       <MegaMenuSecondaryBanner />
-      <MegaMenuQuickLinks links={footerQuickLinks} />
+      <MegaMenuQuickLinks links={config.footerQuickLinks} />
     </nav>
   );
 }
@@ -64,42 +55,14 @@ function MegaMenuNavHome() {
   );
 }
 
-type MegaMenuNavSectionProps = {
-  className: string;
-  title: string;
-  links: MegaMenuLinkItem[];
-  titleHref?: string;
-  showFoldIcon?: boolean;
-};
-
-function MegaMenuNavSection({ className, title, titleHref, showFoldIcon, links }: MegaMenuNavSectionProps) {
-  return (
-    <dl className={className}>
-      <dt>
-        <strong>
-          {titleHref ? (
-            <a href={titleHref}>
-              {title}
-              {showFoldIcon && <i className="ico_fold" />}
-            </a>
-          ) : (
-            title
-          )}
-        </strong>
-      </dt>
-      <dd className="nav_item">
-        <MegaMenuLinkList links={links} />
-      </dd>
-    </dl>
-  );
-}
-
 function MegaMenuPackageSection({
   packageLinks,
   multimediaLinks,
+  newsletterLinks,
 }: {
-  packageLinks: MegaMenuLinkItem[];
-  multimediaLinks: MegaMenuLinkItem[];
+  packageLinks: MegaMenuLink[];
+  multimediaLinks: MegaMenuLink[];
+  newsletterLinks: MegaMenuLink[];
 }) {
   return (
     <dl className="package">
@@ -115,21 +78,18 @@ function MegaMenuPackageSection({
       <dd className="nav_item">
         <MegaMenuLinkList links={multimediaLinks} />
       </dd>
-      <dt>
-        <strong>
-          <a href="https://www.joongang.co.kr/newsletter">뉴스레터</a>
-        </strong>
-      </dt>
-      <dt>
-        <strong>
-          <a href="https://www.joongang.co.kr/sunday">중앙SUNDAY</a>
-        </strong>
-      </dt>
+      {newsletterLinks.map(link => (
+        <dt key={link.href}>
+          <strong>
+            <a href={link.href}>{link.label}</a>
+          </strong>
+        </dt>
+      ))}
     </dl>
   );
 }
 
-function MegaMenuInternationalSection({ links }: { links: MegaMenuLinkItem[] }) {
+function MegaMenuInternationalSection({ links }: { links: MegaMenuLink[] }) {
   return (
     <dl className="lg_hidden">
       <dt>
@@ -142,7 +102,15 @@ function MegaMenuInternationalSection({ links }: { links: MegaMenuLinkItem[] }) 
   );
 }
 
-function MegaMenuPlusSection({ plusExploreLinks }: { plusExploreLinks: MegaMenuLinkItem[] }) {
+function MegaMenuPlusSection({
+  exploreSection,
+  secondaryLinks,
+  utilityLinks,
+}: {
+  exploreSection: MegaMenuSection;
+  secondaryLinks: MegaMenuLink[];
+  utilityLinks: MegaMenuLink[];
+}) {
   return (
     <div className="plus">
       <a href="https://www.joongang.co.kr/plus" className="home">
@@ -153,33 +121,27 @@ function MegaMenuPlusSection({ plusExploreLinks }: { plusExploreLinks: MegaMenuL
       <dl>
         <dt>
           <strong>
-            <a href="https://www.joongang.co.kr/plus/contents">
-              콘텐트 탐색
+            <a href={exploreSection.href}>
+              {exploreSection.title}
               <i className="ico_fold" />
             </a>
           </strong>
         </dt>
         <dd className="nav_item">
-          <MegaMenuLinkList links={plusExploreLinks} />
+          <MegaMenuLinkList links={exploreSection.links} />
         </dd>
-        <dt>
-          <strong>
-            <a href="https://www.joongang.co.kr/plus/series">
-              시리즈별 보기
-              <i className="ico_fold" />
-            </a>
-          </strong>
-        </dt>
-        <dt>
-          <strong>
-            <a href="https://www.joongang.co.kr/plus/curation">
-              큐레이션 발견
-              <i className="ico_fold" />
-            </a>
-          </strong>
-        </dt>
+        {secondaryLinks.map(link => (
+          <dt key={link.href}>
+            <strong>
+              <a href={link.href}>
+                {link.label}
+                <i className="ico_fold" />
+              </a>
+            </strong>
+          </dt>
+        ))}
       </dl>
-      <MegaMenuLinkList links={plusUtilityLinks} />
+      <MegaMenuLinkList links={utilityLinks} />
     </div>
   );
 }
@@ -200,6 +162,6 @@ function MegaMenuSecondaryBanner() {
   );
 }
 
-function MegaMenuQuickLinks({ links }: { links: MegaMenuLinkItem[] }) {
+function MegaMenuQuickLinks({ links }: { links: MegaMenuLink[] }) {
   return <MegaMenuLinkList links={links} wrapWithStrong />;
 }

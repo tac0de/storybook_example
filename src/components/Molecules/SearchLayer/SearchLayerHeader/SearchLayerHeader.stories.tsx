@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import SearchLayerHeader, { type SearchLayerHeaderProps } from './SearchLayerHeader';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { searchLayerOverlayDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<SearchLayerHeaderProps> = {
   title: 'Molecules/SearchLayer/SearchLayerHeader',
@@ -9,14 +9,8 @@ const meta: Meta<SearchLayerHeaderProps> = {
   argTypes: {
     onClose: { action: 'close' },
   },
-  parameters: { layout: 'fullscreen' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      structure: 'div.layer_popup.layer_search',
-      bodyClass: ['index'],
-    }),
-  ],
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, iframeHeight: 480 } } },
+  decorators: [searchLayerOverlayDecorator],
 };
 
 export default meta;

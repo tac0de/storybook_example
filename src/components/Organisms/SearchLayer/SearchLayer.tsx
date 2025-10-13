@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect } from 'react';
 import cx from 'classnames';
 
 import {
@@ -11,27 +11,27 @@ import {
   SearchLayerPlusSection,
   SearchLayerTrendSection,
 } from '../../Molecules/SearchLayer';
+import { useSearchLayerState } from './useSearchLayerState';
 
 export type SearchLayerProps = {
   open: boolean;
   onClose: () => void;
   onSubmit: (q: string) => void;
+  inputBoxIsShow?: boolean;
 };
 
-export default function SearchLayer({ open, onClose, onSubmit }: SearchLayerProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [placeholderHidden, setPlaceholderHidden] = useState(true);
+export default function SearchLayer({ open, onClose, onSubmit, inputBoxIsShow = true }: SearchLayerProps) {
+  const { layerRef, placeholderHidden, handleSubmit, handleSearchInput, close, reset } = useSearchLayerState({
+    open,
+    onClose,
+    onSubmit,
+  });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit(searchQuery);
-  };
-
-  const handleSearchInput = (event: FormEvent<HTMLParagraphElement>) => {
-    const value = event.currentTarget.textContent ?? '';
-    setSearchQuery(value);
-    setPlaceholderHidden(value !== '');
-  };
+  useEffect(() => {
+    if (!open) {
+      reset();
+    }
+  }, [open, reset]);
 
   return (
     <div
@@ -40,15 +40,15 @@ export default function SearchLayer({ open, onClose, onSubmit }: SearchLayerProp
       id="layer_search"
       tabIndex={0}
     >
-      <div className="layer_popup layer_search layer_search_plus search_ai">
-        <SearchLayerHeader onClose={onClose} />
+      <div className="layer_popup layer_search layer_search_plus search_ai" ref={layerRef}>
+        <SearchLayerHeader onClose={close} />
 
         <div className="layer_body" style={{ paddingBottom: 0 }}>
           <SearchLayerForm placeholderHidden={placeholderHidden} onSubmit={handleSubmit} onInput={handleSearchInput} />
           <SearchLayerInputSection />
           <SearchLayerAiTagSection />
           <SearchLayerTrendSection />
-          <SearchLayerInfoBox />
+          <SearchLayerInfoBox inputBoxIsShow={inputBoxIsShow} />
           <SearchLayerMostViewed />
           <SearchLayerPlusSection />
         </div>

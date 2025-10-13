@@ -19,8 +19,7 @@
     "test": "vitest run --project unit",
     "test:watch": "vitest --project unit",
     "test:storybook": "vitest run --project storybook",
-    "test:storybook:watch": "vitest --project storybook",
-    "generate:component": "node scripts/generate-component.mjs"
+    "test:storybook:watch": "vitest --project storybook"
   },
   "dependencies": {
     "eslint-plugin-cypress": "^5.1.1",

@@ -1,6 +1,12 @@
-export default function SearchLayerInfoBox() {
+import cx from 'classnames';
+
+export type SearchLayerInfoBoxType = {
+  inputBoxIsShow?: boolean;
+};
+
+export default function SearchLayerInfoBox({ inputBoxIsShow = true }: SearchLayerInfoBoxType) {
   return (
-    <div className="box hide">
+    <div className={cx('box', inputBoxIsShow ? undefined : 'hide')}>
       <img src="https://img.joongang.co.kr/pubimg/visual/ai/img_joongangai_info.png" alt="" />
       <strong>Smart한 더중앙 검색 활용!!</strong>
       <p>

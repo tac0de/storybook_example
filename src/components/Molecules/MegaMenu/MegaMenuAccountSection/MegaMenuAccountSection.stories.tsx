@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import MegaMenuAccountSection, { type MegaMenuAccountSectionProps } from './MegaMenuAccountSection';
-import { withCssAndShell } from '../../../../decorators/withCssAndShell';
+import { megaMenuScrollDecorator } from '../../../../stories/searchLayerStoryHelpers';
 
 const meta: Meta<MegaMenuAccountSectionProps> = {
   title: 'Molecules/MegaMenu/MegaMenuAccountSection',
@@ -13,13 +13,8 @@ const meta: Meta<MegaMenuAccountSectionProps> = {
   argTypes: {
     onLogin: { action: 'login' },
   },
-  parameters: { layout: 'padded' },
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      bodyClass: ['index'],
-    }),
-  ],
+  parameters: { layout: 'padded', docs: { story: { inline: false, iframeHeight: 480 } } },
+  decorators: [megaMenuScrollDecorator],
 };
 
 export default meta;

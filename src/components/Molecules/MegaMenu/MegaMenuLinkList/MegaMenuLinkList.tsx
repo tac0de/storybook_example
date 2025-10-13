@@ -1,3 +1,5 @@
+import MegaMenuLink from '../../../Atoms/MegaMenuLink/MegaMenuLink';
+
 export type MegaMenuLinkItem = {
   href: string;
   label: string;
@@ -24,12 +26,5 @@ export default function MegaMenuLinkList({ links, wrapWithStrong = false }: Mega
 }
 
 function renderLink({ href, label, ext, withNew }: MegaMenuLinkItem) {
-  const anchorProps = ext ? { target: '_blank', rel: 'noreferrer' } : {};
-
-  return (
-    <a href={href} {...anchorProps}>
-      {label}
-      {withNew && <i className="ico_new" />}
-    </a>
-  );
+  return <MegaMenuLink href={href} label={label} ext={ext} withNew={withNew} />;
 }

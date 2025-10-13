@@ -1,15 +1,20 @@
-import {
-  HeaderBar as HeaderBarCompound,
-  type HeaderBarMastheadMenuProps,
-  type HeaderBarVariant,
-  type HeaderBarUser as CompoundHeaderBarUser,
-} from './HeaderBar.compound';
-import type { LogoGroupProps } from '../../Molecules/LogoGroup/LogoGroup';
-import type { NavItem } from '../../Molecules/NavList/NavList';
-import type { PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
-import type { HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
+import classNames from 'classnames';
+import type { ReactNode } from 'react';
+import { TextLink } from '../../Atoms/TextLink/TextLink';
+import { LogoGroup, type LogoGroupProps } from '../../Molecules/LogoGroup/LogoGroup';
+import { MastheadMenu, type MastheadMenuProps } from '../../Molecules/MastheadMenu/MastheadMenu';
+import { NavList, type NavItem } from '../../Molecules/NavList/NavList';
+import { HeaderActions, type HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
+import { PlusShortcut, type PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
+import { HEADER_BAR_VARIANT_CONFIG } from './headerBarConfig';
 
-export type HeaderBarUser = CompoundHeaderBarUser;
+export type HeaderBarVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
+
+export type HeaderBarUser = {
+  loggedIn: boolean;
+};
+
+export type HeaderBarMastheadMenuProps = Omit<MastheadMenuProps, 'loggedIn'>;
 
 export type HeaderBarProps = {
   variant?: HeaderBarVariant;
@@ -25,9 +30,10 @@ export type HeaderBarProps = {
   mastheadMenu?: HeaderBarMastheadMenuProps;
   shortcut?: Omit<PlusShortcutProps, 'className'>;
   actions?: Omit<HeaderActionsProps, 'onOpenMegaMenu' | 'onOpenSearch'>;
+  rightAddons?: ReactNode;
 };
 
-export function HeaderBar({
+export default function HeaderBar({
   variant = 'default',
   className,
   logo,
@@ -41,46 +47,116 @@ export function HeaderBar({
   mastheadMenu,
   shortcut,
   actions,
+  rightAddons,
 }: HeaderBarProps) {
-  const commonRootProps = {
-    variant,
-    user,
-    className,
-    onOpenMegaMenu,
-    onOpenSearch,
-    onClickJoin,
-    onClickReplica,
-    onLogout,
-  };
+  const config = HEADER_BAR_VARIANT_CONFIG[variant];
+  const rootClass = classNames(config.rootClass, className);
 
-  if (variant === 'sub' || variant === 'plus-sub') {
+  const logoProps: LogoGroupProps = {
+    ...logo,
+    variant: logo.variant ?? variant,
+    renderAsH1: variant !== 'sub',
+  };
+  const logoNode = <LogoGroup {...logoProps} />;
+
+  const mastheadNode = mastheadMenu ? (
+    <MastheadMenu
+      loggedIn={user.loggedIn}
+      onClickJoin={mastheadMenu.onClickJoin ?? onClickJoin}
+      onClickReplica={mastheadMenu.onClickReplica ?? onClickReplica}
+      onClickLogout={mastheadMenu.onClickLogout ?? onLogout}
+      {...mastheadMenu}
+    />
+  ) : null;
+
+  const actionsNode = (
+    <HeaderActions variant={variant} onOpenMegaMenu={onOpenMegaMenu} onOpenSearch={onOpenSearch} {...(actions ?? {})} />
+  );
+  const shortcutNode = shortcut ? <PlusShortcut {...shortcut} /> : null;
+
+  const navItemsNode = nav?.length ? <NavList items={nav} /> : null;
+  const navSection =
+    config.navClass !== null ? (
+      <nav className={config.navClass}>
+        {navItemsNode}
+        {shortcutNode}
+        {actionsNode}
+      </nav>
+    ) : (
+      navItemsNode
+    );
+
+  const optionContent =
+    config.navClass === null ? (
+      <>
+        {shortcutNode}
+        {actionsNode}
+      </>
+    ) : null;
+
+  let optionSection: ReactNode = null;
+  if (optionContent) {
+    optionSection =
+      config.wrapOptionArea || config.optionClass ? (
+        <div className={config.optionClass ?? undefined}>{optionContent}</div>
+      ) : (
+        optionContent
+      );
+  }
+
+  return (
+    <div className={rootClass}>
+      {logoNode}
+      <div className={config.rightClass}>
+        {mastheadNode}
+        {config.showAuth ? <AuthArea loggedIn={user.loggedIn} onClickJoin={onClickJoin} onLogout={onLogout} /> : null}
+        {navSection}
+        {optionSection}
+        {rightAddons}
+      </div>
+    </div>
+  );
+}
+
+type AuthAreaProps = {
+  loggedIn: boolean;
+  onClickJoin: () => void;
+  onLogout?: () => void;
+};
+
+function AuthArea({ loggedIn, onClickJoin, onLogout }: AuthAreaProps) {
+  if (!loggedIn) {
     return (
-      <HeaderBarCompound.Root {...commonRootProps}>
-        <HeaderBarCompound.Logo {...logo} />
-        <HeaderBarCompound.Right>
-          {mastheadMenu ? <HeaderBarCompound.MastheadMenu {...mastheadMenu} /> : null}
-          <HeaderBarCompound.Auth />
-          <HeaderBarCompound.OptionArea>
-            <HeaderBarCompound.Actions {...(actions ?? {})} />
-            {shortcut ? <HeaderBarCompound.Shortcut {...shortcut} /> : null}
-          </HeaderBarCompound.OptionArea>
-        </HeaderBarCompound.Right>
-      </HeaderBarCompound.Root>
+      <>
+        <ul className="logout sm_hidden">
+          <li>
+            <TextLink preventDefault onClick={onClickJoin}>
+              로그인
+            </TextLink>
+          </li>
+          <li>
+            <TextLink preventDefault onClick={onClickJoin}>
+              회원가입
+            </TextLink>
+          </li>
+        </ul>
+        <div className="layer_popup layer_login_popup pop_over hide" />
+      </>
     );
   }
 
   return (
-    <HeaderBarCompound.Root {...commonRootProps}>
-      <HeaderBarCompound.Logo {...logo} />
-      <HeaderBarCompound.Right>
-        {mastheadMenu ? <HeaderBarCompound.MastheadMenu {...mastheadMenu} /> : null}
-        <HeaderBarCompound.Nav items={nav}>
-          {shortcut ? <HeaderBarCompound.Shortcut {...shortcut} /> : null}
-          <HeaderBarCompound.Actions {...(actions ?? {})} />
-        </HeaderBarCompound.Nav>
-      </HeaderBarCompound.Right>
-    </HeaderBarCompound.Root>
+    <ul className="login user sm_hidden">
+      <li className="link_logout">
+        <TextLink preventDefault onClick={() => onLogout?.()}>
+          로그아웃
+        </TextLink>
+      </li>
+      <li>
+        <TextLink href="https://www.joongang.co.kr/mynews" preventDefault={false}>
+          마이페이지
+        </TextLink>
+      </li>
+    </ul>
   );
 }
-
-export default HeaderBar;

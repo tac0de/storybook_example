@@ -5,18 +5,33 @@ import { EmblemBadge } from '../../Atoms/EmblemBadge/EmblemBadge';
 
 export type LogoGroupVariant = 'default' | 'sub' | 'plus' | 'plus-sub';
 
-const WRAPPER_CLASS: Record<LogoGroupVariant, string> = {
-  default: 'logo',
-  sub: 'logo',
-  plus: 'logo_plus',
-  'plus-sub': 'logo_plus',
+type LogoGroupStyle = {
+  wrapperClass: string;
+  anchorClass: string | null;
+  showEmblem: boolean;
 };
 
-const SHOULD_SHOW_EMBLEM: Record<LogoGroupVariant, boolean> = {
-  default: true,
-  sub: true,
-  plus: false,
-  'plus-sub': false,
+const LOGO_GROUP_STYLE: Record<LogoGroupVariant, LogoGroupStyle> = {
+  default: {
+    wrapperClass: 'logo',
+    anchorClass: null,
+    showEmblem: true,
+  },
+  sub: {
+    wrapperClass: 'logo',
+    anchorClass: 'logo',
+    showEmblem: true,
+  },
+  plus: {
+    wrapperClass: 'logo_plus',
+    anchorClass: 'logo_plus',
+    showEmblem: false,
+  },
+  'plus-sub': {
+    wrapperClass: 'logo_plus',
+    anchorClass: 'logo_plus',
+    showEmblem: false,
+  },
 };
 
 export type LogoGroupProps = {
@@ -44,9 +59,10 @@ export function LogoGroup({
   height = 86,
   renderAsH1 = true,
 }: LogoGroupProps) {
-  const wrapperClass = classNames(WRAPPER_CLASS[variant], className);
-  const anchorBase = variant === 'default' || variant === 'plus' ? '' : 'logo';
-  const showEmblem = SHOULD_SHOW_EMBLEM[variant] && Boolean(emblem60Url);
+  const style = LOGO_GROUP_STYLE[variant];
+  const wrapperClass = classNames(style.wrapperClass, className);
+  const anchorBase = style.anchorClass;
+  const showEmblem = style.showEmblem && Boolean(emblem60Url);
 
   const mainLogo = () => {
     if (variant === 'plus' || variant === 'plus-sub') {

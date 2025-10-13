@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import SearchLayer, { type SearchLayerProps } from './SearchLayer';
-import { withCssAndShell } from '../../../decorators/withCssAndShell';
+import { createSearchLayerDecorator } from '../../../stories/searchLayerStoryHelpers';
+
+const searchLayerPageDecorator = createSearchLayerDecorator({
+  structure: 'header#header.header.nav_re.emblem60.sticky_top',
+});
 
 const meta: Meta<SearchLayerProps> = {
   title: 'Organisms/SearchLayer',
@@ -17,16 +21,14 @@ const meta: Meta<SearchLayerProps> = {
     onClose: { action: 'closed' },
   },
 
-  decorators: [
-    withCssAndShell({
-      hrefs: ['/joongang-css/index.min.css'],
-      structure: 'header#header.header.nav_re.emblem60.sticky_top',
-      bodyClass: ['index'],
-    }),
-  ],
+  decorators: [searchLayerPageDecorator],
 };
 export default meta;
 
 type Story = StoryObj<typeof SearchLayer>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    inputBoxIsShow: false,
+  },
+};
