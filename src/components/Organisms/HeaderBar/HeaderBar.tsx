@@ -6,6 +6,7 @@ import { MastheadMenu, type MastheadMenuProps } from '../../Molecules/MastheadMe
 import { NavList, type NavItem } from '../../Molecules/NavList/NavList';
 import { HeaderActions, type HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
 import { PlusShortcut, type PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
+import { composeChildren, maybeWrap } from '../../../utils/reactNode';
 import { HEADER_BAR_VARIANT_CONFIG } from './headerBarConfig';
 
 export type HeaderBarVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
@@ -75,34 +76,20 @@ export default function HeaderBar({
   const shortcutNode = shortcut ? <PlusShortcut {...shortcut} /> : null;
 
   const navItemsNode = nav?.length ? <NavList items={nav} /> : null;
-  const navSection =
-    config.navClass !== null ? (
-      <nav className={config.navClass}>
-        {navItemsNode}
-        {shortcutNode}
-        {actionsNode}
-      </nav>
-    ) : (
-      navItemsNode
-    );
+  const navChildren = composeChildren(navItemsNode, shortcutNode, actionsNode);
+  const navSection = maybeWrap(navChildren, content =>
+    config.navClass !== null ? <nav className={config.navClass}>{content}</nav> : content,
+  );
 
-  const optionContent =
-    config.navClass === null ? (
-      <>
-        {shortcutNode}
-        {actionsNode}
-      </>
-    ) : null;
-
-  let optionSection: ReactNode = null;
-  if (optionContent) {
-    optionSection =
-      config.wrapOptionArea || config.optionClass ? (
-        <div className={config.optionClass ?? undefined}>{optionContent}</div>
-      ) : (
-        optionContent
-      );
-  }
+  const optionContent = config.navClass === null ? composeChildren(shortcutNode, actionsNode) : null;
+  const optionSection = optionContent
+    ? maybeWrap(
+        optionContent,
+        config.wrapOptionArea || config.optionClass
+          ? content => <div className={config.optionClass ?? undefined}>{content}</div>
+          : undefined,
+      )
+    : null;
 
   return (
     <div className={rootClass}>

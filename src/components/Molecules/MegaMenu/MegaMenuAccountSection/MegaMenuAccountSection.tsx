@@ -1,3 +1,5 @@
+import TrackableLink from '../../../common/TrackableLink';
+
 export type MegaMenuAccountSectionProps = {
   loggedIn: boolean;
   userName?: string;
@@ -44,26 +46,24 @@ function MegaMenuMyLinks({ loggedIn, userName }: { loggedIn: boolean; userName?:
     <ul className="mypage_wrap d_mypage_megamenu">
       {loggedIn && (
         <li>
-          <a
+          <TrackableLink
             href="https://www.joongang.co.kr/mynews"
             className="user_wrap"
-            data-evnt-ctg="area:중앙|홈"
-            data-evnt-act="move:A30 메가메뉴"
-            data-evnt-lbl="마이페이지"
+            tracking={{ category: 'area:중앙|홈', action: 'move:A30 메가메뉴', label: '마이페이지' }}
           >
             <strong>
               <span className="user">{userName || '회원'}</span>님
             </strong>
             의 마이페이지
             <i className="ico_arrow_right" />
-          </a>
+          </TrackableLink>
         </li>
       )}
       <li className="sm_hidden md_hidden">
-        <a href="https://www.joongang.co.kr/customercenter">고객센터</a>
+        <TrackableLink href="https://www.joongang.co.kr/customercenter">고객센터</TrackableLink>
       </li>
       <li className="sm_hidden md_hidden">
-        <a href="https://www.joongang.co.kr/guides">더중앙 이용안내</a>
+        <TrackableLink href="https://www.joongang.co.kr/guides">더중앙 이용안내</TrackableLink>
       </li>
     </ul>
   );
@@ -72,11 +72,9 @@ function MegaMenuMyLinks({ loggedIn, userName }: { loggedIn: boolean; userName?:
 function MegaMenuPrimaryBanner() {
   return (
     <div className="banner_wrap lg_hidden">
-      <a
+      <TrackableLink
         href="https://www.joongang.co.kr/replica/guides"
-        data-evnt-ctg="area:중앙|홈"
-        data-evnt-act="move:A30 메가메뉴_drawer"
-        data-evnt-lbl="지면보기이용안내"
+        tracking={{ category: 'area:중앙|홈', action: 'move:A30 메가메뉴_drawer', label: '지면보기이용안내' }}
       >
         <img
           width={320}
@@ -85,7 +83,7 @@ function MegaMenuPrimaryBanner() {
           src="https://img.joongang.co.kr/pubimg/banner/drawer/bn_newspaper_renewal@2x.min.png"
           alt="중앙일보 지면 그대로, 뉴스의 큰 그림 그대로 지면보기 이용안내"
         />
-      </a>
+      </TrackableLink>
     </div>
   );
 }

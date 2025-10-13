@@ -178,11 +178,40 @@ const handleClick = useComposedCallback(onClick, () => log('clicked'));
 
 ---
 
-## 5. 적용 순서 요약
+## 5. JSX 구조 단순화 (`maybeWrap`, `composeChildren`)
+
+```tsx
+import { composeChildren, maybeWrap } from '../utils/reactNode';
+
+const content = composeChildren(primary, secondary, actions);
+const wrapped = maybeWrap(content, children => <nav className="nav_group">{children}</nav>);
+```
+
+- `composeChildren`은 `null`/`undefined` 요소를 자동으로 거르고 배열을 그대로 ReactNode로 반환합니다.
+- `maybeWrap`은 콘텐츠가 존재할 때만 래퍼를 적용합니다. 조건부 `<div>...</div>` 패턴을 한 줄로 줄일 수 있습니다.
+
+---
+
+## 6. 변형/접근성 유틸 (`selectVariant`, `buildAriaProps`)
+
+```ts
+import { selectVariant } from '../utils/variants';
+import { buildAriaProps } from '../utils/accessibility';
+
+const buttonClass = selectVariant(BUTTON_CLASS_BY_VARIANT, variant);
+const ariaProps = buildAriaProps({ expanded });
+```
+
+- variant 레코드에서 안전하게 값을 꺼낼 때 `selectVariant`를 사용하면 기본값 처리까지 한 번에 끝납니다.
+- `buildAriaProps`는 필요한 ARIA 속성만 객체로 반환하므로 `<button {...ariaProps}>`처럼 간결하게 적용할 수 있습니다.
+
+---
+
+## 7. 적용 순서 요약
 
 1. `docs/shared-components.md`에서 사용할 공통 레이아웃/컴포넌트를 살펴봅니다.
 2. 헤더/메가메뉴/검색 키워드 교체가 필요하면 이 문서에 나온 Recipe 함수를 먼저 수정합니다.
-3. Storybook에서 `Layouts/Headers`, `Organisms/MegaMenu`, `Organisms/SearchLayer` 스토리를 열어 변경 사항을 바로 확인합니다. 새 atom/molecule은 위 유틸을 활용해 트래킹/외부 링크 로직을 빠르게 붙일 수 있습니다.
+3. Storybook에서 `Layouts/Headers`, `Organisms/MegaMenu`, `Organisms/SearchLayer` 스토리를 열어 변경 사항을 바로 확인합니다. 새 atom/molecule은 위 유틸을 활용해 트래킹/외부 링크 로직, JSX 래핑, variant/ARIA 처리를 빠르게 붙일 수 있습니다.
 4. 문제가 없다면 git commit → 배포 프로세스를 진행합니다.
 
 필요한 조합이 추가로 생기면 `src/recipes` 폴더에 파일을 하나 더 만들어 같은 패턴으로 확장하면 됩니다.

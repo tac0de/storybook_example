@@ -1,6 +1,10 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
+import { composeChildren } from '../../../utils/reactNode';
+import { buildAriaProps } from '../../../utils/accessibility';
+import { selectVariant } from '../../../utils/variants';
+
 export type IconButtonVariant = 'navbar' | 'ham' | 'search';
 
 const BUTTON_CLASS_BY_VARIANT: Record<IconButtonVariant, string> = {
@@ -40,21 +44,17 @@ export function IconButton({
   className,
   buttonClassName,
   icon,
+  children,
   ...rest
 }: IconButtonProps) {
-  const baseClass = buttonClassName ?? BUTTON_CLASS_BY_VARIANT[variant];
-  const iconNode = icon ?? ICON_BY_VARIANT[variant];
-  const ariaExpanded = typeof expanded === 'boolean' ? expanded : undefined;
+  const baseClass = buttonClassName ?? selectVariant(BUTTON_CLASS_BY_VARIANT, variant);
+  const iconNode = icon ?? selectVariant(ICON_BY_VARIANT, variant);
+  const ariaProps = buildAriaProps({ expanded });
+  const content = composeChildren(iconNode, children ?? null);
 
   return (
-    <button
-      type="button"
-      className={classNames(baseClass, className)}
-      aria-label={ariaLabel}
-      aria-expanded={ariaExpanded}
-      {...rest}
-    >
-      {iconNode}
+    <button type="button" className={classNames(baseClass, className)} aria-label={ariaLabel} {...ariaProps} {...rest}>
+      {content}
     </button>
   );
 }

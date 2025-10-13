@@ -1,3 +1,23 @@
+import TrackableLink from '../../../common/TrackableLink';
+
+type Tracking = {
+  category: string;
+  action: string;
+  label: string;
+};
+
+const ARTICLE_TRACKING: Tracking = {
+  category: 'area:중앙|홈',
+  action: 'move:A30 전체 검색 팝업',
+  label: '중앙플러스_아티클_1',
+};
+
+const SERIES_TRACKING: Tracking = {
+  category: 'area:중앙|홈',
+  action: 'move:중앙플러스_시리즈',
+  label: '유료전용_아티클_1',
+};
+
 export default function SearchLayerPlusSection() {
   return (
     <div className="chain_wrap hide" id="searchPaidArea" style={{ overflow: 'visible' }}>
@@ -19,13 +39,7 @@ export default function SearchLayerPlusSection() {
       >
         <article className="pcard card_cover">
           <figure className="card_image">
-            <a
-              href="https://www.joongang.co.kr/article/25249719"
-              target="_self"
-              data-evnt-ctg="area:중앙|홈"
-              data-evnt-act="move:A30 전체 검색 팝업"
-              data-evnt-lbl="중앙플러스_아티클_1"
-            >
+            <TrackableLink href="https://www.joongang.co.kr/article/25249719" tracking={ARTICLE_TRACKING}>
               <img
                 width="278"
                 height="360"
@@ -34,44 +48,36 @@ export default function SearchLayerPlusSection() {
                 alt="9살에 6개 국어 썼던 천재
 비결은 ‘모국어’ 조기교육"
               />
-            </a>
+            </TrackableLink>
           </figure>
           <div className="card_body">
             <strong className="title">
-              <a
+              <TrackableLink
                 href="https://www.joongang.co.kr/plus/series/106"
-                data-evnt-ctg="area:중앙|홈"
-                data-evnt-act="move:중앙플러스_시리즈"
-                data-evnt-lbl="유료전용_아티클_1"
+                tracking={SERIES_TRACKING}
               >
                 hello! Parents
-              </a>
+              </TrackableLink>
             </strong>
             <strong className="headline">
-              <a
+              <TrackableLink
                 href="https://www.joongang.co.kr/article/25249719"
-                target="_self"
-                data-evnt-ctg="area:중앙|홈"
-                data-evnt-act="move:A30 전체 검색 팝업"
-                data-evnt-lbl="중앙플러스_아티클_1"
                 className="lg_hidden el_sm2"
+                tracking={ARTICLE_TRACKING}
               >
                 9살에 6개 국어 썼던 천재
                 <br />
                 비결은 ‘모국어’ 조기교육
-              </a>
-              <a
+              </TrackableLink>
+              <TrackableLink
                 href="https://www.joongang.co.kr/article/25249719"
-                target="_self"
-                data-evnt-ctg="area:중앙|홈"
-                data-evnt-act="move:A30 전체 검색 팝업"
-                data-evnt-lbl="중앙플러스_아티클_1"
                 className="sm_hidden"
+                tracking={ARTICLE_TRACKING}
               >
                 9살에 6개 국어 썼던 천재
                 <br />
                 비결은 ‘모국어’ 조기교육
-              </a>
+              </TrackableLink>
               &nbsp;
             </strong>
             <div className="meta">

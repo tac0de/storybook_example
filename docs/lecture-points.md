@@ -19,16 +19,24 @@
 - `SearchTagLink` 같이 트래킹이 필요한 atom은 `tracking` 객체만 넘기면 되므로 코드가 간결해지고, 새로운 atom도 같은 패턴을 그대로 재사용.
 - `useComposedCallback` (`src/hooks/useComposedCallback.ts`)으로 컴포넌트를 만들 때 사용자(onClick 등)와 내부 추적(onTrack) 콜백을 손쉽게 결합.
 
-## 4. 검색 레이어 공통 컴포넌트
+## 4. 레이아웃 보조 헬퍼
+- `maybeWrap` & `composeChildren` (`src/utils/reactNode.tsx`)는 JSX 조건부 래핑/조합을 공통화해 레이아웃 컴포넌트 로직을 단순화. `HeaderBar.tsx`에서 길어진 `nav`/`option` 조합 로직을 두 줄로 정리.
+- `IconButton.tsx`도 `composeChildren`으로 기본 아이콘과 커스텀 children을 자연스럽게 결합.
+
+## 5. 검색 레이어 공통 컴포넌트
 - `SearchTagLinkList` (`src/components/Molecules/SearchLayer/SearchTagLinkList/SearchTagLinkList.tsx`)는 AI 태그·트렌드 키워드를 모두 수용하는 범용 리스트 컴포넌트.
 - `InlineLinkList`와 `SearchTagLink` 조합을 숨겨 반복 JSX를 줄였고, 데이터 구조가 바뀌어도 링크 속성만 확장하면 됨.
 - `SearchLayerAiTagSection`과 `SearchLayerTrendSection`은 동일한 API로 호출되어 유지 보수가 간단.
 
-## 5. 스토리북 헬퍼 (`src/stories/searchLayerStoryHelpers.ts`)
+## 6. 스토리북 헬퍼 (`src/stories/searchLayerStoryHelpers.ts`)
 - `createSearchLayerDecorator` 함수로 Storybook 데코레이터 셸을 통일.
 - 재사용 상수(`searchLayerBaseDecorator`, `searchLayerOverlayDecorator`)를 통해 SearchLayer 관련 스토리들이 동일한 CSS 환경을 공유.
 - 구조가 다른 케이스(`SearchLayer.stories.tsx`)도 함수 인자로 `structure`만 전달하면 끝.
 - 동일 파일에서 `megaMenuBaseDecorator`, `megaMenuScrollDecorator` 등을 제공하여 메가메뉴 관련 스토리들도 한 줄로 셸을 공유.
+
+## 7. 변형/접근성 유틸리티
+- `selectVariant` (`src/utils/variants.ts`)로 variant 레코드를 간결하게 조회해 IconButton처럼 다양한 스타일을 유지하면서 코드 중복을 줄입니다.
+- `buildAriaProps` (`src/utils/accessibility.ts`)는 `aria-expanded`, `aria-controls` 등을 객체 하나로 정리해 필요한 속성만 적용합니다. IconButton에서 상태별 `aria` 속성을 구성하는 예시가 있습니다.
 
 ## 6. 문서 & 작업 플로우
 - `docs/recipes.md`는 비개발자용 가이드, 이번 변경점과 같이 활용해 레이아웃/검색 설정을 텍스트 작업으로 끝낼 수 있음을 강조.
