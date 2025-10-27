@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig, type UserConfig } from 'vite';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -7,23 +8,31 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
-  viteFinal(config) {
-    config.server ??= {};
-    config.server.proxy = {
-      '/joongang-css': {
-        target: 'https://static.joongang.co.kr',
-        changeOrigin: true, // Host 헤더 교체
-        secure: true,
-        rewrite: p => p.replace(/^\/joongang-css/, '/css'),
-        configure(proxy) {
-          proxy.on('proxyRes', proxyRes => {
-            // 응답에 CORS 허용 헤더 추가
-            proxyRes.headers['access-control-allow-origin'] = '*';
-          });
-        },
-      },
+
+  viteFinal(baseConfig) {
+    // CI 환경(CHROMATIC=true, CI=true)일 때 프록시 제거
+    const isCI = Boolean(process.env.CI || process.env.CHROMATIC);
+    const custom: UserConfig = {
+      server: isCI
+        ? undefined
+        : {
+            proxy: {
+              '/joongang-css': {
+                target: 'https://static.joongang.co.kr',
+                changeOrigin: true,
+                secure: true,
+                rewrite: p => p.replace(/^\/joongang-css/, '/css'),
+                configure(proxy) {
+                  proxy.on('proxyRes', proxyRes => {
+                    proxyRes.headers['access-control-allow-origin'] = '*';
+                  });
+                },
+              },
+            },
+          },
     };
-    return config;
+    return mergeConfig(baseConfig, custom);
   },
 };
+
 export default config;

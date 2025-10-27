@@ -11,6 +11,9 @@ import {
   SearchLayerPlusSection,
   SearchLayerTrendSection,
 } from '../../Molecules/SearchLayer';
+import { useBodyScrollLock } from '../../../hooks/useBodyScrollLock';
+import { useEscapeKey } from '../../../hooks/useEscapeKey';
+import { useFocusTrap } from '../../../hooks/useFocusTrap';
 import { useSearchLayerState } from './useSearchLayerState';
 
 export type SearchLayerProps = {
@@ -26,6 +29,9 @@ export default function SearchLayer({ open, onClose, onSubmit, inputBoxIsShow = 
     onClose,
     onSubmit,
   });
+  useEscapeKey(close, open);
+  useBodyScrollLock(open);
+  useFocusTrap(layerRef, open);
 
   useEffect(() => {
     if (!open) {

@@ -1,33 +1,39 @@
-import { RefObject, useEffect } from 'react';
+import { useCallback, type RefObject } from 'react';
+
+import { useEventListener } from './useEventListener';
 
 type PointerEvent = MouseEvent | TouchEvent;
+
+function getDocument(node: Element | null): Document | null {
+  if (node?.ownerDocument) {
+    return node.ownerDocument;
+  }
+  if (typeof document !== 'undefined') {
+    return document;
+  }
+  return null;
+}
 
 export function useClickOutside<T extends HTMLElement>(
   ref: RefObject<T | null>,
   handler: (event: PointerEvent) => void,
   enabled = true
 ) {
-  useEffect(() => {
-    if (!enabled) {
-      return undefined;
-    }
-
-    const listener = (event: PointerEvent) => {
+  const createListener = useCallback(
+    (event: PointerEvent) => {
       const element = ref.current;
       if (!element || element.contains(event.target as Node)) {
         return;
       }
       handler(event);
-    };
+    },
+    [handler, ref]
+  );
 
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
+  const doc = getDocument(ref.current);
 
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [enabled, handler, ref]);
+  useEventListener(doc, 'mousedown', createListener, undefined, enabled);
+  useEventListener(doc, 'touchstart', createListener, undefined, enabled);
 }
 
 export default useClickOutside;
