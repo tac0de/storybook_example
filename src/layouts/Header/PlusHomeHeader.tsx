@@ -22,7 +22,7 @@ export default function PlusHomeHeader() {
           nav={nav}
           mastheadMenu={mastheadMenu}
           shortcut={shortcut}
-          onOpenMegaMenu={megaMenu.open}
+          onOpenMegaMenu={megaMenu.toggle}
           onOpenSearch={searchLayer.open}
           onClickJoin={() => alert('회원가입')}
           onClickReplica={() => alert('지면보기')}

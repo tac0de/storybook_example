@@ -2,6 +2,7 @@ import { useCallback, useRef, useState, type FormEvent, type RefObject } from 'r
 
 import { useBoolean } from '../../../hooks/useBoolean';
 import { useClickOutside } from '../../../hooks/useClickOutside';
+import { useDebouncedValue } from '../../../hooks/useDebouncedValue';
 
 type OutsidePointerEvent = MouseEvent | TouchEvent;
 
@@ -20,18 +21,45 @@ export interface SearchLayerState {
   applySuggestion: (value: string, options?: { submit?: boolean; close?: boolean }) => void;
   reset: () => void;
   close: () => void;
+  clearButtonVisible: boolean;
 }
 
 export function useSearchLayerState({ open, onClose, onSubmit }: SearchLayerStateOptions): SearchLayerState {
   const [searchQuery, setSearchQuery] = useState('');
   const placeholder = useBoolean(true);
   const layerRef = useRef<HTMLDivElement | null>(null);
+  const debouncedQuery = useDebouncedValue(searchQuery, 200);
+
+  const setInputContent = useCallback((value: string, options?: { moveCaret?: boolean }) => {
+    const editable = layerRef.current?.querySelector<HTMLParagraphElement>('.search_area .form_control');
+    if (!editable) return;
+
+    editable.textContent = value;
+
+    const shouldMoveCaret = options?.moveCaret ?? true;
+    if (!shouldMoveCaret) {
+      return;
+    }
+
+    const doc = editable.ownerDocument;
+    if (!doc) return;
+
+    const selection = doc.getSelection();
+    if (!selection) return;
+
+    const range = doc.createRange();
+    range.selectNodeContents(editable);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }, []);
 
   const close = useCallback(() => {
     onClose();
     setSearchQuery('');
     placeholder.setFalse();
-  }, [onClose, placeholder]);
+    setInputContent('', { moveCaret: false });
+  }, [onClose, placeholder, setInputContent]);
 
   const handleOutsideClick = useCallback(
     (_event: OutsidePointerEvent) => {
@@ -77,6 +105,7 @@ export function useSearchLayerState({ open, onClose, onSubmit }: SearchLayerStat
   const applySuggestion = useCallback(
     (value: string, options?: { submit?: boolean; close?: boolean }) => {
       setSearchQuery(value);
+      setInputContent(value);
       if (value) {
         placeholder.setTrue();
       } else {
@@ -89,13 +118,14 @@ export function useSearchLayerState({ open, onClose, onSubmit }: SearchLayerStat
         close();
       }
     },
-    [close, placeholder, submitQuery]
+    [close, placeholder, setInputContent, submitQuery]
   );
 
   const reset = useCallback(() => {
     setSearchQuery('');
     placeholder.setFalse();
-  }, [placeholder]);
+    setInputContent('', { moveCaret: false });
+  }, [placeholder, setInputContent]);
 
   return {
     layerRef,
@@ -106,6 +136,7 @@ export function useSearchLayerState({ open, onClose, onSubmit }: SearchLayerStat
     applySuggestion,
     reset,
     close,
+    clearButtonVisible: debouncedQuery.trim().length > 0,
   };
 }
 

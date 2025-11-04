@@ -1,6 +1,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
+import { buildAriaProps } from '../../../utils/accessibility';
+import { selectVariant } from '../../../utils/variants';
+
 export type IconButtonVariant = 'navbar' | 'ham' | 'search';
 
 const BUTTON_CLASS_BY_VARIANT: Record<IconButtonVariant, string> = {
@@ -28,6 +31,9 @@ export type IconButtonProps = Omit<
   variant?: IconButtonVariant;
   ariaLabel: string;
   expanded?: boolean;
+  ariaControls?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
   className?: string;
   buttonClassName?: string;
   icon?: React.ReactNode;
@@ -37,21 +43,29 @@ export function IconButton({
   variant = 'navbar',
   ariaLabel,
   expanded,
+  ariaControls,
+  ariaLabelledBy,
+  ariaDescribedBy,
   className,
   buttonClassName,
   icon,
   ...rest
 }: IconButtonProps) {
-  const baseClass = buttonClassName ?? BUTTON_CLASS_BY_VARIANT[variant];
-  const iconNode = icon ?? ICON_BY_VARIANT[variant];
-  const ariaExpanded = typeof expanded === 'boolean' ? expanded : undefined;
+  const baseClass = buttonClassName ?? selectVariant(BUTTON_CLASS_BY_VARIANT, variant);
+  const iconNode = icon ?? selectVariant(ICON_BY_VARIANT, variant);
+  const ariaAttributes = buildAriaProps({
+    expanded,
+    controls: ariaControls,
+    labelledBy: ariaLabelledBy,
+    describedBy: ariaDescribedBy,
+  });
 
   return (
     <button
       type="button"
       className={classNames(baseClass, className)}
       aria-label={ariaLabel}
-      aria-expanded={ariaExpanded}
+      {...ariaAttributes}
       {...rest}
     >
       {iconNode}

@@ -27,20 +27,33 @@ export function useDisclosure({
 
   const setOpen = useCallback(
     (nextOpen: boolean | ((prev: boolean) => boolean)) => {
-      const nextValue = typeof nextOpen === 'function' ? nextOpen(isOpen) : nextOpen;
-      if (nextValue === isOpen) return;
+      const evaluate = (prev: boolean): boolean => {
+        const nextValue = typeof nextOpen === 'function' ? nextOpen(prev) : nextOpen;
+        if (nextValue === prev) {
+          return prev;
+        }
 
-      if (!isControlled) {
-        setUncontrolled(nextValue);
+        if (nextValue) {
+          onOpen?.();
+        } else {
+          onClose?.();
+        }
+
+        return nextValue;
+      };
+
+      if (isControlled) {
+        const prev = Boolean(isOpenProp);
+        const nextValue = evaluate(prev);
+        if (nextValue !== prev && isOpenProp === undefined) {
+          setUncontrolled(nextValue);
+        }
+        return;
       }
 
-      if (nextValue) {
-        onOpen?.();
-      } else {
-        onClose?.();
-      }
+      setUncontrolled(prev => evaluate(prev));
     },
-    [isControlled, isOpen, onClose, onOpen]
+    [isControlled, isOpenProp, onClose, onOpen]
   );
 
   const open = useCallback(() => setOpen(true), [setOpen]);

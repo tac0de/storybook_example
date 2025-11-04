@@ -42,10 +42,14 @@ export default function MegaMenu({ open, onClose, loggedIn = false, userName, on
   useBodyScrollLock(open);
   useFocusTrap(panelRef, open);
 
+  if (!open) {
+    return null;
+  }
+
   return (
     <div
       id="menu_popup"
-      className={classNames('full_popup', 'menu_popup', open && 'show')}
+      className={classNames('full_popup', 'menu_popup', open ? 'show' : 'hide')}
       tabIndex={0}
       role="dialog"
       aria-modal="true"

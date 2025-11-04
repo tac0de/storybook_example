@@ -1,4 +1,5 @@
 import { IconButton } from '../../Atoms/IconButton/IconButton';
+import { selectVariant } from '../../../utils/variants';
 import Stack from '../../common/Stack';
 
 export type HeaderActionsVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
@@ -35,7 +36,7 @@ export function HeaderActions({
   searchButtonClassName,
   containerClassName,
 }: HeaderActionsProps) {
-  const menuVariant = MENU_VARIANT_MAP[variant] ?? 'navbar';
+  const menuVariant = selectVariant(MENU_VARIANT_MAP, variant, 'default');
 
   const buttons = (
     <>
@@ -43,6 +44,7 @@ export function HeaderActions({
         variant={menuVariant}
         ariaLabel={menuAriaLabel}
         expanded={menuExpanded}
+        ariaControls="menu_popup"
         className={menuButtonClassName}
         onClick={onOpenMegaMenu}
         aria-haspopup="dialog"
@@ -51,6 +53,7 @@ export function HeaderActions({
         variant="search"
         ariaLabel={searchAriaLabel}
         expanded={searchExpanded}
+        ariaControls="layer_search"
         className={searchButtonClassName}
         onClick={onOpenSearch}
         aria-haspopup="dialog"

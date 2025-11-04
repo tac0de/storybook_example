@@ -8,10 +8,12 @@ const meta: Meta<SearchLayerFormProps> = {
   tags: ['autodocs'],
   args: {
     placeholderHidden: true,
+    showClearButton: true,
   },
   argTypes: {
     onSubmit: { action: 'submit' },
     onInput: { action: 'input' },
+    onClear: { action: 'clear' },
   },
   parameters: { layout: 'padded' },
   decorators: [searchLayerBaseDecorator],

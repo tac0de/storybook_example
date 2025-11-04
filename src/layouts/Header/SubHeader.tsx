@@ -16,7 +16,7 @@ export default function SubHeader({ show60thEmblem = true, isLoggedIn = false, s
   const megaMenu = useDisclosure();
   const searchLayer = useDisclosure();
   const { handleSubmit } = useSearchSubmit();
-  const { user: baseUser, shortcut, mastheadMenu } = SUB_HEADER_CONTENT;
+  const { user: baseUser, shortcut } = SUB_HEADER_CONTENT;
   const user = { ...baseUser, loggedIn: isLoggedIn };
 
   const handleJoin = () => {
@@ -45,8 +45,7 @@ export default function SubHeader({ show60thEmblem = true, isLoggedIn = false, s
             height: 26,
           }}
           shortcut={shortcut}
-          mastheadMenu={mastheadMenu}
-          onOpenMegaMenu={megaMenu.open}
+          onOpenMegaMenu={megaMenu.toggle}
           onOpenSearch={searchLayer.open}
           onClickJoin={handleJoin}
           onClickReplica={handleReplica}

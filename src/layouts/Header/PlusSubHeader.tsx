@@ -9,7 +9,7 @@ import { PLUS_SUB_HEADER_CONTENT } from './headerContent';
 export default function PlusSubHeader() {
   const megaMenu = useDisclosure();
   const searchLayer = useDisclosure();
-  const { user, shortcut, mastheadMenu } = PLUS_SUB_HEADER_CONTENT;
+  const { user, shortcut } = PLUS_SUB_HEADER_CONTENT;
   const { handleSubmit } = useSearchSubmit();
 
   return (
@@ -20,8 +20,7 @@ export default function PlusSubHeader() {
           user={user}
           logo={{ variant: 'plus', homeHref: 'https://www.joongang.co.kr/plus' }}
           shortcut={shortcut}
-          mastheadMenu={mastheadMenu}
-          onOpenMegaMenu={megaMenu.open}
+          onOpenMegaMenu={megaMenu.toggle}
           onOpenSearch={searchLayer.open}
           onClickJoin={() => alert('회원가입')}
           onClickReplica={() => alert('지면보기')}

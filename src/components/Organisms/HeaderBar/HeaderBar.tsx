@@ -7,6 +7,7 @@ import { NavList, type NavItem } from '../../Molecules/NavList/NavList';
 import { HeaderActions, type HeaderActionsProps } from '../../Molecules/HeaderActions/HeaderActions';
 import { PlusShortcut, type PlusShortcutProps } from '../../Molecules/PlusShortcut/PlusShortcut';
 import { HEADER_BAR_VARIANT_CONFIG } from './headerBarConfig';
+import { composeChildren, maybeWrap } from '../../../utils/reactNode';
 
 export type HeaderBarVariant = 'default' | 'plus' | 'sub' | 'plus-sub';
 
@@ -75,34 +76,21 @@ export default function HeaderBar({
   const shortcutNode = shortcut ? <PlusShortcut {...shortcut} /> : null;
 
   const navItemsNode = nav?.length ? <NavList items={nav} /> : null;
-  const navSection =
-    config.navClass !== null ? (
-      <nav className={config.navClass}>
-        {navItemsNode}
-        {shortcutNode}
-        {actionsNode}
-      </nav>
+  const navContent = composeChildren(navItemsNode, shortcutNode, actionsNode);
+  const navWrapped =
+    config.navClass !== null
+      ? maybeWrap(navContent, content => <nav className={config.navClass}>{content}</nav>)
+      : null;
+  const navSection = config.navClass !== null ? (navWrapped ?? <nav className={config.navClass} />) : navItemsNode;
+
+  const optionContent = config.navClass === null ? composeChildren(actionsNode, shortcutNode) : null;
+  const optionSection = maybeWrap(optionContent, content =>
+    config.wrapOptionArea || config.optionClass ? (
+      <div className={config.optionClass ?? undefined}>{content}</div>
     ) : (
-      navItemsNode
-    );
-
-  const optionContent =
-    config.navClass === null ? (
-      <>
-        {shortcutNode}
-        {actionsNode}
-      </>
-    ) : null;
-
-  let optionSection: ReactNode = null;
-  if (optionContent) {
-    optionSection =
-      config.wrapOptionArea || config.optionClass ? (
-        <div className={config.optionClass ?? undefined}>{optionContent}</div>
-      ) : (
-        optionContent
-      );
-  }
+      content
+    )
+  );
 
   return (
     <div className={rootClass}>

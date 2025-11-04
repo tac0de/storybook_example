@@ -24,11 +24,12 @@ export type SearchLayerProps = {
 };
 
 export default function SearchLayer({ open, onClose, onSubmit, inputBoxIsShow = true }: SearchLayerProps) {
-  const { layerRef, placeholderHidden, handleSubmit, handleSearchInput, close, reset } = useSearchLayerState({
-    open,
-    onClose,
-    onSubmit,
-  });
+  const { layerRef, placeholderHidden, handleSubmit, handleSearchInput, close, reset, clearButtonVisible } =
+    useSearchLayerState({
+      open,
+      onClose,
+      onSubmit,
+    });
   useEscapeKey(close, open);
   useBodyScrollLock(open);
   useFocusTrap(layerRef, open);
@@ -50,7 +51,13 @@ export default function SearchLayer({ open, onClose, onSubmit, inputBoxIsShow = 
         <SearchLayerHeader onClose={close} />
 
         <div className="layer_body" style={{ paddingBottom: 0 }}>
-          <SearchLayerForm placeholderHidden={placeholderHidden} onSubmit={handleSubmit} onInput={handleSearchInput} />
+          <SearchLayerForm
+            placeholderHidden={placeholderHidden}
+            onSubmit={handleSubmit}
+            onInput={handleSearchInput}
+            onClear={reset}
+            showClearButton={clearButtonVisible}
+          />
           <SearchLayerInputSection />
           <SearchLayerAiTagSection />
           <SearchLayerTrendSection />

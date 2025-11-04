@@ -25,6 +25,20 @@ export function useClickOutside<T extends HTMLElement>(
       if (!element || element.contains(event.target as Node)) {
         return;
       }
+      const target = event.target as Element | null;
+      if (target) {
+        const controller = target.closest('[aria-controls]');
+        if (controller) {
+          const controlledId = controller.getAttribute('aria-controls');
+          const elementId = element.id || element.parentElement?.id;
+          if (controlledId && elementId && controlledId === elementId) {
+            return;
+          }
+        }
+        if ((target as Element).closest('[data-ignore-click-outside="true"]')) {
+          return;
+        }
+      }
       handler(event);
     },
     [handler, ref]
