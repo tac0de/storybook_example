@@ -121,6 +121,32 @@ useBodyScrollLock(megaMenu.isOpen);
 
 ---
 
+### `useDebouncedValue` — `src/hooks/useDebouncedValue.ts`
+
+언제 사용하면 좋을까요?
+
+- 입력값이 바뀔 때마다 바로 API 호출/필터링을 하지 말고, 사용자가 잠깐 멈출 때 한 번만 처리하고 싶을 때.
+- 실시간 검색창, 자동완성 입력, 스크롤/리사이즈 후 처리 최적화 등에 유용합니다.
+
+사용 순서
+
+1. 원본 상태값을 만들고, `useDebouncedValue(value, delay)`로 지연된 값을 만든다.
+2. 지연된 값이 바뀔 때만 네트워크 호출/필터링을 수행한다.
+
+```tsx
+const [query, setQuery] = useState('');
+const debounced = useDebouncedValue(query, 300);
+
+useEffect(() => {
+  if (!debounced) return;
+  fetchList({ q: debounced });
+}, [debounced]);
+
+return <input value={query} onChange={e => setQuery(e.target.value)} placeholder="검색어 입력" />;
+```
+
+---
+
 ### `useFocusTrap` — `src/hooks/useFocusTrap.ts`
 
 **언제 사용하면 좋을까요?**

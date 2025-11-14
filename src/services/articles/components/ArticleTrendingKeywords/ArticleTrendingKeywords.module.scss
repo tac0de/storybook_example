@@ -1,0 +1,41 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  color: #7a5e3e;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #b19163;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fff9f2;
+  border: 1px solid #f1ddc7;
+  font-size: 13px;
+  color: #4a2f14;
+}
+

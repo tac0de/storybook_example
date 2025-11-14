@@ -28,7 +28,7 @@ export function useSearchLayerState({ open, onClose, onSubmit }: SearchLayerStat
   const [searchQuery, setSearchQuery] = useState('');
   const placeholder = useBoolean(true);
   const layerRef = useRef<HTMLDivElement | null>(null);
-  const debouncedQuery = useDebouncedValue(searchQuery, 200);
+  const debouncedQuery = useDebouncedValue(searchQuery, 3000);
 
   const setInputContent = useCallback((value: string, options?: { moveCaret?: boolean }) => {
     const editable = layerRef.current?.querySelector<HTMLParagraphElement>('.search_area .form_control');

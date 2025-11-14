@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  color: #7a5e3e;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid #f2dec3;
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+}
+
+.category {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: #c47a32;
+}
+
+.cardTitle {
+  margin: 6px 0 4px;
+  font-size: 15px;
+  color: #3a2c1a;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: 13px;
+  color: #6b5844;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #9c8468;
+}
+
